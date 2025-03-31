@@ -27,7 +27,7 @@
       |-- data                	-- 示例数据，由于示例数据所占内存较大，项目里面默认不带有示例数据，由开发者自行准备
       |-- modules               -- 示例代码
         |-- cesium              -- Cesium示例
-          |-- api           	-- Cesium的API文档，由于API所占内存较大，项目里面默认不带有API文档，由开发者自行准备
+          |-- api           	-- Cesium的API文档
           |-- example           -- Cesium示例代码
           |-- example-gallery   -- Cesium示例功能效果图
           |-- guide           	-- Cesium产品介绍相关文档
