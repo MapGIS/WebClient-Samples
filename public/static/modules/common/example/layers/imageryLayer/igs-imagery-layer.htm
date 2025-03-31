@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>影像图层</title>
+    <!-- 引入地图引擎库 -->
+    <script src="http://192.168.82.91:8086/static/libs/include-lib-local-upgrade.js"></script>
+    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
+    <script src="http://192.168.82.91:8086/static/libs/cdn/layui/layui.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://192.168.82.91:8086/static/libs/cdn/layui/css/layui.css"
+    />
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://192.168.82.91:8086/static/libs/css/style.css"
+    />
+    <script type="text/javascript">
+      //使用严格模式
+      'use strict'
+      // 定义二维视图的主要类
+
+      let map,
+        view,
+        layer,
+        layerOpacity = 1,
+        renderMode = 'image',
+        httpMethod = 'GET',
+        clipGeometry = undefined,
+        definitionExpression = undefined,
+        rasterFunction = null,
+        interpolation = '',
+        url =
+          'http://192.168.82.91:8089/igs/rest/services/Image/world/ImageServer'
+      const { IGSImageryLayer } = zondy.layer
+      const { Polygon, MultiPolygon, Extent, Circle } = zondy.geometry
+      const { Map, SpatialReference, Color } = zondy
+
+      // 初始化地图
+      function init() {
+        // 初始化地图视图
+        initView()
+        // 初始化示例UI
+        initUI()
+        // 添加瓦片图层
+        addLayer()
+      }
+
+      // 初始二维地图
+      function initView() {
+        // 初始化图层管理容器
+        map = new Map()
+        // 初始化地图视图对象
+        view = createView('mapgis-viewer', map)
+      }
+
+      // 添加影像图层
+      function addLayer() {
+        // 如果layer存在，先删除图层
+        if (layer) {
+          deleteLayer()
+        }
+        // 创建图层，如果是IGS1.0版本的服务请在初始化时指的图层坐标系
+        layer = new IGSImageryLayer({
+          // 服务基地址
+          url: url,
+          // 图层透明度
+          opacity: layerOpacity
+        })
+        // 添加图层
+        map.add(layer)
+        // 图层添加完毕后，跳转到图层范围内
+        layer.on('layerview-created', (result) => {
+          view.flyTo({
+            extent: result.layer.extent
+          })
+        })
+      }
+
+      // 获取图层构造参数
+      function getParams() {
+        // 设置图层初始化参数
+        let options = {
+          // 服务基地址
+          url: url,
+          // 图层透明度
+          opacity: layerOpacity
+        }
+        // 获取token名
+        const tokenKey = document.getElementById('token-key').value
+        // 获取token值
+        const tokenValue = document.getElementById('token-value').value
+        // 波段
+        let bandIds = document.getElementById('bandIds').value
+        if (bandIds) {
+          bandIds = bandIds.split(',')
+        }
+        // token存在
+        if (tokenKey && tokenValue) {
+          // 设置token名
+          options.tokenKey = tokenKey
+          // 设置token值
+          options.tokenValue = tokenValue
+        }
+        // 渲染模式
+        options.renderMode = renderMode
+        // 请求模式
+        options.httpMethod = httpMethod
+        // 客户端裁剪参数
+        options.clippingArea = clipGeometry
+        // 渲染规则
+        options.rasterFunction = rasterFunction
+        // 波段
+        options.bandIds = bandIds
+        // 插值方式
+        options.interpolation = interpolation
+        return options
+      }
+
+      // 设置裁剪多边形
+      function getPolygonClip() {
+        return new Polygon({
+          coordinates: [
+            [
+              [111.36341, 29.032578],
+              [113, 30],
+              [114.13094, 29.032578],
+              [114.13094, 31.273224],
+              [111.36341, 31.273224],
+              [111.36341, 29.032578]
+            ]
+          ]
+        })
+      }
+
+      // 设置裁剪多边形
+      function getMultiPolygonClip() {
+        return new MultiPolygon({
+          coordinates: [
+            [
+              [
+                [113.5, 30.5],
+                [114, 30.5],
+                [114, 31],
+                [113.5, 31],
+                [113.5, 30.5]
+              ]
+            ],
+            [
+              [
+                [111.5, 30.5],
+                [112, 30.5],
+                [112, 31],
+                [111.5, 31],
+                [111.5, 30.5]
+              ]
+            ]
+          ]
+        })
+      }
+
+      // 设置裁剪多边形
+      function getExtentClip() {
+        return new Extent({
+          xmin: 110,
+          xmax: 114,
+          ymin: 29.5,
+          ymax: 31
+        })
+      }
+
+      // 设置裁剪多边形
+      function getCircleClip() {
+        return new Circle({
+          // 设置圆的中心点
+          center: [113.2, 30.5],
+          // 设置圆的半径，单位米
+          radius: 100000,
+          // 设置圆转多边形时分割点的数量
+          numberOfPoints: 200
+        })
+      }
+
+      // 重置图层
+      function resetLayer() {
+        // 删除图层
+        map.remove(layer)
+        // 设置图层初始化参数
+        const options = getParams()
+        // 创建图层
+        layer = new IGSImageryLayer(options)
+        // 添加图层
+        map.add(layer)
+      }
+
+      //初始化示例UI操作
+      function initUI() {
+        layui.use(function () {
+          layui.slider.render({
+            elem: '#moveStep',
+            value: 100,
+            min: 0,
+            max: 100,
+            step: 1,
+            theme: 'rgb(21, 134, 238)',
+            //自定义提示文本
+            setTips: function (value) {
+              layerOpacity = value / 100
+              return value + '%'
+            },
+            change: function (value) {
+              layer.opacity = layerOpacity
+            }
+          })
+          const form = layui.form
+
+          form.on('switch(layer-visible)', function (data) {
+            const elem = data.elem // 获得 checkbox 原始 DOM 对象
+            const checked = elem.checked // 获得 checkbox 选中状态
+            layer.visible = checked
+          })
+          // 切换渲染模式
+          form.on('select(renderMode)', function (data) {
+            renderMode = data.value
+            // 重置图层
+            resetLayer()
+          })
+          // 栅格渲染规则
+          form.on('select(rasterFunction)', function (data) {
+            if (data.value === 'NDVI') {
+              rasterFunction = {
+                functionName: 'NDVI',
+                functionArguments: {
+                  redIndex: 2,
+                  nirIndex: 3
+                }
+              }
+            } else if (data.value === 'HILLSHADE') {
+              rasterFunction = {
+                functionName: 'HILLSHADE',
+                functionArguments: {
+                  altitude: 75,
+                  azimuth: 120,
+                  zFactor: 1.0
+                }
+              }
+            } else {
+              rasterFunction = null
+            }
+            layer.rasterFunction = rasterFunction
+          })
+
+          form.on('select(interpolation)', function (data) {
+            if (data.value === 'NearestNeighbor') {
+              interpolation = data.value
+            } else if (data.value === 'BilinearInterpolation') {
+              interpolation = data.value
+            } else {
+              interpolation = ''
+            }
+            layer.interpolation = interpolation
+          })
+
+          // 客户端裁剪
+          form.on('select(clipArea)', function (data) {
+            if (data.value === 'polygon') {
+              // 设置裁剪多边形
+              clipGeometry = getPolygonClip()
+            } else if (data.value === 'multiPolygon') {
+              // 设置裁剪多边形
+              clipGeometry = getMultiPolygonClip()
+            } else if (data.value === 'extent') {
+              // 设置裁剪多边形
+              clipGeometry = getExtentClip()
+            } else if (data.value === 'circle') {
+              // 设置裁剪多边形
+              clipGeometry = getCircleClip()
+            } else {
+              // 不设置客户端裁剪
+              clipGeometry = null
+            }
+            layer.clippingArea = clipGeometry
+          })
+        })
+      }
+    </script>
+    <style>
+      .layui-input-block-select {
+        width: 186px;
+      }
+    </style>
+  </head>
+
+  <body onload="init();">
+    <!--  视图容器div  -->
+    <div
+      id="mapgis-viewer"
+      style="position: absolute; width: 100%; height: 100%"
+    ></div>
+    <!--  示例UI  -->
+    <div class="layui-panel layui-panel-right map-image-layer-panel">
+      <form class="layui-form" action="">
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="width: 100px">图层显隐</label>
+          <input
+            type="checkbox"
+            title="显示|隐藏"
+            lay-skin="switch"
+            lay-filter="layer-visible"
+            checked
+          />
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="width: 100px"
+            >图层透明度</label
+          >
+          <div class="layui-input-block sample-slider" style="width: 160px">
+            <div id="moveStep"></div>
+          </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 10px">
+          <label class="layui-form-label">渲染模式</label>
+          <div class="layui-input-block layui-input-block-select">
+            <select id="renderMode" name="renderMode" lay-filter="renderMode">
+              <option value="image">图片</option>
+              <option value="tile">瓦片</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item" style="margin-bottom: 10px">
+          <label class="layui-form-label">客户端裁剪</label>
+          <div class="layui-input-block layui-input-block-select">
+            <select id="clipArea" name="clipArea" lay-filter="clipArea">
+              <option value="none">无</option>
+              <option value="polygon">多边形(单区)</option>
+              <option value="multiPolygon">多边形(多区)</option>
+              <option value="extent">矩形</option>
+              <option value="circle">圆形</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">栅格渲染函数</label>
+          <div class="layui-input-block layui-input-block-select">
+            <select
+              id="rasterFunction"
+              name="rasterFunction"
+              lay-filter="rasterFunction"
+            >
+              <option value="NONE">无</option>
+              <option value="NDVI">NDVI</option>
+              <option value="HILLSHADE">HILLSHADE</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">栅格插值方法</label>
+          <div class="layui-input-block layui-input-block-select">
+            <select
+              id="interpolation"
+              name="interpolation"
+              lay-filter="interpolation"
+            >
+              <option value="NONE">无</option>
+              <option value="NearestNeighbor">最近邻域插值</option>
+              <option value="BilinearInterpolation">双线性插值</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">设置波段</label>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">波段列表</label>
+          <div class="layui-input-block" style="margin-bottom: 6px">
+            <input
+              id="bandIds"
+              autocomplete="off"
+              class="layui-input"
+              placeholder="1,2,3"
+            />
+          </div>
+        </div>
+
+        <div class="layui-form-item">
+          <label class="layui-form-label">设置Token</label>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">Token名</label>
+          <div class="layui-input-block" style="margin-bottom: 6px">
+            <input
+              id="token-key"
+              value="token"
+              autocomplete="off"
+              class="layui-input"
+              placeholder="Token名"
+            />
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">Token值</label>
+          <div class="layui-input-block" style="margin-bottom: 6px">
+            <input
+              id="token-value"
+              autocomplete="off"
+              class="layui-input"
+              placeholder="Token值"
+            />
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <button
+            type="button"
+            class="layui-btn"
+            style="float: right; width: auto; margin-top: 10px"
+            onclick="resetLayer()"
+          >
+            重置图层
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

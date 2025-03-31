@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>属性编辑</title>
+    <!-- 引入地图引擎库 -->
+    <script src="http://192.168.82.91:8086/static/libs/include-lib-local-upgrade.js"></script>
+    <!-- 天地图Token -->
+    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <!-- 行业标绘相关库 -->
+    <script src="http://192.168.82.91:8086/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
+    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-plot.min.js"></script>
+    <!-- menu -->
+    <script src="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotMenu/index.js"></script>
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotMenu/index.css"/>
+    <!-- editor -->
+    <script src="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/Pickr/pickr.min.js"></script>
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/Pickr/nano.min.css"/>
+    <script src="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotStyleEditor/index.js"></script>
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotStyleEditor/index.css"/>
+    <!--示例公共样式-->
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css"/>
+    <script type="text/javascript">
+      //使用严格模式
+      'use strict'
+      // 定义视图的主要类
+      let map, view, layer
+      const { WebTileLayer } = zondy.layer
+      const { Map } = zondy
+      const { Plot } = Zondy
+      const {
+        SymbolManager,
+        FabricLayer,
+        PlotLayer2DGroup,
+        PlotLayer2D,
+        DrawTool,
+        PlotLayer3D,
+        PlotLayer3DGroup
+      } = Plot
+      const { PlotStyleEditor } = window.webclientPlot
+      const symbolUrl = `http://192.168.82.91:8200/Plot/plot-sample/symbolLibs/标号库a/symbolLib.json`
+      const symbolOptions = {
+        fontURL: `http://192.168.82.91:8200/Plot/plot-sample/fonts/`,
+        baseUrl: `http://192.168.82.91:8200/Plot/plot-sample/symbolLibs/标号库a/`
+      }
+      let currentPlot, plotEditor, plotLayer
+
+      // 初始化地图
+      function init() {
+        // 初始化地图视图
+        initView()
+        // 视图加载完毕后，初始化行业标绘
+        view.on('layerview-created', () => {
+          // 跳转到指定位置
+          view.goTo({
+            // 跳转中心点
+            center: [117.19, 34.232, 30000],
+            // 地图层级
+            zoom: 12
+          });
+          // 获取引擎类型
+          let type = localStorage.getItem('engine-type')
+          // 创建符号管理器
+          const manager = new SymbolManager(symbolUrl, symbolOptions)
+          // 请求获取符号库
+          manager.getSymbols().then(function () {
+            //获取符号库后执行回调
+            //确保符号获取完毕后，初始化标绘图层
+            if (type === 'cesium') {
+              // 初始化三维行业标绘
+              initPlot3D()
+            } else {
+              // 初始化二维行业标绘
+              initPlot2D()
+            }
+          })
+        })
+      }
+
+      // 初始化二维行业标绘
+      function initPlot2D() {
+        // 获取引擎视图对象
+        const viewer = view.getInnerView()
+        // 获取overlay图层
+        const canvas = new FabricLayer(viewer, PlotLayer2DGroup)
+        // 创建二维图层组
+        const plotLayer2DGroup = canvas.getFabricCanvas()
+        // 创建二维图层
+        const plotLayer = new PlotLayer2D()
+        // 设置图层标绘元素缩放比，默认为1
+        plotLayer.setPlotSize(1)
+        // 添加图层
+        plotLayer2DGroup.addLayer(plotLayer)
+        // 读取保存的标绘物数据
+        plotLayer.addGeoJSONObject({
+          type: 'Feature',
+          properties: {
+            symbolId: '56'
+          },
+          geometry: {
+            type: 'MultiPoint',
+            coordinates: [[117.18944441797595, 34.2390284961602]]
+          }
+        })
+        //点击获取要素
+        plotLayer.editable = true
+        plotLayer.pickPlot = function (plot) {
+          // 获取选中的标绘元素
+          initUI(plot)
+        }
+      }
+
+      // 初始化三维行业标绘
+      function initPlot3D() {
+        // 获取引擎视图对象
+        const viewer = view.getInnerView()
+        // 创建图层组
+        const plotLayer3DGroup = new PlotLayer3DGroup(viewer)
+        // 创建三维图层
+        const plotLayer = new PlotLayer3D(Cesium, viewer, {
+          //设置为贴地模式
+          classificationType: 0
+        })
+        // 设置图层标绘元素缩放比，默认为1
+        plotLayer.setPlotSize(0.5)
+        // 设置图层是否可编辑
+        plotLayer.editable = false
+        // 将三维图层添加到图层组内
+        plotLayer3DGroup.addLayer(plotLayer)
+        // 读取保存的标绘物数据
+        plotLayer.addGeoJSONObject({
+          id: 'test',
+          type: 'Feature',
+          properties: {
+            symbolId: '56'
+          },
+          geometry: {
+            type: 'MultiPoint',
+            coordinates: [[117.18944441797595, 34.2390284961602]]
+          }
+        })
+        //点击获取要素
+        plotLayer.editable = true
+        plotLayer.pickPlot = function (plot) {
+          // 获取选中的标绘元素
+          initUI(plot)
+        }
+      }
+
+      //初始化UI界面
+      function initUI(currentPlot) {
+        if (!plotEditor) {
+          // 创建plotStyleEditor
+          plotEditor = new PlotStyleEditor('plot-editor')
+          // 监听属性变更事件
+          plotEditor.on('attributes-change', (attr) => {
+            // 修改当前符号
+            currentPlot.setStyle(attr.type, attr.value, attr.key)
+          })
+          // 获取标绘元素样式
+          let style = currentPlot.getStyle()
+          currentPlot
+            .getElement()
+            .getSymbol()
+            .getSvg()
+            .then((svgDom) => {
+              // 修改属性界面
+              plotEditor.setAttrs(style, style.nodeStyles, {
+                svgDom: svgDom
+              })
+            })
+        }
+      }
+
+      // 初始二维地图
+      function initView() {
+        // 初始化图层管理容器
+        map = new Map()
+        // 初始化地图视图对象
+        view = createView('mapgis-viewer', map)
+        // 创建瓦片图层
+        layer = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=img_c&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        // 添加图层
+        map.add(layer)
+      }
+    </script>
+</head>
+
+<body onload="init();">
+<div id="mapgis-viewer">
+    <div id="content">
+        <div id="plot-editor"></div>
+    </div>
+</div>
+</body>
+</html>

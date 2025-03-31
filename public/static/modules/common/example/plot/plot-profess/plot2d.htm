@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>标绘使用</title>
+    <!-- 引入地图引擎库 -->
+    <script src="http://192.168.82.91:8086/static/libs/include-lib-local-upgrade.js"></script>
+    <!-- 天地图Token -->
+    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <!-- 行业标绘相关库 -->
+    <script src="http://192.168.82.91:8086/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
+    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-plot.min.js"></script>
+    <script src="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotMenu/index.js"></script>
+    <script src="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.js"></script>
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotMenu/index.css"/>
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.css"/>
+    <!--示例公共样式-->
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css"/>
+    <script type="text/javascript">
+      //使用严格模式
+      'use strict'
+      // 定义视图的主要类
+      let map, view, layer
+      const { WebTileLayer } = zondy.layer
+      const { Map } = zondy
+      const { Plot } = Zondy
+      const {
+        SymbolManager,
+        FabricLayer,
+        PlotLayer2DGroup,
+        PlotLayer2D,
+        DrawTool,
+        PlotLayer3D,
+        PlotLayer3DGroup
+      } = Plot
+      const symbolUrl = `http://192.168.82.91:8200/Plot/plot-sample/symbolLibs/标号库a/symbolLib.json`
+      const symbolOptions = {
+        fontURL: `http://192.168.82.91:8200/Plot/plot-sample/fonts/`,
+        baseUrl: `http://192.168.82.91:8200/Plot/plot-sample/symbolLibs/标号库a/`
+      }
+
+      // 初始化地图
+      function init() {
+        // 初始化地图视图
+        initView()
+        // 视图加载完毕后，初始化行业标绘
+        view.on('layerview-created', () => {
+          // 跳转到指定位置
+          view.goTo({
+            // 跳转中心点
+            center: [115.47643872463577, 30.980700423496124, 30000],
+            // 地图层级
+            zoom: 12
+          });
+          // 获取引擎类型
+          let type = localStorage.getItem('engine-type')
+          if (type === 'cesium') {
+            initPlot3D()
+          } else {
+            initPlot2D()
+          }
+        })
+      }
+
+      // 初始化行业标绘2D
+      function initPlot2D() {
+        // #创建符号管理器
+        // 1.可传入符号库url链接
+        let manager = new SymbolManager(symbolUrl, symbolOptions)
+        let drawTool, layer1, plotLayer2DGroup
+        // 2.可传入json对象
+        //let manager = new SymbolManager(symbolObject, symbolOptions);
+        // 获取overlay图层
+        const innerView = view.getInnerView()
+        const canvas = new FabricLayer(innerView, PlotLayer2DGroup)
+        // #请求获取符号库
+        manager.getSymbols().then(() => {
+          // 创建二维图层组
+          plotLayer2DGroup = canvas.getFabricCanvas()
+          // 创建二维图层
+          layer1 = new PlotLayer2D()
+          // 设置图层标绘元素缩放比，默认为1
+          layer1.setPlotSize(1)
+          // 添加图层
+          plotLayer2DGroup.addLayer(layer1)
+
+          // 创建绘制工具
+          drawTool = new DrawTool(layer1, {
+            // 新增标绘对象回调
+            addedPlot: function (plot) {}
+          })
+          // 创建左侧符号目录树，并绑定绘制方法
+          function drawFunc(id) {
+            // 开始绘制
+            drawTool.stopDraw()
+            // 查询当前绘制符号参数
+            const node = manager.getLeafByID(id)
+            drawTool.drawPlot(node)
+          }
+
+          /**
+           * ***********************ui部分***************************
+           */
+          initPlotUI(manager, drawFunc)
+        })
+
+        // #符号库结构
+        // 1.manager._leaves 符号库节点扁平化数组
+        // 2.manager._symbols 符号库节点（有目录结构）
+      }
+
+      // 初始化行业标绘3D
+      function initPlot3D() {
+        //初始化标绘图层，图层组，绘制工具，编辑工具，当前拾取标绘对象
+        let plotLayer, plotLayer3DGroup, drawTool, plotEditor, currentPlot
+        // #创建符号管理器
+        let manager = new SymbolManager(symbolUrl, symbolOptions)
+        // #请求获取符号库
+        manager.getSymbols().then(function () {
+          const viewer = view.getInnerView()
+          // 创建图层组
+          plotLayer3DGroup = new PlotLayer3DGroup(viewer)
+          // 创建三维图层
+          plotLayer = new PlotLayer3D(Cesium, viewer, {})
+          // 设置图层是否可编辑
+          plotLayer.editable = false
+          // 创建绘制工具
+          drawTool = new DrawTool(plotLayer, {
+            // 新增标绘对象回调
+            addedPlot: function (plot) {}
+          })
+          // 将三维图层添加到图层组内
+          plotLayer3DGroup.addLayer(plotLayer)
+          //点击获取要素
+          plotLayer.editable = true
+
+          //UI相关操作
+          // 获取完符号库后，创建左侧符号目录树，并绑定绘制方法
+          // #符号库结构
+          // 1.manager._leaves 符号库节点扁平化数组
+          // 2.manager._symbols 符号库节点（有目录结构）
+          function drawFunc(id) {
+            drawTool.stopDraw()
+            // 查询当前绘制符号参数
+            const node = manager.getLeafByID(id)
+            drawTool.drawPlot(manager.getLeafByID(id))
+          }
+
+          /**
+           * ***********************ui部分***************************
+           */
+          initPlotUI(manager, drawFunc)
+        })
+      }
+
+      // 行业标绘UI
+      function initPlotUI(manager, drawFunc) {
+        const { PlotMenu,PlotPanel } = window.webclientPlot
+
+        // 创建左侧符号目录树，并绑定绘制方法
+        new PlotMenu(manager, drawFunc)
+
+        //初始化ui
+        const showTabel = document.createElement('div')
+        showTabel.id = 'plot-show-table'
+        document.querySelector('.sidebar-menu').appendChild(showTabel)
+      }
+
+      // 初始二维地图
+      function initView() {
+        // 初始化图层管理容器
+        map = new Map()
+        // 初始化地图视图对象
+        view = createView('mapgis-viewer', map)
+        // 创建瓦片图层
+        layer = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=img_c&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        // 添加图层
+        map.add(layer)
+      }
+    </script>
+</head>
+
+<body onload="init();">
+<div id="mapgis-viewer">
+    <div id="side">
+    </div>
+    <div id="content" style="position: relative"></div>
+</div>
+</body>
+<style>
+    #mapgis-viewer {
+        width: 100%;
+        height: 100vh;
+        display: flex;
+        position: relative;
+    }
+    #side {
+        flex: 1;
+        height: 100%;
+    }
+    #content {
+        height: 100%;
+        flex: 6.5;
+        position: relative;
+    }
+    #plot-show-table {
+        position: absolute;
+        bottom: 40px;
+        display: block;
+    }
+
+    #plot-show-table .list {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100%;
+        border-left: 1px solid #ccc;
+        border-top: 1px solid #ccc;
+        border-right: 1px solid #ccc;
+    }
+    #plot-show-table .list:last-child {
+        border-bottom: 1px solid #ccc;
+    }
+    #plot-show-table .list .key {
+        flex: 1;
+        padding: 5px 5px;
+        border-right: 1px solid #ccc;
+    }
+    #plot-show-table .list .value {
+        flex: 1;
+        padding: 5px 5px;
+    }
+</style>
+</html>

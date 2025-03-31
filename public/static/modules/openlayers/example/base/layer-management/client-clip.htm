@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  
+<head>
+  <title>图层裁剪(客户端)</title>
+  <!--引入当前页面样式表-->
+  <script src="./static/libs/include-openlayers-local.js"></script>
+  <script type="text/javascript">
+    //定义地图文档图层和地图
+    var map, currentLayer
+    //设置裁剪区默认值
+    var multiPolygonCoords = {
+      type:'MultiPolygon',
+      coordinates:[
+        [[[70,0],[138,0],[138,56],[70,56],[70,0]]]
+      ],
+    }
+    var { protocol, ip, port } = window.webclient
+
+    function init() {
+      // 初始化地图容器
+      map = new ol.Map({
+        target: 'mapCon',
+        view: new ol.View({
+          center: [114, 31],
+          zoom: 8,
+          projection: 'EPSG:4326',
+        }),
+      })
+      // 获取裁剪区域坐标参数
+      getClippingAreaCoords()
+    }
+
+    // 切换图层
+    function changeLayer(value){
+      var value = document.getElementById('layers').value; 
+      if (currentLayer) {
+        removeLayer(currentLayer)
+      }
+      if (value === 'Doc') {
+        addDoc()
+      } else if (value === 'MapDocTileLayer') {
+        addMapDocTileLayer()
+      } else if (value === 'TileLayer') {
+        addTileLayer()
+      }
+    }
+
+    // 加载地图文档图层
+    function addDoc(){
+      currentLayer = new Zondy.Map.Doc('MapGIS IGS MapDocLayer', 'WorldJWVector', {//SampleDoc
+          ip: `${ip}`,
+          port: `${port}`,
+          clippingArea: multiPolygonCoords,
+      })
+      map.addLayer(currentLayer)
+    }
+
+    // 加载动态裁图的矢量地图文档图层
+    function addMapDocTileLayer(){
+      currentLayer = new Zondy.Map.MapDocTileLayer('MapGIS IGS MapDocLayer', 'WorldJWVector', {
+        ip: `${ip}`,
+        port: `${port}`,
+        clippingArea: multiPolygonCoords,
+      })
+      map.addLayer(currentLayer)
+    }
+
+    // 加载MapGIS瓦片地图服务图层
+    function addTileLayer(){
+      currentLayer = new Zondy.Map.TileLayer('MapGIS IGS TileLayer', 'WorldJWTile', {
+        ip: `${ip}`,
+        port: `${port}`,
+        clippingArea: multiPolygonCoords,
+      })
+      map.addLayer(currentLayer)
+    }
+
+    // 移除图层
+    function removeLayer(layer){
+      map.removeLayer(layer)
+      layer = null
+    }
+
+    // 获取裁剪区域参数
+    function getClippingAreaCoords(){
+      fetch('http://192.168.82.91:8200/Vector/json/populationSizeGeoJson_2017.json')
+      // fetch('https://file.geojson.cn/china/1.5.2/china.json')
+        .then(response => {
+          if (!response.ok) {
+            throw new Error('网络请求失败');
+          }
+          return response.json(); 
+        })
+        .then(geojson => {
+          // 处理返回的数据
+          var coordinates = []
+          geojson.features.forEach(feature => {
+            if(feature.geometry.type.toLocaleLowerCase()==='polygon'){
+              coordinates = coordinates.concat([feature.geometry.coordinates])
+            }if(feature.geometry.type.toLocaleLowerCase()==='multipolygon'){
+              coordinates = coordinates.concat(feature.geometry.coordinates)
+            }
+          });
+          multiPolygonCoords = {
+            type:'multipolygon',
+            coordinates: coordinates
+          }
+          // 添加初始图层
+          addMapDocTileLayer()
+        })
+        .catch(error => {
+          // 处理错误
+          console.error('There was a problem with the fetch operation:', error);
+        });
+    }
+
+    // 动态设置裁剪区域
+    function changeClippingArea(){
+      multiPolygonCoords = {
+        type:'MultiPolygon',
+        coordinates:[
+          [[[70,0],[138,0],[138,56],[70,56],[70,0]]]
+        ],
+      }
+      // 重新设置图层裁剪区域
+      currentLayer.setClippingArea(multiPolygonCoords)
+      // 需刷新地图，才能显示重设的裁剪区域效果
+      map.render()
+    }
+
+  </script>
+</head>
+
+<body onload="init()">
+  <div id="mapCon" class="mapCon"></div>
+  <div id="menuContain" class='menuContain'>
+    图层
+    <select id="layers" onchange="changeLayer()">
+      <option value="Doc">Doc</option>
+      <option value="MapDocTileLayer">MapDocTileLayer</option>
+      <option value="TileLayer">TileLayer</option>
+    </select>
+    <button onclick="changeClippingArea()">重新设置裁剪区域</button>
+  </div>
+</body>
+<style>
+  .mapCon {
+    width: 100%; height: 100%; position: absolute;
+  }
+  .menuContain {
+    position: absolute;
+  }
+</style>
+</html>

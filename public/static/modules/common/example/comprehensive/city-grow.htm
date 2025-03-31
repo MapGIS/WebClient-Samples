@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>城市生长</title>
+    <!-- 引入地图引擎库 -->
+    <script
+      include="engine:cesium"
+      src="http://192.168.82.91:8086/static/libs/include-lib-local-upgrade.js"
+    ></script>
+    <!-- 引入token脚本 -->
+    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
+    <script src="http://192.168.82.91:8086/static/libs/cdn/layui/layui.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://192.168.82.91:8086/static/libs/cdn/layui/css/layui.css"
+    />
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://192.168.82.91:8086/static/libs/css/style.css"
+    />
+    <script type="text/javascript">
+      //使用严格模式
+      'use strict'
+      // 定义二维视图的主要类
+
+      let map,
+        view,
+        layer,
+        layerOpacity = 1,
+        slider,
+        timeSpace,
+        startTime,
+        endTime,
+        updateInterval
+      const { IGSFeatureLayer, WebTileLayer } = zondy.layer
+      const { Map, Color, ElevationInfo } = zondy
+
+      const { ClassBreakRenderer } = zondy.renderer
+      const {
+        SimpleMarkerSymbol,
+        SimpleLineSymbol,
+        PolygonSymbol3D,
+        ColorMaterial,
+        ExtrudeSymbol3DLayer
+      } = zondy.symbol
+
+      // 初始化地图
+      function init() {
+        // 初始化地图视图
+        initView()
+        // 添加瓦片图层
+        addIGSTileLayer()
+        // 添加要素图层
+        addLayer()
+        // 初始化示例UI
+        initUI()
+      }
+
+      // 初始二维地图
+      function initView() {
+        // 初始化图层管理容器
+        map = new Map()
+        // 初始化地图视图对象
+        view = createView('mapgis-viewer', map)
+        // 获取地图引擎类型
+        const engineType = localStorage.getItem('engine-type', 'cesium')
+        // 针对三维进行特殊处理
+        if (engineType === 'cesium') {
+          // 获取三维场景视图对象
+          const viewer = view.getInnerView()
+          // 判断是否支持图像渲染像素化处理
+          if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
+            // 使得该值和浏览器保持一致，文字或者图形的渲染结果会更加平滑
+            viewer.resolutionScale = window.devicePixelRatio
+          }
+          // 开启抗锯齿，文字或者图形的渲染结果会更加平滑
+          viewer.scene.fxaa = true
+          viewer.scene.postProcessStages.fxaa.enabled = true
+        }
+      }
+
+      // 添加瓦片图层
+      function addIGSTileLayer() {
+        // 创建瓦片图层
+        const webtileLayer = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=img_c&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken(),
+          // 图层透明度
+          opacity: layerOpacity
+        })
+        // 添加图层
+        map.add(webtileLayer)
+      }
+
+      // 添加要素图层
+      function addLayer() {
+        layer = new IGSFeatureLayer({
+          url: 'http://192.168.82.91:8089/igs/rest/services/Map/深圳市白模/FeatureServer',
+          // 设置最小比例尺
+          minScale: 200000,
+          // 设置渲染方式
+          renderMode: 'grid',
+          // 图层透明度
+          opacity: layerOpacity,
+          // 指定显示一个子图层，仅支持单图层的要素查询，不支持多图层和子图层的要素查询
+          sublayerId: '0',
+          // 时间描述信息
+          timeInfo: {
+            fullTimeExtent: {
+              start: new Date(953935416),
+              end: new Date(1640675368)
+            },
+            startField: 'startTime',
+            endField: 'endTime',
+            interval: {
+              unit: 'milliseconds',
+              value: 1
+            }
+          },
+          // 扩展参数
+          extensionOptions: {
+            // 覆盖默认的渲染器，单个要素设置样式
+            renderer: getRenderer(953935416, 1640675368),
+            // 自定义网格请求的方法
+            queryFeaturesByGrid: (grid) => {
+              return layer
+                .queryFeatures({
+                  sublayerId: '0',
+                  spatialRel: 'Intersects',
+                  geometry: grid.extent,
+                  resultRecordCount: 40
+                })
+                .then((res) => {
+                  res.features.forEach((feature) => {
+                    // 生产随机的时间范围
+                    feature.attributes['startTime'] = parseInt(
+                      feature.attributes['startTime']
+                    )
+                    feature.attributes['endTime'] = parseInt(
+                      feature.attributes['endTime']
+                    )
+                  })
+                  return Promise.resolve(res.features)
+                })
+            },
+            debugGrid: true
+          }
+        })
+        // 添加要素图层
+        map.add(layer)
+        layer.on('layerview-created', (result) => {
+          view.getInnerView().camera.flyTo({
+            destination: new Cesium.Cartesian3(
+              -2409172.3556568953,
+              5379181.769010496,
+              2429725.1842937577
+            ),
+            orientation: {
+              heading: 6.249442072389105,
+              pitch: -0.2692376155173688,
+              roll: 0.000011165729973505734
+            }
+          })
+        })
+      }
+
+      //定义将Date对象转换为字符串函数
+      function dateToString(timeObj) {
+        var str = ''
+        var year = timeObj.getFullYear()
+        var month = timeObj.getMonth()
+        var date = timeObj.getDate()
+        var time = timeObj.toTimeString().split(' ')[0]
+        var rex = new RegExp(/:/g)
+        str =
+          year + '-' + (month + 1) + '-' + date + ' ' + time.replace(rex, ':')
+        return str
+      }
+
+      // 节流函数
+      function throttle(fn, time, context) {
+        let lock
+        let args
+
+        function later() {
+          // reset lock and call if queued
+          lock = false
+          if (args) {
+            // eslint-disable-next-line no-use-before-define
+            wrapperFn.apply(context, args)
+            args = false
+          }
+        }
+
+        function wrapperFn() {
+          if (lock) {
+            // called too soon, queue to call later
+            args = arguments
+          } else {
+            // lock until later then call
+            lock = true
+            fn.apply(context, arguments)
+            setTimeout(later, time)
+          }
+        }
+
+        return wrapperFn
+      }
+
+      // 更新时间信息
+      function updateTabel(value) {
+        document.getElementById('start-time').innerText = dateToString(
+          new Date(value[0])
+        )
+        document.getElementById('end-time').innerText = dateToString(
+          new Date(value[1])
+        )
+      }
+
+      function getRenderer(startTime, endTime) {
+        const classBreakInfos = []
+        const colors = []
+        // 起始点：深暖橙色 (HSL: 30°, 100%, 30%)
+        colors.push(new Color(102, 51, 0, 1.0)) // 深棕橙
+        colors.push(new Color(140, 70, 15, 1.0)) // 红木色
+        colors.push(new Color(179, 89, 38, 1.0)) // 陶土色
+        colors.push(new Color(204, 102, 51, 1.0)) // 砖红色
+        colors.push(new Color(224, 122, 82, 1.0)) // 赤陶色
+
+        // 中段过渡：降低饱和度，提升亮度
+        colors.push(new Color(237, 140, 105, 1.0)) // 珊瑚橙
+        colors.push(new Color(245, 163, 131, 1.0)) // 杏黄色
+        colors.push(new Color(250, 184, 158, 1.0)) // 奶油橙
+        colors.push(new Color(252, 198, 178, 1.0)) // 香草米色
+        colors.push(new Color(254, 210, 194, 1.0)) // 浅桃色
+
+        // 浅色段：逐步接近白色
+        colors.push(new Color(255, 220, 210, 1.0)) // 贝壳粉
+        colors.push(new Color(255, 242, 237, 1.0)) // 亚麻白
+
+        // 最终白色过渡段
+        colors.push(new Color(255, 248, 245, 1.0)) // 暖白
+        colors.push(new Color(255, 255, 255, 1.0)) // 纯白
+        let i = startTime
+        const space = (endTime - startTime) / 15
+        while (i < endTime) {
+          const cur = i + space
+          const color =
+            colors[
+              Math.floor(
+                ((i - startTime) / (endTime - startTime)) * colors.length
+              )
+            ]
+          classBreakInfos.push({
+            //分段最小值
+            minValue: i,
+            //分段最大值
+            maxValue: cur,
+            //匹配到该值后的样式，更多样式详见：《SimpleMarkerSymbol》
+            symbol: new PolygonSymbol3D({
+              symbolLayers: [
+                // 创建一个三维拉伸区符号突出
+                new ExtrudeSymbol3DLayer({
+                  // 覆盖物颜色
+                  material: new ColorMaterial({
+                    color: color
+                  })
+                })
+              ]
+            })
+          })
+          i = cur
+        }
+
+        const renderer = new ClassBreakRenderer({
+          //字段名
+          field: `startTime`,
+          classBreakInfos: classBreakInfos,
+          // 设置视觉变量
+          visualVariables: [
+            {
+              // 视觉变量类型
+              type: 'size',
+              // 视觉变量字段表达式
+              field: 'height',
+              // 颜色分段数组
+              stops: [
+                {
+                  size: 0,
+                  value: 0
+                },
+                {
+                  size: 500,
+                  value: 500
+                }
+              ]
+            }
+          ]
+        })
+        return renderer
+      }
+
+      // 更新时间信息
+      function updateTimeExtent(params) {
+        layer.timeExtent = {
+          start: params[0],
+          end: params[1]
+        }
+      }
+
+      // 更新方法
+      function update(timeRange) {
+        timeRange = [
+          sliderValueToDateTime(timeRange[0]),
+          sliderValueToDateTime(timeRange[1])
+        ]
+        updateTabel(timeRange)
+        updateTimeExtent(timeRange)
+      }
+      update = throttle(update, 20, this)
+
+      // 开始生长动画
+      function startGrowAnimation() {
+        slider.setValue(0, 1)
+        let durCount = 0
+        updateInterval = setInterval(() => {
+          durCount += 2
+          if (durCount > 100) {
+            document
+              .getElementsByClassName('layui-unselect layui-form-switch')[0]
+              .click()
+            endGrowAnimation()
+            return
+          }
+          slider.setValue(durCount, 1)
+        }, 1000)
+      }
+
+      // 结束生长动画
+      function endGrowAnimation() {
+        clearInterval(updateInterval)
+      }
+
+      function sliderValueToDateTime(value) {
+        return (value / 100) * (endTime - startTime) + startTime
+      }
+
+      //初始化示例UI操作
+      function initUI() {
+        const form = layui.form
+        layui.use(function () {
+          startTime = layer.timeInfo.fullTimeExtent.start.getTime()
+          endTime = layer.timeInfo.fullTimeExtent.end.getTime()
+          timeSpace = (endTime - startTime) / 100
+          updateTabel([startTime, endTime])
+          slider = layui.slider.render({
+            elem: '#time-slider',
+            value: [0, 100], // 初始值
+            range: true, // 范围选择
+            theme: 'rgb(21, 134, 238)',
+            //自定义提示文本
+            setTips: function (value) {
+              return dateToString(new Date(sliderValueToDateTime(value)))
+            },
+            change: function (timeRange) {
+              update(timeRange)
+            }
+          })
+        })
+
+        form.on('switch(play)', function (data) {
+          const elem = data.elem // 获得 checkbox 原始 DOM 对象
+          const checked = elem.checked // 获得 checkbox 选中状态
+          if (checked) {
+            startGrowAnimation()
+          } else {
+            endGrowAnimation()
+          }
+        })
+      }
+    </script>
+  </head>
+
+  <body onload="init();">
+    <!--  视图容器div  -->
+    <div
+      id="mapgis-viewer"
+      style="position: absolute; width: 100%; height: 100%"
+    ></div>
+    <!--  示例UI  -->
+    <div class="layui-panel layui-panel-bottom feature-layer-panel">
+      <form class="layui-form" action="">
+        <div class="panel-timeslider">
+          <div id="time-slider"></div>
+        </div>
+        <div class="panel-button">
+          <div class="panel-button-item" id="start-time"></div>
+          <div class="panel-button-menu" class="layui-form-item">
+            <input
+              type="checkbox"
+              name="play"
+              id="play"
+              value="2"
+              lay-skin="switch"
+              lay-filter="play"
+            />
+            <div lay-checkbox>
+              <i class="layui-icon layui-icon-pause"></i> |
+              <i class="layui-icon layui-icon-play"></i>
+            </div>
+          </div>
+          <div class="panel-button-item" id="end-time"></div>
+        </div>
+      </form>
+    </div>
+  </body>
+  <style>
+    .feature-layer-panel {
+      position: absolute !important;
+      color: #e1e1e1;
+      background-color: rgb(44, 44, 44);
+      left: 10%;
+      padding: 16px;
+      width: 80%;
+      height: 100px;
+      bottom: 80px;
+    }
+    .feature-layer-panel .layui-form {
+      height: 100%;
+    }
+
+    .panel-timeslider {
+      height: 60%;
+    }
+    .panel-button {
+      height: 40%;
+      display: flex;
+      justify-content: center;
+    }
+    .panel-button-item {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+    }
+  </style>
+</html>

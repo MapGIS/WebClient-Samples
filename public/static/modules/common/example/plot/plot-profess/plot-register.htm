@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>算法注册</title>
+    <!-- 引入地图引擎库 -->
+    <script src="http://192.168.82.91:8086/static/libs/include-lib-local-upgrade.js"></script>
+    <!-- 天地图Token -->
+    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <!-- 行业标绘相关库 -->
+    <script src="http://192.168.82.91:8086/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
+    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-plot.min.js"></script>
+    <script src="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotMenu/index.js"></script>
+    <script src="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.js"></script>
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotMenu/index.css"/>
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.css"/>
+    <!--示例公共样式-->
+    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css"/>
+    <script type="text/javascript">
+      //使用严格模式
+      'use strict'
+      // 定义视图的主要类
+      let map, view, layer
+      const { WebTileLayer } = zondy.layer
+      const { Map } = zondy
+      const { Plot } = Zondy
+      const {
+        SymbolManager,
+        FabricLayer,
+        PlotLayer2DGroup,
+        PlotLayer2D,
+        DrawTool,
+        PlotLayer3D,
+        PlotLayer3DGroup,
+        PlotRegister,
+        PlotUtilBase
+      } = Plot
+      const symbolUrl = `http://192.168.82.91:8200/Plot/plot-sample/symbolLibs/标号库a/symbolLib.json`
+      const symbolOptions = {
+        fontURL: `http://192.168.82.91:8200/Plot/plot-sample/fonts/`,
+        baseUrl: `http://192.168.82.91:8200/Plot/plot-sample/symbolLibs/标号库a/`
+      }
+      let rewriteSymbolId
+
+      // 初始化地图
+      function init() {
+        // 初始化地图视图
+        initView()
+        // 视图加载完毕后，初始化行业标绘
+        view.on('layerview-created', () => {
+          // 跳转到指定位置
+          view.goTo({
+            // 跳转中心点
+            center: [117.19504487039819, 34.23585315456168, 30000],
+            // 地图层级
+            zoom: 10
+          });
+          // 创建符号管理器
+          const manager = new SymbolManager(symbolUrl, symbolOptions)
+          // 请求获取符号库
+          manager.getSymbols().then(() => {
+            // 注册自定义算法
+            registerPlot(manager)
+            // 获取引擎类型
+            let type = localStorage.getItem('engine-type')
+            if (type === 'cesium') {
+              initPlot3D()
+            } else {
+              initPlot2D()
+            }
+          })
+        })
+      }
+
+      // 注册自定义算法
+      function registerPlot(manager) {
+        // 算法注册
+        const plotRegister = new PlotRegister(manager)
+        // 以kidney算法为基础,改写生成带空隙的区域方法
+        rewriteSymbolId = plotRegister.rewrite(
+          'kidney',
+          'kidney1',
+          (proto) => {
+            return {
+              constructor(node) {
+                proto(node)
+              },
+              applyFuncToStorkeGeometry(coords) {
+                let v = coords.map((t) =>
+                  t.map((s) => new PlotUtilBase.Point(s.x, s.y))
+                )
+                let s = []
+                for (let i = 0; i < coords.length; i = i + 2) {
+                  const vt = coords[i].map(
+                    (t) => new PlotUtilBase.Point(t.x, t.y)
+                  )
+                  delete v[i]
+                  const v1 = vt.slice(0, 20)
+                  const v2 = vt.slice(25, 45)
+                  const v3 = vt.slice(50)
+                  s.unshift(v3, v2, v1)
+                }
+                s = s.filter((t) => t.length !== 0)
+                v = v.filter((t) => t)
+                s = s.concat(v)
+                return s
+              }
+            }
+          },
+          {
+            path: '常用符号库/算法符号/区域.svg'
+          }
+        )
+        // 注册符号类型为newclass的算法
+        let registerSymbolId = plotRegister.register(
+          'newclass',
+          (proto) => {
+            return {
+              _insertGeometry(points) {
+                return [points]
+              }
+            }
+          },
+          {
+            path: '常用符号库/算法符号/区域.svg'
+          }
+        )
+        console.log('rewriteSymbolId: ', rewriteSymbolId)
+        console.log('registerSymbolId: ', registerSymbolId)
+        console.log('registerSymbolId: ', manager)
+      }
+
+      // 初始化行业标绘2D
+      function initPlot2D() {
+        // 获取引擎视图对象
+        const viewer = view.getInnerView()
+        // 获取overlay图层
+        const canvas = new FabricLayer(viewer, PlotLayer2DGroup)
+        // 创建二维图层组
+        const plotLayer2DGroup = canvas.getFabricCanvas()
+        // 创建二维图层
+        const layer1 = new PlotLayer2D()
+        // 添加图层
+        plotLayer2DGroup.addLayer(layer1)
+        // 设置图层标绘元素缩放比，默认为1
+        layer1.setPlotSize(0.5)
+        // 将三维图层添加到图层组内
+        plotLayer2DGroup.addLayer(layer1)
+        layer1.addGeoJSONObject({
+          type: 'Feature',
+          properties: {
+            show: true,
+            symbolId: rewriteSymbolId,
+            symbolName: '区域'
+          },
+          geometry: {
+            type: 'MultiPoint',
+            coordinates: [
+              [117.3701360274617, 34.15566255198262],
+              [117.26718426641384, 34.103216223599446],
+              [117.1508839238758, 34.08738778399195],
+              [117.1508839238758, 34.09738778399195]
+            ]
+          }
+        })
+      }
+
+      // 初始化行业标绘3D
+      function initPlot3D() {
+        // 获取引擎视图对象
+        const viewer = view.getInnerView()
+        // 创建图层组
+        const plotLayer3DGroup = new PlotLayer3DGroup(viewer)
+        // 创建二维图层
+        const layer1 = new PlotLayer3D(Cesium, viewer, {})
+        // 添加图层
+        plotLayer3DGroup.addLayer(layer1)
+        // 设置图层标绘元素缩放比，默认为1
+        layer1.setPlotSize(0.5)
+        // 将三维图层添加到图层组内
+        plotLayer3DGroup.addLayer(layer1)
+        layer1.addGeoJSONObject({
+          type: 'Feature',
+          properties: {
+            show: true,
+            symbolId: rewriteSymbolId,
+            symbolName: '区域'
+          },
+          geometry: {
+            type: 'MultiPoint',
+            coordinates: [
+              [117.3701360274617, 34.15566255198262],
+              [117.26718426641384, 34.103216223599446],
+              [117.1508839238758, 34.08738778399195],
+              [117.1508839238758, 34.09738778399195]
+            ]
+          }
+        })
+      }
+
+      // 初始二维地图
+      function initView() {
+        // 初始化图层管理容器
+        map = new Map()
+        // 初始化地图视图对象
+        view = createView('mapgis-viewer', map)
+        // 创建瓦片图层
+        layer = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=img_c&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        // 添加图层
+        map.add(layer)
+      }
+    </script>
+</head>
+
+<body onload="init();">
+<div id="mapgis-viewer">
+    <div id="content" style="position: relative"></div>
+</div>
+</body>
+</html>
