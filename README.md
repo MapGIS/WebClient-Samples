@@ -108,16 +108,16 @@ yarn build
  到文件夹 “\static\libs\cdn\mapboxgl-plugins” 下
  4.1.12 拷贝webclient-leaflet第三插件库JS包 “leaflet-easyprint”、“webclient-graphic-render” 到文件夹 “\static\libs\cdn\mapboxgl-plugins” 下
 #### 4.2.拷贝 API 文档和 storybook
- 4.2.1 拷贝 webclient-common 库 API 文档 “webclient-common\documention” 到文件夹 “\static\modules\common\api\common-mapgis” 下。
- 4.2.2 拷贝 webclient-cesium-plugin 库 API 文档 “webclient-cesium-plugin\documention” 到文件夹 “\static\modules\cesium\api\cesium-mapgis” 下
- 4.2.3 拷贝 webclient-leaflet-plugin 库 API 文档 “webclient-leaflet-plugin\documention” 到文件夹 “\static\modules\leaflet\api\leaflet-mapgis” 下
- 4.2.4 拷贝 webclient-mapboxgl-plugin 库 API 文档 “webclient-mapboxgl-plugin\documention” 到文件夹 “\static\modules\mapboxgl\api\mapboxgl-mapgis” 下
- 4.2.5 拷贝 webclient-video-plugin 库 API 文档 “webclient-video-plugin\documention” 到文件夹 “\static\modules\video\api\video-mapgis” 下
+ 4.2.1 拷贝 webclient-common 库 API 文档 “webclient-common\documentation” 到文件夹 “\static\modules\common\api\common-mapgis” 下。
+ 4.2.2 拷贝 webclient-cesium-plugin 库 API 文档 “webclient-cesium-plugin\documentation” 到文件夹 “\static\modules\cesium\api\cesium-mapgis” 下
+ 4.2.3 拷贝 webclient-leaflet-plugin 库 API 文档 “webclient-leaflet-plugin\documentation” 到文件夹 “\static\modules\leaflet\api\leaflet-mapgis” 下
+ 4.2.4 拷贝 webclient-mapboxgl-plugin 库 API 文档 “webclient-mapboxgl-plugin\documentation” 到文件夹 “\static\modules\mapboxgl\api\mapboxgl-mapgis” 下
+ 4.2.5 拷贝 webclient-video-plugin 库 API 文档 “webclient-video-plugin\documentation” 到文件夹 “\static\modules\video\api\video-mapgis” 下
  4.2.6 拷贝 webclient-openlayers-plugin 库 API 文档 “mapgis-client-for-javascript-dist-vx.x.x.x\static\modules\openlayers\api\openlayers-mapgis” 到文件夹 “\static\modules\openlayers\api\openlayers-mapgis” 下
- 4.2.7 拷贝 webclient-plot 库 API 文档 “webclient-plot\documention” 到文件夹 “\static\modules\common\api\common-plot” 下
- 4.2.8 拷贝 webclient-cesium 库 API 文档 “cesium\documention” 到文件夹 “\static\modules\cesium\api\cesium” 下
- 4.2.9 拷贝 webclient-cesium 库（10.7.2.10）API 文档 “cesium\documention” 到文件夹 “\static\modules\cesium\api\cesium-10.7.2.10” 下
- 4.2.9 拷贝 webclient-mapboxgl 库 API 文档 “mapbox-gl\documention” 到文件夹 “\static\modules\mapboxgl\api\mapboxgl” 下
+ 4.2.7 拷贝 webclient-plot 库 API 文档 “webclient-plot\documentation” 到文件夹 “\static\modules\common\api\common-plot” 下
+ 4.2.8 拷贝 webclient-cesium 库 API 文档 “cesium\documentation” 到文件夹 “\static\modules\cesium\api\cesium” 下
+ 4.2.9 拷贝 webclient-cesium 库（10.7.2.10）API 文档 “cesium\documentation” 到文件夹 “\static\modules\cesium\api\cesium-10.7.2.10” 下
+ 4.2.9 拷贝 webclient-mapboxgl 库 API 文档 “mapbox-gl\documentation” 到文件夹 “\static\modules\mapboxgl\api\mapboxgl” 下
  4.2.10 拷贝 webclient-vue 库 API 文档 “mapgis-client-for-javascript-dist-vx.x.x.x\static\modules\component\api” 到文件夹 “\static\modules\component\api” 下
  4.2.11 拷贝 webclient-vue 库 storybook “mapgis-client-for-javascript-dist-vx.x.x.x\storybook” 到文件夹 “\storybook” 下
 #### 4.3.拷贝示例数据
@@ -127,14 +127,14 @@ yarn build
 若将站点部署在内网服务器上时，需要将示例中的依赖库和服务地址改为对应的内网地址
 
 #### 5.1.依赖库地址
-将 'http://192.168.82.91:8086/' 或 'http://webclient.smaryun.com/’ 替换为  'http://你的内网服务器地址/'
+将 “http://192.168.82.91:8086/” 或 “http://webclient.smaryun.com/” 替换为  “http://你的内网服务器地址/”
 #### 5.2.服务地址
 
-- 文件服务：将 'http://192.168.82.91:8200/' 或 'http://webclient.smaryun.com:8200/’ 替换为  'http://你的内网文件服务地址/'
+- 文件服务：将 “http://192.168.82.91:8200/” 或 “http://webclient.smaryun.com:8200/” 替换为  “http://你的内网文件服务地址/”
 
-- IGS服务1.0：将 'http://192.168.82.91:6163/' 或 'http://webclient.smaryun.com:6163/’ 替换为  'http://你的内网IGS1.0服务地址/'
+- IGS服务1.0：将 “http://192.168.82.91:6163/” 或 “http://webclient.smaryun.com:6163/” 替换为  “http://你的内网IGS1.0服务地址/”
 
-- IGS服务2.0：将 'http://192.168.82.91:8089/' 或 'http://webclient.smaryun.com:8089/’ 替换为  'http://你的内网IGS2.0服务地址/'
+- IGS服务2.0：将 “http://192.168.82.91:8089/” 或 “http://webclient.smaryun.com:8089/” 替换为  “http://你的内网IGS2.0服务地址/”
 
 #### 5.3.OpenLayers示例引用地址替换
 
