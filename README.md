@@ -7,7 +7,8 @@
     - [2、编译测试](#2编译测试)
     - [3、代码格式检查](#3代码格式检查)
     - [4、打包](#4打包)
-    - [5、自定义配置](#5自定义配置)
+    - [5、替换资源引用地址](#5替换资源引用地址)
+    - [6、自定义配置](#6自定义配置)
   - [三、站点发布](#三站点发布)
     - [1. Windows](#1-windows)
       - [MIME](#mime)
@@ -89,8 +90,64 @@ npm run build
 # or
 yarn build
 ```
+#### 打包后需要额外拷贝如下文件
+#### 4.1.拷贝 webclient 库
+ 4.1.1 拷贝 webclient-common 库JS包 “webclient-common\dist\es5” 到文件夹 “\static\libs\cdn\zondyclient” 下
+ 4.1.2 拷贝 webclient-cesium-plugin 库 JS 包 “webclient-cesium-plugin\dist\es5” 到文件夹 “\static\libs\cdn\zondyclient” 下
+ 4.1.3 拷贝 webclient-leaflet-plugin 库 JS 包 “webclient-leaflet-plugin\dist\es5” 到文件夹 “\static\libs\cdn\zondyclient” 下
+ 4.1.4 拷贝 webclient-mapboxgl-plugin 库 JS 包 “webclient-mapboxgl-plugin\dist\es5” 到文件夹 “\static\libs\cdn\zondyclient” 下
+ 4.1.5 拷贝 webclient-video-plugin 库 JS 包“webclient-video-plugin\dist\es5”到文件夹“\static\libs\cdn\zondyclient”下
+ 4.1.6 拷贝 webclient-plot 库 JS 包 “webclient-plot\dist” 到文件夹 “\static\libs\cdn\zondyclient” 下
+ 4.1.7 拷贝 webclient-cesium 库 JS 包“cesium\Build\Cesium” 到文件夹 “\static\libs\cdn\cesium” 下
+ 4.1.8 拷贝 webclient-cesium 库（10.7.2.10）JS 包 “cesium\dist” 到文件夹 “\static\libs\cdn\cesium-10.7.2.10” 下
+ 4.1.9 拷贝 webclient-leaflet 库 JS 包 “leaflet\dist” 到文件夹 “\static\libs\cdn\leaflet” 下
+ 4.1.10 拷贝 webclient-mapboxgl 库 JS包 “mapbox-gl\dist” 到文件夹 “\static\libs\cdn\mapboxgl” 下
+ 4.1.11 拷贝 webclient-mapboxgl 第三插件库 JS 包
+ “mapbox-gl-custom-raster”、“mapbox-gl-style-spec”、“mapbox-gl-inspect”、“mapbox-gl-compare”、“mapbox-gl-draw-static-mode”、
+ “mapbox-gl-draw-radius”、“mapbox-gl-draw-circle”、“mapbox-gl-draw”、“supercluster”、“geojson-vt”、“vector-tile”
+ 到文件夹 “\static\libs\cdn\mapboxgl-plugins” 下
+ 4.1.12 拷贝webclient-leaflet第三插件库JS包 “leaflet-easyprint”、“webclient-graphic-render” 到文件夹 “\static\libs\cdn\mapboxgl-plugins” 下
+#### 4.2.拷贝 API 文档和 storybook
+ 4.2.1 拷贝 webclient-common 库 API 文档 “webclient-common\documention” 到文件夹 “\static\modules\common\api\common-mapgis” 下。
+ 4.2.2 拷贝 webclient-cesium-plugin 库 API 文档 “webclient-cesium-plugin\documention” 到文件夹 “\static\modules\cesium\api\cesium-mapgis” 下
+ 4.2.3 拷贝 webclient-leaflet-plugin 库 API 文档 “webclient-leaflet-plugin\documention” 到文件夹 “\static\modules\leaflet\api\leaflet-mapgis” 下
+ 4.2.4 拷贝 webclient-mapboxgl-plugin 库 API 文档 “webclient-mapboxgl-plugin\documention” 到文件夹 “\static\modules\mapboxgl\api\mapboxgl-mapgis” 下
+ 4.2.5 拷贝 webclient-video-plugin 库 API 文档 “webclient-video-plugin\documention” 到文件夹 “\static\modules\video\api\video-mapgis” 下
+ 4.2.6 拷贝 webclient-openlayers-plugin 库 API 文档 “mapgis-client-for-javascript-dist-vx.x.x.x\static\modules\openlayers\api\openlayers-mapgis” 到文件夹 “\static\modules\openlayers\api\openlayers-mapgis” 下
+ 4.2.7 拷贝 webclient-plot 库 API 文档 “webclient-plot\documention” 到文件夹 “\static\modules\common\api\common-plot” 下
+ 4.2.8 拷贝 webclient-cesium 库 API 文档 “cesium\documention” 到文件夹 “\static\modules\cesium\api\cesium” 下
+ 4.2.9 拷贝 webclient-cesium 库（10.7.2.10）API 文档 “cesium\documention” 到文件夹 “\static\modules\cesium\api\cesium-10.7.2.10” 下
+ 4.2.9 拷贝 webclient-mapboxgl 库 API 文档 “mapbox-gl\documention” 到文件夹 “\static\modules\mapboxgl\api\mapboxgl” 下
+ 4.2.10 拷贝 webclient-vue 库 API 文档 “mapgis-client-for-javascript-dist-vx.x.x.x\static\modules\component\api” 到文件夹 “\static\modules\component\api” 下
+ 4.2.11 拷贝 webclient-vue 库 storybook “mapgis-client-for-javascript-dist-vx.x.x.x\storybook” 到文件夹 “\storybook” 下
+#### 4.3.拷贝示例数据
+ 4.3.1 拷贝示例数据 data 包 “mapgis-client-for-javascript-dist-vx.x.x.x\static\data” 到文件夹 “\static\data” 下
 
-### 5、自定义配置
+### 5、替换资源引用地址
+若将站点部署在内网服务器上时，需要将示例中的依赖库和服务地址改为对应的内网地址
+
+#### 5.1.依赖库地址
+将 'http://192.168.82.91:8086/' 或 'http://webclient.smaryun.com/’ 替换为  'http://你的内网服务器地址/'
+#### 5.2.服务地址
+
+- 文件服务：将 'http://192.168.82.91:8200/' 或 'http://webclient.smaryun.com:8200/’ 替换为  'http://你的内网文件服务地址/'
+
+- IGS服务1.0：将 'http://192.168.82.91:6163/' 或 'http://webclient.smaryun.com:6163/’ 替换为  'http://你的内网IGS1.0服务地址/'
+
+- IGS服务2.0：将 'http://192.168.82.91:8089/' 或 'http://webclient.smaryun.com:8089/’ 替换为  'http://你的内网IGS2.0服务地址/'
+
+#### 5.3.OpenLayers示例引用地址替换
+
+在打包号的dist文件夹中，打开dist/static/libs/下的include-openlayers-local.js文件，拉倒最底下，将如下代码中的ip和port修改为内网服的ip和port
+
+```
+  window.webclient = {
+    ip: "192.168.82.91",
+    port: 6163,
+    protocol: "http",
+  };
+```
+### 6、自定义配置
 
 请看 [配置引用](https://cli.vuejs.org/config/).
 
