@@ -6,8 +6,8 @@
     - [1、安装依赖环境](#1安装依赖环境)
     - [2、编译测试](#2编译测试)
     - [3、代码格式检查](#3代码格式检查)
-    - [4、打包](#4打包)
-    - [5、替换资源引用地址](#5替换资源引用地址)
+    - [4、替换资源引用地址](#4替换资源引用地址)
+    - [5、打包](#5打包)
     - [6、自定义配置](#6自定义配置)
   - [三、站点发布](#三站点发布)
     - [1. Windows](#1-windows)
@@ -83,16 +83,42 @@ npm run lint
 yarn lint
 ```
 
-### 4、打包
+### 4、替换资源引用地址
+若将站点部署在内网服务器上时，需要将示例中的依赖库和服务地址改为对应的内网地址
+
+#### 4.1.依赖库地址
+将 “http://192.168.82.91:8086/” 或 “http://webclient.smaryun.com/” 替换为  “http://你的内网服务器地址/”
+#### 4.2.服务地址
+
+- 文件服务：将 “http://192.168.82.91:8200/” 或 “http://webclient.smaryun.com:8200/” 替换为  “http://你的内网文件服务地址/”
+
+- IGS服务1.0：将 “http://192.168.82.91:6163/” 或 “http://webclient.smaryun.com:6163/” 替换为  “http://你的内网IGS1.0服务地址/”
+
+- IGS服务2.0：将 “http://192.168.82.91:8089/” 或 “http://webclient.smaryun.com:8089/” 替换为  “http://你的内网IGS2.0服务地址/”
+
+#### 4.3.OpenLayers示例引用地址替换
+
+在打包号的dist文件夹中，打开dist/static/libs/下的include-openlayers-local.js文件，拉倒最底下，将如下代码中的ip和port修改为内网服的ip和port
+
+```
+  window.webclient = {
+    ip: "192.168.82.91",
+    port: 6163,
+    protocol: "http",
+  };
+```
+
+### 5、打包
 
 ```
 npm run build
 # or
 yarn build
 ```
+打包后的示例站点，在和package.json同级的dist文件夹中，将dist文件夹中的内容拷贝到你的服务目录文件夹中
 **打包后需要额外拷贝如下文件**
 
-#### 4.1.拷贝 webclient 库
+#### 5.1.拷贝 webclient 库
 1. 拷贝 webclient-common 库JS包 “webclient-common\dist\es5” 到文件夹 “\static\libs\cdn\zondyclient” 下
 2. 拷贝 webclient-cesium-plugin 库 JS 包 “webclient-cesium-plugin\dist\es5” 到文件夹 “\static\libs\cdn\zondyclient” 下
 3. 拷贝 webclient-leaflet-plugin 库 JS 包 “webclient-leaflet-plugin\dist\es5” 到文件夹 “\static\libs\cdn\zondyclient” 下
@@ -109,7 +135,7 @@ yarn build
   到文件夹 “\static\libs\cdn\mapboxgl-plugins” 下
 12. 拷贝webclient-leaflet第三插件库JS包 “leaflet-easyprint”、“webclient-graphic-render” 到文件夹 “\static\libs\cdn\mapboxgl-plugins” 下
 
-#### 4.2.拷贝 API 文档和 storybook
+#### 5.2.拷贝 API 文档和 storybook
 1. 拷贝 webclient-common 库 API 文档 “webclient-common\documentation” 到文件夹 “\static\modules\common\api\common-mapgis” 下。
 2. 拷贝 webclient-cesium-plugin 库 API 文档 “webclient-cesium-plugin\documentation” 到文件夹 “\static\modules\cesium\api\cesium-mapgis” 下
 3. 拷贝 webclient-leaflet-plugin 库 API 文档 “webclient-leaflet-plugin\documentation” 到文件夹 “\static\modules\leaflet\api\leaflet-mapgis” 下
@@ -123,33 +149,9 @@ yarn build
 11. 拷贝 webclient-vue 库 API 文档 “mapgis-client-for-javascript-dist-vx.x.x.x\static\modules\component\api” 到文件夹 “\static\modules\component\api” 下
 12. 拷贝 webclient-vue 库 storybook “mapgis-client-for-javascript-dist-vx.x.x.x\storybook” 到文件夹 “\storybook” 下
 
-#### 4.3.拷贝示例数据
+#### 5.3.拷贝示例数据
 1. 拷贝示例数据 data 包 “mapgis-client-for-javascript-dist-vx.x.x.x\static\data” 到文件夹 “\static\data” 下
 
-### 5、替换资源引用地址
-若将站点部署在内网服务器上时，需要将示例中的依赖库和服务地址改为对应的内网地址
-
-#### 5.1.依赖库地址
-将 “http://192.168.82.91:8086/” 或 “http://webclient.smaryun.com/” 替换为  “http://你的内网服务器地址/”
-#### 5.2.服务地址
-
-- 文件服务：将 “http://192.168.82.91:8200/” 或 “http://webclient.smaryun.com:8200/” 替换为  “http://你的内网文件服务地址/”
-
-- IGS服务1.0：将 “http://192.168.82.91:6163/” 或 “http://webclient.smaryun.com:6163/” 替换为  “http://你的内网IGS1.0服务地址/”
-
-- IGS服务2.0：将 “http://192.168.82.91:8089/” 或 “http://webclient.smaryun.com:8089/” 替换为  “http://你的内网IGS2.0服务地址/”
-
-#### 5.3.OpenLayers示例引用地址替换
-
-在打包号的dist文件夹中，打开dist/static/libs/下的include-openlayers-local.js文件，拉倒最底下，将如下代码中的ip和port修改为内网服的ip和port
-
-```
-  window.webclient = {
-    ip: "192.168.82.91",
-    port: 6163,
-    protocol: "http",
-  };
-```
 ### 6、自定义配置
 
 请看 [配置引用](https://cli.vuejs.org/config/).
