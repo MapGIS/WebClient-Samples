@@ -129,11 +129,6 @@ yarn build
 8. 拷贝 webclient-cesium 库（10.7.2.10）JS 包 “cesium\dist” 到文件夹 “\static\libs\cdn\cesium-10.7.2.10” 下
 9. 拷贝 webclient-leaflet 库 JS 包 “leaflet\dist” 到文件夹 “\static\libs\cdn\leaflet” 下
 10. 拷贝 webclient-mapboxgl 库 JS包 “mapbox-gl\dist” 到文件夹 “\static\libs\cdn\mapboxgl” 下
-11. 拷贝 webclient-mapboxgl 第三插件库 JS 包
-  “mapbox-gl-custom-raster”、“mapbox-gl-style-spec”、“mapbox-gl-inspect”、“mapbox-gl-compare”、“mapbox-gl-draw-static-mode”、
-  “mapbox-gl-draw-radius”、“mapbox-gl-draw-circle”、“mapbox-gl-draw”、“supercluster”、“geojson-vt”、“vector-tile”
-  到文件夹 “\static\libs\cdn\mapboxgl-plugins” 下
-12. 拷贝webclient-leaflet第三插件库JS包 “leaflet-easyprint”、“webclient-graphic-render” 到文件夹 “\static\libs\cdn\mapboxgl-plugins” 下
 
 #### 5.2.拷贝 API 文档和 storybook
 1. 拷贝 webclient-common 库 API 文档 “webclient-common\documentation” 到文件夹 “\static\modules\common\api\common-mapgis” 下。
