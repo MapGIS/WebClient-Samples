@@ -1,25 +1,60 @@
-./public/static/download
+/node_modules/
+/build/
+/.idea/
+/.vscode/
+dist-libs
+package-lock.json
+yarn.lock
 
-.DS_Store
-node_modules
-/dist
+# service git忽略项(待移除)
+/src/service/node_modules/
+/src/service/dist*/
 
-# local env files
-.env.local
-.env.*.local
+# config git忽略项
+/src/config/common/
+/src/config/opensource/output/
 
-# Log files
-npm-debug.log*
-yarn-debug.log*
-yarn-error.log*
+# 文档 git忽略项
+/docs/leaflet/
+/docs/mapboxgl/
+/docs/openlayers/
+/docs/cesium/
+/website/public/docs/
 
-# Editor directories and files
-.idea
-.vscode
-*.suo
-*.ntvs*
-*.njsproj
-*.sln
-*.sw?
-/public/static/libs/cdn/cesium/
-/public/static/libs/cdn/webclient-plot/webclient-plot.min.js
+# cesium git忽略项
+/src/cesium/node_modules/
+/src/cesium/dist/
+
+# leaflet git忽略项
+/src/leaflet/node_modules/
+/src/leaflet/dist/
+
+# mapboxgl git忽略项
+/src/mapboxgl/node_modules/
+/src/mapboxgl/dist/
+
+# common git忽略项
+/src/common/node_modules/
+/src/common/dist/
+
+# website git忽略项
+/website/node_modules/
+/website/public/docs/other/
+/website/public/docs/leaflet/
+/website/public/docs/mapboxgl/
+/website/public/docs/openlayers/
+/website/public/docs/service/
+/website/public/docs/cesium/
+/website/public/static/data/
+/website/public/static/data/deckgl/
+/website/public/static/data/echarts/gps/
+/website/public/static/data/echarts/line/
+/website/public/static/data/echarts/point/
+/website/public/static/data/echarts/road/
+/website/public/static/libs/cdn/zondyclient/
+/website/public/static/libs/cdn/leaflet/
+/website/public/static/libs/cdn/mapboxgl/
+
+# videoGIS git忽略项
+/src/videoGIS/node_modules
+/src/videoGIS/dist/
