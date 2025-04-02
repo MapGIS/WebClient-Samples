@@ -30,7 +30,6 @@
         |-- cesium              -- Cesium示例
           |-- example           -- Cesium示例代码
           |-- example-gallery   -- Cesium示例功能效果图
-          |-- example-introduce -- 10.6.0.10以前的示例说明文档
           |-- guide           	-- Cesium产品介绍相关文档
           |-- produce           -- Cesium开发教程相关文档
           |-- fqa               -- 常见问题相关文档
