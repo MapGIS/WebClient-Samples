@@ -45,7 +45,7 @@
     };
     //添加MapGISIGServer发布的瓦片
     tilelayer = webGlobe.appendMapGISTile(
-      "http://192.168.82.91:6163/igs/rest/mrms/tile/250DEM",
+      "http://10.10.130.72:6163/igs/rest/mrms/tile/250DEM",
       options
     );
     ```

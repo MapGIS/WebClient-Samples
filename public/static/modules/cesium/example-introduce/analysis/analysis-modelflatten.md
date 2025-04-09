@@ -39,7 +39,7 @@
         viewer: webGlobe.viewer
     });
     //加载M3D地图文档（服务地址，配置参数）
-    landscapeLayer = m3dLayer.append('http://192.168.82.91:6163/igs/rest/g3d/ZondyModels', {});
+    landscapeLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/ZondyModels', {});
   ```
 
 **Step 4. <font color=red>创建交互式绘制区工具</font>**：

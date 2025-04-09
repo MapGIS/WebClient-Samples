@@ -5,16 +5,16 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>MapGIS地图服务-子图层过滤</title>
     <!--加载不同版本Cesium库-->
-    <script src="http://192.168.82.91:8086/static/libs/loadCesium.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
     <!--plugin脚本库-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
 
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/layui/layui.js"></script>
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/layui/css/layui.css"/>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"/>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css"/>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
     <script>
       // 定义三维视图的主要类
       let viewer,
@@ -34,7 +34,7 @@
       // 控制子图层显隐，然后通过igsMapImageLayer.layers参数直接获取子图层过滤参数layers
       function addImageryProvider1() {
         const url =
-          'http://192.168.82.91:8089/igs/rest/services/Map/湖北省4326/MapServer'
+          'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/MapServer'
 
         igsMapImageLayer = new IGSMapImageLayer({
           url
@@ -86,7 +86,7 @@
       // 方法2：根据子图层对象ID手动拼接子图层过滤参数layers
       async function addImageryProvider2() {
         const url =
-          'http://192.168.82.91:8089/igs/rest/services/Map/武汉市4547/MapServer'
+          'http://10.10.130.72:8089/igs/rest/services/Map/武汉市4547/MapServer'
         // 若要控制显示部分子图层，则layers参数以"show:"开始，后续拼接子图层的ID并以逗号分隔
         const options = {
           layers:

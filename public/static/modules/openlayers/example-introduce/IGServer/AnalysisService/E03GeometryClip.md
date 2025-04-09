@@ -112,7 +112,7 @@
       var resultname = resultBaseUrl + 'clipByCircleAnalysisResultLayer' + getCurentTime()
       //实例化Zondy.Service.ClipByCircle类
       var clipParam = new Zondy.Service.ClipByCircle({
-        ip: '192.168.82.91',
+        ip: '10.10.130.72',
         port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
         //设置圆心坐标
         center: '88.62, 25.09',
@@ -139,7 +139,7 @@
       var resultname = resultBaseUrl + 'clipByPolyAnalysisResultLayer' + getCurentTime()
       //实例化ClipByPolygon类
       var clipParam = new Zondy.Service.ClipByPolygon({
-        ip: '192.168.82.91',
+        ip: '10.10.130.72',
         port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
       })
       //设置被裁剪图层URL
@@ -168,7 +168,7 @@
           var resultLayerUrl = data.results[0].Value || data.results[0].value
           //将结果图层添加到地图视图中显示
           var resultLayer = new Zondy.Map.GdbpLayer('MapGIS IGS BuffAnalyResultLayer', [resultLayerUrl], {
-            ip: '192.168.82.91',
+            ip: '10.10.130.72',
             port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
             isBaseLayer: false,
           })
@@ -239,7 +239,7 @@
 | guid    | String                            |             | 矢量图层缓存的唯一标识          |
 
 **详细信息见 OpenLayers API**
-http://192.168.82.91:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClipByCircle.html
-http://192.168.82.91:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClipByPolygon.html
-http://192.168.82.91:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClipBase.html
-http://192.168.82.91:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.AnalysisBase.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClipByCircle.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClipByPolygon.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClipBase.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.AnalysisBase.html

@@ -5,16 +5,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>聚类显示</title>
     <!--引入Mapboxgl库-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"/>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"/>
     <!-- 获取天地图token -->
-    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
     <!--引入jquery-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
     <!--引入papaparse-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/papaparse/papaparse.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/papaparse/papaparse.js"></script>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css"/>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
     <style>
         body {
             margin: 0;
@@ -70,7 +70,7 @@
                         maxzoom: 22
                     }
                 ],
-                glyphs: 'http://192.168.82.91:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf'
+                glyphs: 'http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf'
             },
             center: [108.95, 34.25],
             zoom: 3
@@ -85,7 +85,7 @@
             document.getElementById('mouse-position').innerHTML = "X轴：" + x.toFixed(2) + "，Y轴：" + y.toFixed(2);
         });
         map.on('load', () => {
-            $.get('http://192.168.82.91:8200/Vector/csv/chinaEarthquake.csv', function (response) {
+            $.get('http://10.10.130.72:8200/Vector/csv/chinaEarthquake.csv', function (response) {
                 var dataObj = Papa.parse(response, {
                     skipEmptyLines: true,
                     header: true

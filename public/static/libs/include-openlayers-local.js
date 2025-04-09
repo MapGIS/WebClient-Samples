@@ -125,7 +125,7 @@
 
   load();
   window.webclient = {
-    ip: "192.168.82.91",
+    ip: "10.10.130.72",
     port: 6163,
     protocol: "http",
   };

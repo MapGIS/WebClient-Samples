@@ -60,7 +60,7 @@ npm install @mapgis/webclient-common
 
 ### 开发包
 
-&ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript（common） SDK，含 WebGIS 开发所需的开发库、API、示例、文档等资源，可访问<a href="http://192.168.82.91:8086/#/index" target="_blank">MapGIS Client for JavaScript 产品门户</a>在线体验，或<a a href="#download">下载资源</a>本地部署。
+&ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript（common） SDK，含 WebGIS 开发所需的开发库、API、示例、文档等资源，可访问<a href="http://10.10.130.72:8086/#/index" target="_blank">MapGIS Client for JavaScript 产品门户</a>在线体验，或<a a href="#download">下载资源</a>本地部署。
 
 ### 开发库
 
@@ -76,13 +76,13 @@ npm install @mapgis/webclient-common
 
 &ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript 为用户提供离在线 API（应用程序编程接口），开发者可以通过 API 查找学习 MapGIS 提供的实现功能的方法。
 
-- <a href="http://192.168.82.91:8086/static/modules/common/api/common-mapgis/index.html" target="_blank">MapGIS Client for JavaScript（common） API</a>
+- <a href="http://10.10.130.72:8086/static/modules/common/api/common-mapgis/index.html" target="_blank">MapGIS Client for JavaScript（common） API</a>
 
 ### 开发示例
 
 &ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript（common）为用户提供了功能全面的接口示例与配套文档，支持离在线访问，源码与效果可共同展现，同时提供即时编辑与运行功能，可以帮助您进行高效开发。
 
-- 在线使用：<a href="http://192.168.82.91:8086/#/example-gallery/common" target="_blank">MapGIS Client for JavaScript（common）示例</a>
+- 在线使用：<a href="http://10.10.130.72:8086/#/example-gallery/common" target="_blank">MapGIS Client for JavaScript（common）示例</a>
 - 离线使用：方式一，可在云开发世界下载<a href="http://www.smaryun.com/dev/download_detail.html#/download828" target="_blank">MapGIS Client for JavaScript 开发包</a>，解压后按说明步骤发布即可；方式二，可通过<a href="https://github.com/MapGIS/WebClient-JavaScript" targer="_blank">GitHub</a>、<a href="https://gitee.com/osmapgis/WebClient-JavaScript" targer="_blank">Gitee</a>获取产品源码，按说明文档编译运行。
 
 ## 模块说明
@@ -142,7 +142,7 @@ npm install @mapgis/webclient-common
 
 
 3. API接口变更
-  <a href="http://192.168.82.91:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
+  <a href="http://10.10.130.72:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
 
 4. 新增示例
 
@@ -162,7 +162,7 @@ npm install @mapgis/webclient-common
 - 优化投影变化功能支持自定义WKID投影
 
 3. API接口变更
-<a href="http://192.168.82.91:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
+<a href="http://10.10.130.72:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
 
 4. 新增示例
 - 场景图层-MapGIS多地形服务
@@ -180,7 +180,7 @@ npm install @mapgis/webclient-common
 - 优化Echart图层效果，解决偏移问题
 
 3. API接口变更
-<a href="http://192.168.82.91:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
+<a href="http://10.10.130.72:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
 
 4. 新增示例
 - 网络瓦片图层-天地图
@@ -238,4 +238,4 @@ npm install @mapgis/webclient-common
 - proj4：客户端地理坐标投影变换库（<a href="[http://proj4js.org/](http://proj4js.org/)" target="_blank">[http://proj4js.org/](http://proj4js.org/)</a>）
 
 ## webclient-common库对各个引擎支持情况
-- <a href="http://192.168.82.91:8086/#/guideMulti/common/development_common_support" target="_blank">webclient-common库对各个引擎支持情况表</a>
+- <a href="http://10.10.130.72:8086/#/guideMulti/common/development_common_support" target="_blank">webclient-common库对各个引擎支持情况表</a>

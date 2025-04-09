@@ -55,7 +55,7 @@
     ```javascript
         //加载地图文档图层
         MapDocLayer = new Zondy.Map.MapDocTileLayer("MapGIS IGS VectorMapdocLayer", "FeatureEditForPolygon", {
-            ip: "192.168.82.91",
+            ip: "10.10.130.72",
             port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
             isBaseLayer: true
         });
@@ -152,7 +152,7 @@
             featureSet.addFeature(newFeature)
             //创建一个要素编辑服务对象
             var editDocFeature = new Zondy.Service.EditDocFeature('FeatureEditForPolygon', 0, {
-                ip: '192.168.82.91',
+                ip: '10.10.130.72',
                 port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
             })
             editDocFeature.add(featureSet, function(rlt){
@@ -177,7 +177,7 @@
     ```javascript
         //选择点所在的地图文档
         var deleteService = new Zondy.Service.EditDocFeature('FeatureEditForPolygon', 0, {
-            ip: '192.168.82.91',
+            ip: '10.10.130.72',
             port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
         })
         deleteService.deletes(featureIds, function(rlt){
@@ -234,7 +234,7 @@
         resultReg.SFEleArray[0].AttValue[8] = document.getElementById('name').value
         //创建一个要素编辑服务对象
         var editDocFeature = new Zondy.Service.EditDocFeature('FeatureEditForPolygon', '0', {
-            ip: '192.168.82.91',
+            ip: '10.10.130.72',
             port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
         })
         editDocFeature.update(resultReg, function(data){
