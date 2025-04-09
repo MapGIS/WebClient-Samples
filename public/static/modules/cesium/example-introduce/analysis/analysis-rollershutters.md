@@ -39,12 +39,12 @@
       viewer: webGlobe.viewer
     });
     var drilllayer = m3dLayer.append(
-      "http://192.168.82.91:6163/igs/rest/g3d/钻孔_2_钻孔模型s", {
+      "http://10.10.130.72:6163/igs/rest/g3d/钻孔_2_钻孔模型s", {
         autoReset: false,
       }
     );
     //加载M3D地图文档（服务地址，配置参数）
-    landscapeLayer = m3dLayer.append('http://192.168.82.91:6163/igs/rest/g3d/钻孔分层点_Sur_000_Ent', {});
+    landscapeLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/钻孔分层点_Sur_000_Ent', {});
   ```
 
 **Step 4. <font color=red>地图跳转</font>**：

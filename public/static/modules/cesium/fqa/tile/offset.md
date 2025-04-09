@@ -27,7 +27,7 @@ const { TileInfo } = Util;
 let tileinfo = new TileInfo();
 let zoomOffset = await tileinfo.getZoomOffset(
     "WMTS",
-    "192.168.82.91",
+    "10.10.130.72",
     "6163",
     "东城区_瓦片_MAPGIS",
 );
@@ -48,7 +48,7 @@ var tileMatrixLabels = Array.from(
   >
     <mapgis-3d-ogc-wmts-layer
       v-if="tileMatrixLabels.length > 0"
-      baseUrl="http://192.168.82.91:8089/igs/rest/services/东城区_瓦片_MAPGIS/WMTSServer"
+      baseUrl="http://10.10.130.72:8089/igs/rest/services/东城区_瓦片_MAPGIS/WMTSServer"
       :options="{
         tileMatrixLabels: tileMatrixLabels,
       }"
@@ -80,7 +80,7 @@ export default {
       let tileinfo = new TileInfo();
       let zoomOffset = await tileinfo.getZoomOffset(
         "WMTS",
-        "192.168.82.91",
+        "10.10.130.72",
         "6163",
         "东城区_瓦片_MAPGIS",
       );

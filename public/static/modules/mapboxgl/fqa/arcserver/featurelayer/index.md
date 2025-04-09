@@ -5,7 +5,7 @@
 
 ![信息](../../static/modules/mapboxgl/fqa/arcserver/featurelayer/info.png)
 
-从服务链接进去可以看见这个是要素图层，4490坐标系。可以参考[要素图层](http://192.168.82.91:8086/#/modules/mapboxgl/arcgis-mapserver/arcgismapserver/featurelayer)
+从服务链接进去可以看见这个是要素图层，4490坐标系。可以参考[要素图层](http://10.10.130.72:8086/#/modules/mapboxgl/arcgis-mapserver/arcgismapserver/featurelayer)
 
 ![BBox](../../static/modules/mapboxgl/fqa/arcserver/featurelayer/bbox.png)
 

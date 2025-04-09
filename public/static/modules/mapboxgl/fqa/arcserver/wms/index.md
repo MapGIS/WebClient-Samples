@@ -11,8 +11,8 @@
 http://192.168.27.33:6080/arcgis/services/chanpin/xianxzq/MapServer/WMSServer?request=GetCapabilities&service=WMS 
 
 ## 参考demo
-[WebClient](http://192.168.82.91:8086/#/modules/mapboxgl/arcgis-mapserver/arcgisogc/wmsreverse)
-http://192.168.82.91:8086/#/modules/mapboxgl/arcgis-mapserver/arcgisogc/wmsreverse
+[WebClient](http://10.10.130.72:8086/#/modules/mapboxgl/arcgis-mapserver/arcgisogc/wmsreverse)
+http://10.10.130.72:8086/#/modules/mapboxgl/arcgis-mapserver/arcgisogc/wmsreverse
 
 结合参考demo 加载地图时这样拼接URL
 ``` javascript

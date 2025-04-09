@@ -39,7 +39,7 @@
       viewer: webGlobe.viewer,
     })
     //添加三维地图文档：地形数据
-    var terrainlayer = layer.append('http://192.168.82.91:6163/igs/rest/g3d/250DEM_3D', {})
+    var terrainlayer = layer.append('http://10.10.130.72:6163/igs/rest/g3d/250DEM_3D', {})
   ```
 
 ### 关键接口

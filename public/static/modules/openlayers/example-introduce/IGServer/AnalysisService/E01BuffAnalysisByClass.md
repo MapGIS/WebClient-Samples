@@ -47,7 +47,7 @@
     //执行单圈缓冲区分析
     function bufferOneRing() {
       var clsBufBySR = new Zondy.Service.ClassBufferBySingleRing({
-        ip: '192.168.82.91',
+        ip: '10.10.130.72',
         port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
         //缓冲时要素左侧缓冲半径
         leftRad: 0.1,
@@ -74,7 +74,7 @@
   ```javascript
     function bufferMulRings() {
       var clsBufByMR = new Zondy.Service.ClassBufferByMultiplyRing({
-        ip: '192.168.82.91',
+        ip: '10.10.130.72',
         port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
         //多圈缓冲分析各圈的缓冲半径
         radiusStr: '0.01,0.05,0.1',
@@ -103,7 +103,7 @@
           var resultLayerUrl = data.results[0].Value || data.results[0].value
           //将结果图层添加到地图视图中显示
           var resultLayer = new Zondy.Map.GdbpLayer('MapGIS IGS BuffAnalyResultLayer', [resultBaseUrl + resultLayerUrl], {
-            ip: '192.168.82.91',
+            ip: '10.10.130.72',
             port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
             isBaseLayer: false,
           })
@@ -175,6 +175,6 @@
 | guid    | String                            |             | 矢量图层缓存的唯一标识          |
 
 **详细信息见 OpenLayers API**
-http://192.168.82.91:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClassBufferBySingleRing.html
-http://192.168.82.91:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClassBufferByMultiplyRing.html
-http://192.168.82.91:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClassBufferBase.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClassBufferBySingleRing.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClassBufferByMultiplyRing.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.ClassBufferBase.html

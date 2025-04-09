@@ -1,6 +1,6 @@
 # 0. wmts - 教程
 
-[标准的 WMTS 元数据](http://192.168.82.91:6163/igs/rest/ogc/SAMPLETILE/WMTSServer)
+[标准的 WMTS 元数据](http://10.10.130.72:6163/igs/rest/ogc/SAMPLETILE/WMTSServer)
 
 ![说明](./static/modules/cesium/fqa/ogc/wmts/gettile.png)
 
@@ -11,7 +11,7 @@
 
 ```js
 var tianditu = new Cesium.WebMapTileServiceImageryProvider({
-    url: 'http://192.168.82.91:6163/igs/rest/ogc/beijing/WMTSServer/1.0.0/beijing/default/EPSG:4326_北京市_arcgis_GB/{TileMatrix}/{TileRow}/{TileCol}.png',
+    url: 'http://10.10.130.72:6163/igs/rest/ogc/beijing/WMTSServer/1.0.0/beijing/default/EPSG:4326_北京市_arcgis_GB/{TileMatrix}/{TileRow}/{TileCol}.png',
     maximumLevel: 19,
     credit: new Cesium.Credit('4326')
 });
@@ -59,7 +59,7 @@ webGlobe.viewer.imageryLayers.addImageryProvider(tianditu);
 
 ```js
 var lnglat = new Cesium.WebMapTileServiceImageryProvider({
-    url: 'http://192.168.82.91:6163/igs/rest/ogc/SAMPLETILE/WMTSServer',
+    url: 'http://10.10.130.72:6163/igs/rest/ogc/SAMPLETILE/WMTSServer',
     layer: 'SAMPLETILE',
     style: 'default',
     format: 'image/png',
@@ -92,7 +92,7 @@ var lnglat = new Cesium.WebMapTileServiceImageryProvider({
     ```
     2. 示例
     ``` js 
-    >>> http://192.168.82.91:6163/igs/rest/ogc/beijing/WMTSServer/1.0.0/beijing/default/EPSG:4326_北京市_arcgis_GB/{z}/{y}/{x}.png
+    >>> http://10.10.130.72:6163/igs/rest/ogc/beijing/WMTSServer/1.0.0/beijing/default/EPSG:4326_北京市_arcgis_GB/{z}/{y}/{x}.png
     ```
 2. kvp
     1. 规则
@@ -181,7 +181,7 @@ var lnglat = new Cesium.WebMapTileServiceImageryProvider({
 
 > 从下面数据情况几乎可以得出结论，无法避免不同平台不同版本带来的差异， `强烈推荐`使用`KVP`的方式`手动匹配`来统一处理，而不是自动解析 WMTS.xml 的元数据信息
 
-1. MapGIS 平台官方测试数据 [MapGIS 10.3 & OGC 1.0.0](http://192.168.82.91:6163/igs/rest/ogc/SAMPLETILE/WMTSServer)
+1. MapGIS 平台官方测试数据 [MapGIS 10.3 & OGC 1.0.0](http://10.10.130.72:6163/igs/rest/ogc/SAMPLETILE/WMTSServer)
 1. MapGIS 九州官方测试数据 [MapGIS 10.5 & OGC 1.0.0]()
 1. ArcGIS 官方测试数据 [ArcServer 10.8 & OGC 1.0.0](https://gibs.earthdata.nasa.gov/wmts/epsg4326/best/1.0.0/WMTSCapabilities.xml)
 1. ArcGIS 官方测试数据 [ArcServer 10.7 OGC 1.0.0](http://219.142.81.85/arcgis/rest/services/10wanZH/MapServer/WMTS/1.0.0/WMTSCapabilities.xml)

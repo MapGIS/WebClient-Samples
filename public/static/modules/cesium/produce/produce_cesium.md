@@ -110,7 +110,7 @@
 
 ### 开发包
 
-&ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript（Cesium） SDK，包含三维 WebGIS 开发所需的开发库、API、示例、文档等资源，可访问<a href="http://192.168.82.91:8086/#/index" target="_blank">MapGIS Client for JavaScript 产品门户</a>在线体验，或<a a href="#download">下载资源</a>本地部署。
+&ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript（Cesium） SDK，包含三维 WebGIS 开发所需的开发库、API、示例、文档等资源，可访问<a href="http://10.10.130.72:8086/#/index" target="_blank">MapGIS Client for JavaScript 产品门户</a>在线体验，或<a a href="#download">下载资源</a>本地部署。
 
 ### 开发库
 
@@ -126,12 +126,12 @@
 
 ### API 参考
 
-- <a href="http://192.168.82.91:8086/static/modules/cesium/api/cesium/index.html" target="_blank">MapGIS Cesium 内核库 API</a>
-- <a href="http://192.168.82.91:8086/static/modules/cesium/api/cesium-mapgis/index.html" target="_blank">MapGIS Cesium 插件库 API</a>
+- <a href="http://10.10.130.72:8086/static/modules/cesium/api/cesium/index.html" target="_blank">MapGIS Cesium 内核库 API</a>
+- <a href="http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/index.html" target="_blank">MapGIS Cesium 插件库 API</a>
 
 ### 开发示例
 
-- 在线体验：<a href="http://192.168.82.91:8086/#/example-gallery/cesium" target="_blank">MapGIS Client for JavaScript （Cesium）示例</a>
+- 在线体验：<a href="http://10.10.130.72:8086/#/example-gallery/cesium" target="_blank">MapGIS Client for JavaScript （Cesium）示例</a>
 - 离线使用：
 方式一，可在司马云-云开发世界下载<a href="http://www.smaryun.com/dev/download_detail.html#/download828" target="_blank">MapGIS Client for JavaScript 开发包</a>，解压后按说明步骤发布即可；
 方式二，可通过<a href="https://github.com/MapGIS/WebClient-JavaScript" targer="_blank">GitHub</a>、<a href="https://gitee.com/osmapgis/WebClient-JavaScript" targer="_blank">Gitee</a>获取产品源码，按说明文档，自动编译、运行。
@@ -185,7 +185,7 @@
 - 要素图层对接对gdbp数据的处理
 
 3. API接口变更
-<a href="http://192.168.82.91:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">webclient-cesium-plugin 接口变更表</a>
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">webclient-cesium-plugin 接口变更表</a>
 
 4. 新增示例
 - BIM构件树(M3D-M3D服务)
@@ -207,7 +207,7 @@
 - 优化绘制辅助剖切面(体)后的控制显隐的效果
 
 3. API接口变更
-<a href="http://192.168.82.91:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">webclient-cesium 接口变更表</a>
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">webclient-cesium 接口变更表</a>
 
 
 ### <font color=red>V10.7.2.10</font>
@@ -222,7 +222,7 @@
 - 优化坡向分析中的箭头效果
 
 3. API接口变更
-<a href="http://192.168.82.91:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">webclient-cesium-plugin 接口变更表</a>
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">webclient-cesium-plugin 接口变更表</a>
 
 4. 新增示例
 
@@ -243,7 +243,7 @@
 - 优化单体化专题图renderer的效果
 
 3. API接口变更
-<a href="http://192.168.82.91:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">webclient-cesium 接口变更表</a>
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">webclient-cesium 接口变更表</a>
 
 
 ### <font color=red>V10.7.0.10</font>
@@ -260,7 +260,7 @@
 - M3D2.0缓存加载流畅度优化
 
 3. API接口变更
-<a href="http://192.168.82.91:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">webclient-cesium-plugin 接口变更表</a>
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">webclient-cesium-plugin 接口变更表</a>
 
 4. 新增示例
 - WMS-混合接口
@@ -321,7 +321,7 @@
 - 优化专题图渲染效果，提升对Cesium的样式兼容性
 
 3. API接口变更
-<a href="http://192.168.82.91:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">webclient-cesium 接口变更表</a>
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">webclient-cesium 接口变更表</a>
 
 ### <font color=red>V10.6.8.10</font>
 

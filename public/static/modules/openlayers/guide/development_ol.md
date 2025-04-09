@@ -55,7 +55,7 @@
 
 ### 数据准备
 
-&ensp;&ensp;&ensp;&ensp;本示例使用MapGIS官方云端（192.168.82.91）已经发布的名称为“北京市”（或“SampleDoc”）的地图文档进行演示。若您需要显示自己的地图文档，需要先附加待显示地图数据所在的地理数据库，然后通过**MapGIS Server Manager**配置GIS服务环境并发布地图服务。
+&ensp;&ensp;&ensp;&ensp;本示例使用MapGIS官方云端（10.10.130.72）已经发布的名称为“北京市”（或“SampleDoc”）的地图文档进行演示。若您需要显示自己的地图文档，需要先附加待显示地图数据所在的地理数据库，然后通过**MapGIS Server Manager**配置GIS服务环境并发布地图服务。
 
 <center>![](C:/Users/杨琨/Downloads/Cesium_API结构.png)
   <img src="./static/modules/openlayers/source/img/MapGIS发布服务.png" alt="MapGIS服务发布" style="zoom:80%;" />
@@ -167,7 +167,7 @@
             });
             //初始化地图文档图层对象
               mapDocLayer = new Zondy.Map.MapDocTileLayer("MapGIS IGS MapDocLayer", "北京市", {
-                ip: "192.168.82.91",
+                ip: "10.10.130.72",
                 port: 6163
             });
             //将地图文档图层加载到地图中
@@ -238,7 +238,7 @@
 | 比例尺| 	ol.control.ScaleLine  | 地图比例尺，默认位于地图左下角 |
 | 鹰眼 | 	ol.control.OverviewMap  | 鹰眼，默认位于地图右下角 |
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/MapControl/E01Navigation" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/MapControl/E01Navigation" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/100-地图控件.png" alt="地图控件" style="zoom:80%;" />
 </a>
 
@@ -354,7 +354,7 @@
 
 &ensp;&ensp;&ensp;&ensp;地图基本操作是Web地图应用的基本功能，也是用户与地图的简单交互，主要包括地图放大、缩小、移动、复位和更新等。在具体的地图操作应用中，其交互操作的方式多样化。例如，地图缩放有单击缩放、在地图上拉框缩放、导航条按钮缩放、通过键盘按键控制地图缩放等。
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/MapOperation/E01MapOperation" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/MapOperation/E01MapOperation" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/101-地图操作.png" alt="地图操作" style="zoom:80%;" />
 </a>
 
@@ -422,7 +422,7 @@
 ### 地图域信息
 
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/MapOperation/E02MapInfomation" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/MapOperation/E02MapInfomation" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/102-地图域信息.png" alt="地图域信息" style="zoom:80%;" />
 </a>
 
@@ -465,10 +465,10 @@
 
 &ensp;&ensp;&ensp;&ensp;图层的显示控制，包括图层的显示隐藏、地图图层的过滤显示，以及某一图层的地图要素的过滤显示。地图容器中加载的图层以列表形式显示，并提供显示控制的功能，便于用户查看与操作。
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/MapOperation/E03LayerGroupControl" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/MapOperation/E03LayerGroupControl" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/103-图层透明度.png" alt="图层透明度" style="zoom:44%;margin:0 10px;" />
 </a>
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/MapOperation/E09LayerLevelControl" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/MapOperation/E09LayerLevelControl" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/104-图层顺序调整.png" alt="图层顺序调整" style="zoom:40%;" />
 </a>
 
@@ -625,7 +625,7 @@
 
 &ensp;&ensp;&ensp;&ensp;当多图层叠加显示时，顶层图层会遮盖下层图层。图层探查，就是为了方便查看位于下层的图层数据，辅助功能操作或分析，是一个非常实用的工具。图层探查的原理，就是在客户端裁剪上层图层，将上层图层挖掉一部分，让下层图层数据可见。
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/MapOperation/E08MapLayerProbe" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/MapOperation/E08MapLayerProbe" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/109-图层探查.png" alt="图层探查" style="zoom:80%;" />
 </a>
 
@@ -704,7 +704,7 @@ Step 3. <font color=red>实现图层探查</font>:
 | 矩形　| ol.geom.Polygon | 矩形图形，通过ol.style.Style设置样式 |
 
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/GraphicEdit/E01GraphicDraw" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/GraphicEdit/E01GraphicDraw" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/201-绘制固定几何图形.png" alt="绘制固定几何图形" style="zoom:80%;" />
 </a>
 
@@ -937,7 +937,7 @@ Step 3. <font color=red>实现图层探查</font>:
 
 &ensp;&ensp;&ensp;&ensp;交互绘制几何图形实现：先通过ol.interaction.Draw()方法构建交互式绘制控件，然后使用map.addInteraction()方法把交互式绘制控件添加到地图中。
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/GraphicEdit/E02InterActionGraphicDraw" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/GraphicEdit/E02InterActionGraphicDraw" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/202-交互绘制图形.png" alt="交互绘制图形" style="zoom:80%;" />
 </a>
 
@@ -1036,7 +1036,7 @@ Step 2. <font color=red>添加交互绘制控件，实现图形绘制</font>:
 | PopUp 标注| ol.Overlay() |  PopUp 标注，构建 overlay 弹窗实现 |
 | 聚合标注| ol.source.Cluster() | 创建聚合标注数据源 |
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/Base/MapMark/E01InterActionMapMark" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/Base/MapMark/E01InterActionMapMark" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/301-地图标注.png" alt="地图标注" style="zoom:80%;" />
 </a>
 
@@ -1463,7 +1463,7 @@ Step 3. 加载聚合标注数据图层
   })
   ```
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/ThirdMap/E01Baidu" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/ThirdMap/E01Baidu" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/401-百度地图.png" alt="百度地图" style="zoom:80%;" />
 </a>
 
@@ -1488,7 +1488,7 @@ Step 3. 加载聚合标注数据图层
    map.addLayer(tiandituLayer)
   ```
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/ThirdMap/E02Tianditu" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/ThirdMap/E02Tianditu" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/402-天地图.png" alt="天地图" style="zoom:80%;" />
 </a>
 
@@ -1516,7 +1516,7 @@ Step 3. 加载聚合标注数据图层
   })
   ```
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/ThirdMap/E04Bings" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/ThirdMap/E04Bings" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/403-Bing地图.png" alt="Bing地图" style="zoom:80%;" />
 </a>
 
@@ -1550,7 +1550,7 @@ Step 3. 加载聚合标注数据图层
   })
   ```
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/ThirdMap/E05OSM" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/ThirdMap/E05OSM" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/404-OSM地图.png" alt="OSM地图" style="zoom:80%;" />
 </a>
 
@@ -1620,7 +1620,7 @@ Step 3. 加载聚合标注数据图层
       wmsLayer = new ol.layer.Image({
         source: new ol.source.ImageWMS({
           //WMS服务基地址
-          url: `http://192.168.82.91:6163/igs/rest/ogc/doc/WorldJWVector/WMSServer`,
+          url: `http://10.10.130.72:6163/igs/rest/ogc/doc/WorldJWVector/WMSServer`,
           //图层等参数
           params: {
             LAYERS: '世界政区',
@@ -1634,7 +1634,7 @@ Step 3. 加载聚合标注数据图层
       map.addLayer(wmsLayer)
   ```
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/OGC/E01WMS_MapGISM" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/OGC/E01WMS_MapGISM" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/405-WMS地图服务.png" alt="WMS地图服务" style="zoom:80%;" />
 </a>
 
@@ -1658,7 +1658,7 @@ Step 3. 加载聚合标注数据图层
                 matrixIds[z] = z;
             }
             //WMTS服务访问基地址
-            baseUrlTile = `http://192.168.82.91:6163/igs/rest/ogc/WMTSServer`;
+            baseUrlTile = `http://10.10.130.72:6163/igs/rest/ogc/WMTSServer`;
             //初始化WMTS图层对象
             wmtsLayer = new ol.layer.Tile({
                 opacity: 1,
@@ -1689,7 +1689,7 @@ Step 3. 加载聚合标注数据图层
             map.addLayer(wmtsLayer);
   ```
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/OGC/E03WMTS_MapGIS" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/OGC/E03WMTS_MapGIS" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/406-WMTS地图服务.png" alt="WMTS地图服务" style="zoom:80%;" />
 </a>
 
@@ -1731,7 +1731,7 @@ Step 3. 加载聚合标注数据图层
 
   //构建地图文档图层
   var mapDocLayer = new Zondy.Map.Doc(name, docname, {
-    ip: `http://192.168.82.91:8086/`,
+    ip: `http://10.10.130.72:8086/`,
     port: 6163, //访问IGServer的端口号，.net版为6163，Java版为8089
     extent: extent,
   })
@@ -1771,7 +1771,7 @@ Step 3. 加载聚合标注数据图层
   var gdbps = ['gdbp://MapGisLocal/sample/ds/地图综合/sfcls/水系']
   //创建一个矢量图层
   var VecLayer = new Zondy.Map.GdbpLayer(name, gdbps, {
-    ip: `http://192.168.82.91:8086/`,
+    ip: `http://10.10.130.72:8086/`,
     port: 6163, //访问IGServer的端口号，.net版为6163，Java版为8089
     extent: extent,
   })
@@ -1812,7 +1812,7 @@ Step 3. 加载聚合标注数据图层
   var TileName = 'SAMPLETILE'
   //构建瓦片地图图层
   var TileLayer = new Zondy.Map.TileLayer(name, TileName, {
-    ip: `http://192.168.82.91:8086/`,
+    ip: `http://10.10.130.72:8086/`,
     port: 6163, //访问IGServer的端口号，.net版为6163，Java版为8089
   })
 
@@ -1862,7 +1862,7 @@ Step 3. 加载聚合标注数据图层
 
         //显示瓦片图
         var tileLayer = new Zondy.Map.TileLayer('MapGIS IGS TileLayer', '武汉市区自定义比例尺', {
-          ip: `http://192.168.82.91:8086/`,
+          ip: `http://10.10.130.72:8086/`,
           port: 6163,//访问IGServer的端口号，.net版为6163，Java版为8089
           projection: projection,
           maxResolution: maxResolution,
@@ -1901,7 +1901,7 @@ Step 3. 加载聚合标注数据图层
 &ensp;&ensp;&ensp;&ensp;**以属性查询为例：**
 
 <!-->
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/DocFeatureQuery/E01QueryDocByAttribute" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/DocFeatureQuery/E01QueryDocByAttribute" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/501-QueryDocByAttribute.png" alt="文档要素属性查询" style="zoom:80%;" />
 </a>
 <!-->
@@ -1953,7 +1953,7 @@ Step 3. 加载聚合标注数据图层
     ```javascript
         //实例化地图文档查询服务对象
         var queryService = new Zondy.Service.QueryDocFeature(queryParam, "WorldJWVector", 1, {
-            ip: "192.168.82.91",
+            ip: "10.10.130.72",
             port: "6163"    //访问IGServer的端口号，.net版为6163，Java版为8089
         });
         //执行查询操作，querySuccess为查询回调函数
@@ -2010,7 +2010,7 @@ Step 3. 加载聚合标注数据图层
 &ensp;&ensp;&ensp;&ensp;**以几何查询为例：**
 
 <!-->
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/LayerFeatureQuery/E03QueryLayerByGeom" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/LayerFeatureQuery/E03QueryLayerByGeom" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/502-QueryLayerByGeom.png" alt="图层要素几何查询" style="zoom:80%;" />
 </a>
 <!-->
@@ -2236,7 +2236,7 @@ Step 3. 加载聚合标注数据图层
     ```javascript
     //实例化地图文档查询服务对象
     var queryService = new Zondy.Service.QueryLayerFeature(queryParam, {
-        ip: '192.168.82.91',
+        ip: '10.10.130.72',
         port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
     })
     //执行查询操作，querySuccess为查询回调函数
@@ -2304,7 +2304,7 @@ Step 3. 加载聚合标注数据图层
 
 &ensp;&ensp;&ensp;&ensp;**以点要素编辑为例：**
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/DocFeatureEdit/E01InterActionDocPointEdit" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/DocFeatureEdit/E01InterActionDocPointEdit" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/601-InterActionDocPointEdit.png" alt="文档点要素编辑" style="zoom:80%;" />
 </a>
 
@@ -2319,7 +2319,7 @@ Step 3. 加载聚合标注数据图层
 ```javascript
 //加载地图文档图层
 MapDocLayer = new Zondy.Map.MapDocTileLayer('MapGIS IGS VectorMapdocLayer', 'FeatureEditForPoint', {
-    ip: '192.168.82.91',
+    ip: '10.10.130.72',
     port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
     isBaseLayer: true,
 })
@@ -2381,7 +2381,7 @@ map.addEventListener('click', function(e){
     featureSet.addFeature(feature);
     //创建一个编辑服务类
     var editService = new Zondy.Service.EditDocFeature('FeatureEditForPoint', 0, {
-        ip: '192.168.82.91',
+        ip: '10.10.130.72',
         port: '6163',
     })
     //执行添加点要素功能
@@ -2405,7 +2405,7 @@ map.addEventListener('click', function(e){
 ```javascript
     //选择点所在的地图文档
     var deleteService = new Zondy.Service.EditDocFeature('FeatureEditForPoint', 0, {
-        ip: '192.168.82.91',
+        ip: '10.10.130.72',
         port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
     })
     deleteService.deletes(featureIds, function(rlt){
@@ -2449,7 +2449,7 @@ map.addEventListener('click', function(e){
     resultPoint.SFEleArray[0].AttValue[3] = document.getElementById('POPULATION').value
     //创建一个编辑服务类
     var editService = new Zondy.Service.EditDocFeature('FeatureEditForPoint', '0', {
-        ip: '192.168.82.91',
+        ip: '10.10.130.72',
         port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
     })
     editService.update(resultPoint, function(data){
@@ -2469,7 +2469,7 @@ map.addEventListener('click', function(e){
 
 &ensp;&ensp;&ensp;&ensp;**以区要素编辑为例：**
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/LayerFeatureEdit/E03InterActionRegEdit" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/LayerFeatureEdit/E03InterActionRegEdit" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/602-InterActionRegEdit.png" alt="图层区要素编辑" style="zoom:80%;" />
 </a>
 
@@ -2483,7 +2483,7 @@ map.addEventListener('click', function(e){
 ```javascript
 //初始化矢量图层
 vectorLayer = new Zondy.Map.GdbpLayer("MapGIS IGS VectorLayer", ["gdbp://MapGisLocal/OpenLayerVecterMap/ds/地图编辑缓存经纬度/sfcls/myreglayer"], {
-    ip: "192.168.82.91",
+    ip: "10.10.130.72",
     port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
     isBaseLayer: true
 });
@@ -2581,7 +2581,7 @@ map.addLayer(vectorLayer);
         featureSet.addFeature(newFeature)
         //创建一个要素编辑服务对象
         var editLayerFeature = new Zondy.Service.EditLayerFeature('gdbp://MapGisLocal/OpenLayerVecterMap/ds/地图编辑缓存经纬度/sfcls/myreglayer', {
-            ip: '192.168.82.91',
+            ip: '10.10.130.72',
             port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
         })
         editLayerFeature.add(featureSet, function(rlt){
@@ -2604,7 +2604,7 @@ map.addLayer(vectorLayer);
 
 ```javascript
     var deleteService = new Zondy.Service.EditLayerFeature('gdbp://MapGisLocal/OpenLayerVecterMap/ds/地图编辑缓存经纬度/sfcls/myreglayer', {
-            ip: '192.168.82.91',
+            ip: '10.10.130.72',
             port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
     })
     deleteService.deletes(featureIds, function(rlt){
@@ -2661,7 +2661,7 @@ map.addLayer(vectorLayer);
         resultReg.SFEleArray[0].AttValue[8] = document.getElementById('name').value
         //创建一个要素编辑服务对象
         var editLayerFeature = new Zondy.Service.EditLayerFeature('gdbp://MapGisLocal/OpenLayerVecterMap/ds/地图编辑缓存经纬度/sfcls/myreglayer', {
-            ip: '192.168.82.91',
+            ip: '10.10.130.72',
             port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
         })
         editLayerFeature.update(resultReg, function(data){
@@ -2692,7 +2692,7 @@ map.addLayer(vectorLayer);
 &ensp;&ensp;&ensp;&ensp;**以分段专题图（单字段）为例：**
 
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/ThemeService/E03ParagraphThemeBySinglefield" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/ThemeService/E03ParagraphThemeBySinglefield" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/701-ParagraphThemeBySinglefield.png" alt="分段专题图（单字段）" style="zoom:80%;" />
 </a>
 
@@ -2706,7 +2706,7 @@ map.addLayer(vectorLayer);
   //初始化地图文档图层对象
   guid = Math.floor(Math.random() * 10000000).toString()
   mapDocLayer = new Zondy.Map.MapDocTileLayer('MapGIS IGS MapDocLayer', 'Hubei4326', {
-    ip: `192.168.82.91`,
+    ip: `10.10.130.72`,
     port: `6163`,
     //文档guid
     guid: guid,
@@ -2724,7 +2724,7 @@ map.addLayer(vectorLayer);
   //初始化专题图服务类
   ThemeOper = new Zondy.Service.ThemeOper(null, guid)
   //设置ip地址
-  ThemeOper.ip = `192.168.82.91`
+  ThemeOper.ip = `10.10.130.72`
   //设置端口号
   ThemeOper.port = `6163`
   ```
@@ -2866,7 +2866,7 @@ map.addLayer(vectorLayer);
 &ensp;&ensp;&ensp;&ensp;**以要素缓冲区分析为例**：实现针对几何要素的单圈或多圈的缓冲分析。
 
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/AnalysisService/E02BuffAnalysisByFeature" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/AnalysisService/E02BuffAnalysisByFeature" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/801-BuffAnalysisByFeature.png" alt="要素缓冲区分析" style="zoom:80%;" />
 </a>
 
@@ -2945,7 +2945,7 @@ map.addLayer(vectorLayer);
     ```javascript
     //实例化FeatureBuffBySingleRing类，设置要素缓冲分析必要参数，输出分析结果到缓冲分析结果图层
     var featureBufBySR = new Zondy.Service.FeatureBuffBySingleRing({
-        ip: "192.168.82.91",
+        ip: "10.10.130.72",
         port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
         //设置要素缓冲分析左半径
         leftRad: 2,
@@ -2976,7 +2976,7 @@ map.addLayer(vectorLayer);
     ```javascript
     //实例化FeatureBuffByMultiplyRing类，设置要素缓冲分析必要参数，输出分析结果到缓冲分析结果图层
     var featureBufByMR = new Zondy.Service.FeatureBuffByMultiplyRing({
-        ip: "192.168.82.91",
+        ip: "10.10.130.72",
         port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
         //设置多圈缓冲分析的缓冲半径字符串
         radiusStr: "2,4,6"		
@@ -3008,7 +3008,7 @@ map.addLayer(vectorLayer);
                 var resultLayerUrl = data.results[0].Value || data.results[0].value;
                 //将结果图层添加到地图视图中显示
                 var resultLayer = new Zondy.Map.GdbpLayer("MapGIS IGS BuffAnalyResultLayer", [resultLayerUrl], {
-                    ip: "192.168.82.91",
+                    ip: "10.10.130.72",
                     port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
                     isBaseLayer: false
                 });
@@ -3029,7 +3029,7 @@ map.addLayer(vectorLayer);
 &ensp;&ensp;&ensp;&ensp;**以图层裁剪分析为例**：实现针对简单要素类的图层裁剪分析(以图层中的要素作为裁剪框)。
 
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/AnalysisService/E05PolygonOverLayAnalysis" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/AnalysisService/E05PolygonOverLayAnalysis" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/802-LayerClipAnalysis.png" alt="图层裁剪分析" style="zoom:80%;" />
 </a>
 
@@ -3045,7 +3045,7 @@ map.addLayer(vectorLayer);
     var resultname = resultBaseUrl + 'clipByLayerAnalysisResultLayer' + getCurentTime()
     //实例化ClipByLayer类
     var clipParam = new Zondy.Service.ClipByLayer({
-      ip: '192.168.82.91',
+      ip: '10.10.130.72',
       port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
       //源简单要素类的URL
       srcInfo1: 'gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界河流',
@@ -3074,7 +3074,7 @@ map.addLayer(vectorLayer);
         var resultLayerUrl = data.results[0].Value || data.results[0].value
         //将结果图层添加到地图视图中显示
         var resultLayer = new Zondy.Map.GdbpLayer('MapGIS IGS BuffAnalyResultLayer', [resultBaseUrl + resultLayerUrl], {
-          ip: '192.168.82.91',
+          ip: '10.10.130.72',
           port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
           isBaseLayer: false,
         })
@@ -3096,7 +3096,7 @@ map.addLayer(vectorLayer);
 
 &ensp;&ensp;&ensp;&ensp;**以多边形叠加分析为例**：实现针对简单要素类的多边形叠加分析，即以几何多边形为叠加对象，简单要素类图层为被叠加对象，执行叠加分析的几何运算。
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/AnalysisService/E05PolygonOverLayAnalysis" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/AnalysisService/E05PolygonOverLayAnalysis" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/803-PolygonOverLayAnalysis.png" alt="多边形叠加分析" style="zoom:80%;" />
 </a>
 
@@ -3162,7 +3162,7 @@ map.addLayer(vectorLayer);
     ```javascript
     //执行多边形叠加分析
     var overlayParam = new Zondy.Service.OverlayByPolygon({
-        ip: "192.168.82.91",
+        ip: "10.10.130.72",
         port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
         //设置被叠加图层URL 
         srcInfo1: "gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界政区",
@@ -3201,7 +3201,7 @@ map.addLayer(vectorLayer);
                 var resultLayerUrl = data.results[0].Value || data.results[0].value;
                 //将结果图层添加到地图视图中显示
                 var resultLayer = new Zondy.Map.GdbpLayer("MapGIS IGS BuffAnalyResultLayer", [resultBaseUrl+resultLayerUrl], {
-                    ip: "192.168.82.91",
+                    ip: "10.10.130.72",
                     port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
                     isBaseLayer: false
                 });
@@ -3221,7 +3221,7 @@ map.addLayer(vectorLayer);
 &ensp;&ensp;&ensp;&ensp;提供路径分析功能服务接口NetAnalysis。支持用户和系统两种分析模式，和普通公路优先、高速公路优先、最少花费、最短路径、最短时间等多种分析类型。基于网络类数据设置感兴趣起始点、障碍点，以及其它必要信息，调用路径分析功能服务接口，可将获取到的最佳路径信息绘制到客户端以做展示。
 
 
-<a href="http://192.168.82.91:8089/#/modules/openlayers/IGServer/NetService/E01NetAnalysist" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/openlayers/IGServer/NetService/E01NetAnalysist" target="_blank">
  <img src="./static/modules/openlayers/source/img/dev/804-NetAnalysist.png" alt="路径分析" style="zoom:80%;" />
 </a>
 
@@ -3248,7 +3248,7 @@ map.addLayer(vectorLayer);
   //初始化矢量图层对象
   var vectorGDBLayer = new Zondy.Map.GdbpLayer('MapGIS IGS VectorLayer', ['gdbp://MapGisLocal/sample/ds/网络分析/ncls/道路交通网'], {
     //矢量图层地图服务器ip
-    ip: '192.168.82.91',
+    ip: '10.10.130.72',
     //矢量图层地图服务端口
     port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
   })
@@ -3284,7 +3284,7 @@ map.addLayer(vectorLayer);
   ```javascript
   var netAnalyParam = new Zondy.Service.NetAnalysis({
     //矢量图层地图服务器ip
-    ip: '192.168.82.91',
+    ip: '10.10.130.72',
     //矢量图层地图服务端口
     port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089,
     //设置网络类URL

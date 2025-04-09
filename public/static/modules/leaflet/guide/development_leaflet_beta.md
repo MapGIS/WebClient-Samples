@@ -21,7 +21,7 @@
 
 <center>
 
-<img src="http://192.168.82.91:8086/static/modules/leaflet/source/img/开发指南_1.png" style="zoom:100%;" />
+<img src="http://10.10.130.72:8086/static/modules/leaflet/source/img/开发指南_1.png" style="zoom:100%;" />
 
 </center>
 
@@ -29,7 +29,7 @@
 
 <center>
 
-<img src="http://192.168.82.91:8086/static/modules/leaflet/source/img/开发指南_2.png" style="zoom:100%;" />
+<img src="http://10.10.130.72:8086/static/modules/leaflet/source/img/开发指南_2.png" style="zoom:100%;" />
 
 </center>
 

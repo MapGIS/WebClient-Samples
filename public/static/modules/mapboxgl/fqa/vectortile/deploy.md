@@ -12,28 +12,28 @@
 在线部署这四类服务的对应的地址如下：
 | 服务名|服务地址|示例|
 |:---|:---|:---|
-|瓦片服务|http://192.168.82.91:6163/igs/rest/mrms/tile/{docname}/{z}/{y}/{x}?type=cpbf|http://192.168.82.91:6163/igs/rest/mrms/tile/中国行政区/3/2/5?type=cpbf|
-|样式服务|http://192.168.82.91:6163/igs/rest/mrms/vtiles/styles/{stylename}.json|http://192.168.82.91:6163/igs/rest/mrms/vtiles/styles/浅色-墨卡托.json|
-|字体服务|http://192.168.82.91:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf|http://192.168.82.91:6163/igs/rest/mrms/vtiles/fonts/微软雅黑,微软雅黑/65024-65279.pbf|
-|符号服务|http://192.168.82.91:6163/igs/rest/mrms/vtiles/{spritename}|http://192.168.82.91:6163/igs/rest/mrms/vtiles/sprite.json http://192.168.82.91:6163/igs/rest/mrms/vtiles/sprite.png |
+|瓦片服务|http://10.10.130.72:6163/igs/rest/mrms/tile/{docname}/{z}/{y}/{x}?type=cpbf|http://10.10.130.72:6163/igs/rest/mrms/tile/中国行政区/3/2/5?type=cpbf|
+|样式服务|http://10.10.130.72:6163/igs/rest/mrms/vtiles/styles/{stylename}.json|http://10.10.130.72:6163/igs/rest/mrms/vtiles/styles/浅色-墨卡托.json|
+|字体服务|http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf|http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/微软雅黑,微软雅黑/65024-65279.pbf|
+|符号服务|http://10.10.130.72:6163/igs/rest/mrms/vtiles/{spritename}|http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite.json http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite.png |
 
 
 
 ``` javascript
     var map = new mapboxgl.Map({
       container: 'map', // 绑定div
-      style: 'http://192.168.82.91:6163/igs/rest/mrms/vtiles/styles/浅色-墨卡托.json', // 样式服务
+      style: 'http://10.10.130.72:6163/igs/rest/mrms/vtiles/styles/浅色-墨卡托.json', // 样式服务
       center: [106.563777, 29.578285],
       zoom: 3
     });
 
     // 浅色-墨卡托里面记录了另外三种服务的地址
     // 瓦片数据服务
-    "tiles": ["http://192.168.82.91:6163/igs/rest/mrms/tile/OSM全中国/{z}/{y}/{x}?type=cpbf&returnError=false"],
+    "tiles": ["http://10.10.130.72:6163/igs/rest/mrms/tile/OSM全中国/{z}/{y}/{x}?type=cpbf&returnError=false"],
     // 符号库服务
-    sprite:"http://192.168.82.91:6163/igs/rest/mrms/vtiles/sprite"
+    sprite:"http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite"
     // 字体库服务
-    glyphs:"http://192.168.82.91:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf"
+    glyphs:"http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf"
 }
 ```
 
@@ -72,7 +72,7 @@
          "OSM全中国": {
          "type": "vector",
          "tiles": [
-            "http://192.168.82.91:6163/igs/rest/mrms/tile/OSM全中国/{z}/{x}/{y}.pbf"  // 或者{z}/{y}{x}
+            "http://10.10.130.72:6163/igs/rest/mrms/tile/OSM全中国/{z}/{x}/{y}.pbf"  // 或者{z}/{y}{x}
          ],
          "minZoom": 0,
          "maxZoom": 13
@@ -95,7 +95,7 @@
          "OSM全中国": {
          "type": "vector",
          "tiles": [
-            "http://192.168.82.91:6163/igs/rest/mrms/tile/OSM全中国/{z}/{x}/{y}.pbf"  // 或者{z}/{y}{x}
+            "http://10.10.130.72:6163/igs/rest/mrms/tile/OSM全中国/{z}/{x}/{y}.pbf"  // 或者{z}/{y}{x}
          ],
          "minZoom": 11,    // 此处说明该数据只有11级到-13级才请求数据源， 0-10  14-20都不发请求
          "maxZoom": 13     

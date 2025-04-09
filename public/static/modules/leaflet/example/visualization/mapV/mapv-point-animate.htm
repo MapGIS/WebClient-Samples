@@ -4,16 +4,16 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>点数据渲染</title>
     <!--引入mapv-->
-    <script type="text/javascript" src="http://192.168.82.91:8086/static/libs/cdn/mapv/mapv.min.js"></script>
+    <script type="text/javascript" src="http://10.10.130.72:8086/static/libs/cdn/mapv/mapv.min.js"></script>
     <!--该库集成了leaflet与MapGIS IGServer for JavaScript脚本库-->
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/leaflet/leaflet.css"/>
-    <script src="http://192.168.82.91:8086/static/libs/cdn/leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/leaflet/leaflet.css"/>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/leaflet/leaflet.js"></script>
     <!--plugin库-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-leaflet-plugin.min.js"></script>
-    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-leaflet-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css"/>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
     <!--css-->
     <script type="text/javascript">
       //使用严格模式
@@ -60,7 +60,7 @@
         function addMapVLayer(map) {
           // 构造数据
           httpGetPromise(
-            'http://192.168.82.91:8200/Vector/json/pointAnimate/china-point.json'
+            'http://10.10.130.72:8200/Vector/json/pointAnimate/china-point.json'
           ).then((rs) => {
             // 构建对应的dataset
             let data = []

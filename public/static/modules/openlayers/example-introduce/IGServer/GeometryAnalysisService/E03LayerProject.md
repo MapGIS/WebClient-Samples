@@ -20,7 +20,7 @@
         //初始化图层投影转换服务类Zondy.Service.ProjectByLayer类
         var projByLayer = new Zondy.Service.ProjectByLayer({
             //设置服务ip
-            ip: "192.168.82.91",
+            ip: "10.10.130.72",
             //设置端口号
             port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
             //投影类型，0地理坐标系，1UTM，2兰伯特等角圆锥投影坐标系

@@ -6,34 +6,34 @@
     <title>态势推演二三维联动</title>
     <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha384-SOnAn/m2fVJCwnbEYgD4xzrPtvsXdElhOVvR8ND1YjB5nhGNwwf7nBQlhfAwHAZC" crossorigin="anonymous"/>
     <!--引入MapBox库-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
     <link
             rel="stylesheet"
-            href="http://192.168.82.91:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"
+            href="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"
     />
     <!--加载不同版本Cesium库-->
-    <script src="http://192.168.82.91:8086/static/libs/loadCesium.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
     <!--plugin脚本库-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
 
     <!-- jquery -->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
     <!-- plot -->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-plot.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-plot.min.js"></script>
     <!-- panel -->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.js"></script>
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.css"/>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.js"></script>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.css"/>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css"/>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
     <link
             rel="stylesheet"
-            href="http://192.168.82.91:8086/static/libs/css/link.css"
+            href="http://10.10.130.72:8086/static/libs/css/link.css"
     />
     <link
             rel="stylesheet"
-            href="http://192.168.82.91:8086/static/libs/css/plot/plot.css"
+            href="http://10.10.130.72:8086/static/libs/css/plot/plot.css"
     />
     <script>
       //使用严格模式
@@ -104,12 +104,12 @@
           TimeLine
         } = plot
         // 符号库路径
-        const symbolUrl = `http://192.168.82.91:8200/Plot/plot-sample/symbolLibs/标号库a/symbolLib.json`
+        const symbolUrl = `http://10.10.130.72:8200/Plot/plot-sample/symbolLibs/标号库a/symbolLib.json`
         const symbolOptions = {
           // 符号库字体路径
-          fontURL: `http://192.168.82.91:8200/Plot/plot-sample/fonts/`,
+          fontURL: `http://10.10.130.72:8200/Plot/plot-sample/fonts/`,
           // 静态资源路径
-          baseUrl: `http://192.168.82.91:8200/Plot/plot-sample/symbolLibs/标号库a/`
+          baseUrl: `http://10.10.130.72:8200/Plot/plot-sample/symbolLibs/标号库a/`
         }
 
         // 创建符号管理器
@@ -124,7 +124,7 @@
           plotLayer3DGroup.addLayer(plotLayer)
           // 加载标绘图层
           $.getJSON(
-            `http://192.168.82.91:8200/Plot/plot-sample/layers/bbbbb.json`,
+            `http://10.10.130.72:8200/Plot/plot-sample/layers/bbbbb.json`,
             (res) => {
               plotLayer.fromJSON(res)
               let interval = setInterval(function () {
@@ -139,7 +139,7 @@
           )
           // 创建态势推演工具
           $.getJSON(
-            `http://192.168.82.91:8200/Plot/plot-sample/scripts/abc.json`,
+            `http://10.10.130.72:8200/Plot/plot-sample/scripts/abc.json`,
             (t) => {
               animationTool = new TimeLine(plotLayer3DGroup, {})
               animationTool.fromJSON(t)

@@ -5,13 +5,13 @@
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
   <title>三维图层--混合接口</title>
   <!--加载不同版本Cesium库-->
-  <script src="http://192.168.82.91:8086/static/libs/loadCesium.js"></script>
+  <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
   <!--plugin脚本库-->
-  <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-  <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-  <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+  <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+  <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+  <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
   <!--示例公共样式-->
-  <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css" />
+  <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css" />
   <script>
     'use strict'
     //定义三维视图的主要类
@@ -20,14 +20,14 @@
 
     // 添加M3d缓存图层
     function addM3DModelCacheLayer() {
-      // 参考API: http://192.168.82.91:8086/static/modules/common/api/common-mapgis/M3DModelCacheLayer.html
+      // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/M3DModelCacheLayer.html
       let M3DLayer = new zondy.layer.M3DModelCacheLayer({
         // 服务基地址
-        url: 'http://192.168.82.91:8200/3DData/ModelCache/M3D/1.0/钻孔分层点_Sur_000_Ent/钻孔分层点_Sur_000_Ent.mcj'
+        url: 'http://10.10.130.72:8200/3DData/ModelCache/M3D/1.0/钻孔分层点_Sur_000_Ent/钻孔分层点_Sur_000_Ent.mcj'
       })
-      // 参考API: http://192.168.82.91:8086/static/modules/cesium/api/cesium-mapgis/initializeOptions.html
+      // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/initializeOptions.html
       const options = initializeOptions(M3DLayer, viewer)
-      // 参考API: http://192.168.82.91:8086/static/modules/cesium/api/cesium-mapgis/MapGISM3DSet.html
+      // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/MapGISM3DSet.html
       zondy.cesium.MapGISM3DSet.fromUrl(options.url, options).then(m3dset => {
         const boundingSphere = m3dset.boundingSphere
         const orientation = new Cesium.HeadingPitchRange(0.0, -0.5, boundingSphere.radius * 2.5)

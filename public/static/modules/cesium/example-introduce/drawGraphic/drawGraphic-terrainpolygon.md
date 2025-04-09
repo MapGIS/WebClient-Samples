@@ -28,7 +28,7 @@
       viewer: webGlobe.viewer,
     })
     //添加三维地图文档：地形数据
-    terrainLayer.append('http://192.168.82.91:6163/igs/rest/g3d/terrain', {})
+    terrainLayer.append('http://10.10.130.72:6163/igs/rest/g3d/terrain', {})
   ```
 
 **Step 4. <font color=red>绘制贴地形线</font>**:

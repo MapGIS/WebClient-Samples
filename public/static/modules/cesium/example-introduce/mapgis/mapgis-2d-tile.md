@@ -54,7 +54,7 @@
       tileHeight: 256,
     }
     //添加MapGIS IGServer发布的二维瓦片服务
-    var layer = tilelayer.appendMapGISTile('http://192.168.82.91:6163/igs/rest/mrms/tile/北京市', options)
+    var layer = tilelayer.appendMapGISTile('http://10.10.130.72:6163/igs/rest/mrms/tile/北京市', options)
   ```
 
 ### 关键接口
