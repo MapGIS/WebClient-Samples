@@ -353,6 +353,11 @@
               break
           }
         })
+        layui.form.on('radio(inverse)', function (data) {
+          // 切换卷帘反转参数
+          currentSwipeInverse = Number(data.value)
+          currentLyr.swipeInverse = currentSwipeInverse
+        })
       }
 
       function initSelectSwiperType() {
@@ -700,15 +705,15 @@
               <input
                 type="radio"
                 name="inverse"
-                lay-filter="allInverse"
-                value="on"
+                lay-filter="inverse"
+                value="1"
                 title="是"
               />
               <input
                 type="radio"
                 name="inverse"
-                lay-filter="allInverse"
-                value="off"
+                lay-filter="inverse"
+                value="-1"
                 title="否"
                 checked
               />
