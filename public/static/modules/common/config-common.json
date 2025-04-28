@@ -1028,6 +1028,24 @@
           ]
         },
         {
+          "name": "自定义图层",
+          "folder": "customLayer",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "自定义CZML图层",
+              "file": "custom-czml-layer",
+              "icon": "custom-czml-layer.png",
+              "diffcult": "1",
+              "tags": [
+                "custom-czml-layer",
+                "custom",
+                "custom-czml"
+              ]
+            }
+          ]
+        },
+        {
           "name": "图层管理",
           "folder": "layer-management",
           "leaffolder": true,

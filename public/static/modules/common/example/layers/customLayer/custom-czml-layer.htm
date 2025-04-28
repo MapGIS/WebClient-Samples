@@ -1,0 +1,308 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>自定义CZML图层</title>
+    <!--引入Cesium.js库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <!--自定义图层类-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/custom-layer/CustomCZMLLayer.js" type="module"></script>
+    <!--cesium样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/MapGIS/css/mapgis.css"
+    />
+    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+    />
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+    <script>
+      'use strict'
+      var map,
+        view,
+        innerViewer,
+        imageryLayer,
+        innerLayer,
+        customLayer,
+        customCZMLLayerVisible = true,
+        currentCustmLayerIndex = -1
+
+      const { isNull } = zondy.util
+      const { SceneView } = zondy.cesium
+      const { 
+        WMTSLayer,
+        M3DModelCacheLayer,
+        IGSTileLayer,
+        IGSVectorTileLayer,
+      } = zondy.layer
+      debugger
+      const { LayerType,MapEventType,LayerEventType,ViewEventType } = zondy.enum
+
+      //地图初始化函数
+      function init() {
+        // 初始化球体
+        initViewer()
+        // 加载天地图
+        addTDT()
+        // 添加IGS地图服务
+        addIGSMapImageLayer()
+        // 加载自定义图层
+        addCustomLayer()
+        //初始化UI
+        initUI()
+      }
+
+      //初始化球体
+      function initViewer() {
+        //初始化图层管理容器
+        map = new zondy.Map()
+        //初始化地图视图对象
+        view = new SceneView({
+          //视图id
+          viewId: 'mapgis-viewer',
+          //图层管理容器
+          map: map,
+          //Cesium场景视图的初始化参数
+          extensionOptions: {
+            shouldAnimate: true
+          }
+        })
+        //获取引擎视图对象
+        innerViewer = view.getInnerView()
+      }
+
+      // 加载天地图
+      function addTDT() {
+        let tdtLayer = new WMTSLayer({
+          // 加载经纬度的影像地图
+          url: "http://t6.tianditu.gov.cn/vec_c/wmts",
+          // 天地图必须加token，且token名为tk
+          tokenKey: "tk",
+          // token请在天地图官网申请
+          tokenValue: "4c27d6e0e8a90715b23a989d42272fd8",
+          opacity: 0.1,
+        })
+        map.add(tdtLayer)
+      }
+
+      // 添加IGS地图服务
+      function addIGSMapImageLayer() {
+        const igsMapImageLayer = new zondy.layer.IGSMapImageLayer({
+          url: "http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/MapServer",
+          visible: true,
+        })
+        map.add(igsMapImageLayer)
+      }
+
+      // 添加自定义图层
+      function addCustomLayer() {
+        // 注册自定义LayerType枚举键值对
+        LayerType.register("customCZML", "custom-czml");
+        // 创建CustomCZMLLayer图层实例。CustomCZMLLayer类请参考"static/libs/cdn/custom-layer/CustomCZMLLayer.js"
+        const layer = new zondy.layer.CustomCZMLLayer({
+          //czml数据url
+          url: "http://10.10.130.72:8200/Vector/czml/simple.czml",
+          type: LayerType.customCZML,
+          visible: customCZMLLayerVisible,
+        })
+        customLayer = layer
+        // 初始化自定义图层相关的事件
+        initCustomLayerEvent()
+        // map中加载自定义图层
+        map.add(customLayer)
+        // 引擎中添加（自定义图层对应的）引擎图层innerLayer
+        addInnerLayer().then(function(result){
+          innerLayer = result
+        })
+        currentCustmLayerIndex =  map.layers.findIndex((layer)=>layer.id === customLayer.id)
+        document.getElementById("currentCustmLayerIndex").innerText = currentCustmLayerIndex
+      }
+
+      // 移除自定义图层
+      function removeCustomLayer() {
+        // map中移除自定义图层
+        map.remove(customLayer)
+        // 引擎中移除（自定义图层对应的）引擎图层innerLayer
+        removeInnerLayer()
+      }
+    
+    // 初始化自定义图层相关的事件
+      function initCustomLayerEvent(){
+        // 图层改变（添加、移除、排序）事件
+        view.on(ViewEventType.layerChange, function (event) {
+            // 图层添加事件
+          if (event.added && event.added.length > 0) {
+            const targetLayer = event.added.find(function (layer){ return layer.id === customLayer.id })
+            if (targetLayer) {
+              console.log('map中已添加图层：', targetLayer)
+              // #SampleCode1.在图层添加事件中，在引擎中添加引擎图层innerLayer
+              // addInnerLayer()
+            }
+          } else if (event.removed && event.removed.length > 0) {
+            // 图层移除事件
+            const targetLayer = event.removed.find(function (layer){ return layer.id === customLayer.id })
+            if (targetLayer) {
+              console.log('map中已移除图层', targetLayer)
+              // #SampleCode2.在图层添加事件中，在引擎中移除引擎图层innerLayer
+              // removeInnerLayer()
+            }
+          } else if (event.moved && event.moved.length > 0) {
+            // 图层排序事件
+            const targetLayer = event.moved.find(function (layer){ return layer.id === customLayer.id })
+            if (targetLayer) {
+              const layerIndex = map.layers.findIndex((layer)=>layer.id === targetLayer.id)
+              console.log('map中图层顺序已改变，图层顺序为：', layerIndex)
+            }
+          }
+        })
+        // 图层属性更新事件
+        view.on(ViewEventType.layerUpdate, function (event){
+          if (event.layer.id === customLayer.id) {
+            event.updateContent.forEach(function (content){
+              // 图层显隐属性更新事件
+              if (content.operationType === 'property' && content.name === 'visible' && !isNull(content.params[0])) {
+                console.log('图层显隐属性已改变，显隐属性布尔值为：', content.params[0])
+                // #SampleCode3.在图层显隐属性更新事件中，设置引擎图层innerLayer的显隐属性
+                // changeInnerLayerVisible(content.params[0])
+              }
+            })
+          }
+        })
+      }
+
+      // 更新图层显隐
+      function changeVisible(){
+        customCZMLLayerVisible = !customCZMLLayerVisible 
+        // 设置图层的显隐属性
+        customLayer.visible = customCZMLLayerVisible
+        // 设置引擎图层innerLayer的显隐属性。(或者在图层添加事件中执行，请看 #SampleCode1)
+        changeInnerLayerVisible(customCZMLLayerVisible)
+      }
+
+      // 引擎中添加（自定义图层对应的）引擎图层innerLayer。(或者在图层移除事件中执行，请看 #SampleCode2)
+      function addInnerLayer(){
+        return new Promise(function (resolve,reject){
+          innerViewer.dataSources.add(
+            Cesium.CzmlDataSource.load(
+              customLayer.url, 
+            ),
+          )
+          .then((dataSource) => {
+            resolve(dataSource)
+          });
+        })
+      }
+
+      // 引擎中移除（自定义图层对应的）引擎图层innerLayer。(或者在图层显隐属性更新事件中执行，请看 #SampleCode3)
+      function removeInnerLayer(){
+        if(innerViewer && innerLayer){
+          innerViewer.dataSources.remove(innerLayer)
+        }
+      }
+
+      // 引擎中修改（自定义图层对应的）引擎图层innerLayer显隐属性
+      function changeInnerLayerVisible(visible){
+        if(innerViewer && innerLayer){
+          innerLayer.show = visible
+        }
+      }
+      
+      // UI按钮修改图层排序
+      function changeLayerIndex(direction){
+        if(direction === 'up'){
+          // 图层顺序加大
+          if(currentCustmLayerIndex < map.layers.length - 2){
+            currentCustmLayerIndex ++ 
+          }
+        } else if(direction === 'down'){
+          // 图层顺序减小
+          if(currentCustmLayerIndex > 0){
+            currentCustmLayerIndex --
+          }
+        }
+        map.reorder(customLayer,currentCustmLayerIndex)
+        document.getElementById("currentCustmLayerIndex").innerText = currentCustmLayerIndex
+      }
+
+      //初始化示例UI操作
+      function initUI() {
+        layui.use(function () {
+          // 切换自定义czml图层显隐
+          layui.form.on('switch(customLayerVisible)', function (data) {
+            changeVisible(data.elem.checked)
+          })
+        })
+        document.getElementById("currentCustmLayerIndex").innerText = currentCustmLayerIndex
+      }
+    </script>
+  </head>
+
+  <body onload="init()">
+    <div
+      id="mapgis-viewer"
+      style="position: absolute; width: 100%; height: 100%"
+    ></div>
+    <!--  示例UI  -->
+    <div class="layui-panel layui-panel-right scene-layer-panel">
+      <form class="layui-form" action="">
+        <div class="layui-form-item">
+          <button type="button" class="layui-btn" onclick="removeCustomLayer()">
+            删除图层
+          </button>
+          <button type="button" class="layui-btn" onclick="addCustomLayer()">
+            添加图层
+          </button>
+        </div>
+        <div class="layui-form-item">
+          <label class="layui-form-label">显隐图层</label>
+          <div class="layui-input-block">
+            <input
+              type="checkbox"
+              lay-filter="customLayerVisible"
+              lay-skin="switch"
+              lay-text="显示|隐藏"
+              checked
+            />
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <button
+            type="button"
+            class="layui-btn"
+            onclick="changeLayerIndex('up')"
+            style="margin-bottom: 3px"
+          >
+            图层上移
+          </button>
+          <button
+            type="button"
+            class="layui-btn"
+            onclick="changeLayerIndex('down')"
+            style="margin-bottom: 3px"
+          >
+            图层下沉
+          </button>
+          图层顺序 <span id="currentCustmLayerIndex">-1</span>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>
