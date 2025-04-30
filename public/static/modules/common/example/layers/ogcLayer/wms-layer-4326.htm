@@ -20,7 +20,7 @@
       'use strict'
       // 定义二维视图的主要类
 
-      let map, view, layer, layerOpacity = 1
+      let map, view, layer, sublayers = [], layerOpacity = 1, layerRenderMode = 'tile', layerOptions = {}
       const {
         WMSLayer
       } = zondy.layer
@@ -51,14 +51,8 @@
           deleteLayer()
         }
         // 创建瓦片图层
-        layer = new WMSLayer({
-          // 服务基地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WMSServer',
-          // 图层透明度
-          opacity: layerOpacity,
-          // 设置子图层属性，可选项
-          sublayers: []
-        })
+        layerOptions = getLayerOptions()
+        layer = new WMSLayer(layerOptions)
         // 添加图层
         map.add(layer)
         // 图层添加完毕后，跳转到图层范围内
@@ -86,6 +80,28 @@
         subLayer.visible = !subLayer.visible
       }
 
+      // 重置图层
+      function resetLayer() {
+        // 删除图层
+        deleteLayer()
+        // 添加图层
+        addLayer()
+      }
+
+      // 获取图层构造参数
+      function getLayerOptions() {
+        return {
+          // 服务基地址
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WMSServer',
+          // 图层透明度
+          opacity: layerOpacity,
+          // 渲染模式
+          renderMode: layerRenderMode,
+          // 设置子图层属性，可选项
+          sublayers: []
+        }
+      }
+
       //初始化示例UI操作
       function initUI() {
         layui.use(function () {
@@ -105,6 +121,13 @@
               layer.opacity = layerOpacity
             }
           });
+          const form = layui.form
+          // 切换渲染模式
+          form.on('select(renderMode)', function (data) {
+            layerRenderMode = data.value
+            // 重置图层
+            resetLayer()
+          })
         })
       }
     </script>
@@ -126,10 +149,19 @@
             <div class="layui-form-item">
                 <button type="button" class="layui-btn" onclick="addLayer()">添加图层</button>
                 <button type="button" class="layui-btn" onclick="deleteLayer()" style="margin-left: 6px">删除图层</button>
-                <button type="button" class="layui-btn" onclick="toggleLayer()" style="margin-left: 6px">显隐图层</button>
             </div>
-            <div class="layui-form-item" style="margin-top: 10px;width: auto">
-                <button type="button" class="layui-btn" onclick="setSubLayerVisible()" style="float: right">显隐子图层</button>
+            <div class="layui-form-item" style="margin-top: 5px;width: auto">
+                <button type="button" class="layui-btn" onclick="toggleLayer()">显隐图层</button>
+                <button type="button" class="layui-btn" onclick="setSubLayerVisible()" style="margin-left: 6px">显隐子图层</button>
+            </div>
+            <div class="layui-form-item" style="margin-top: 10px">
+              <label class="layui-form-label">渲染模式</label>
+              <div class="layui-input-block layui-input-block-select">
+                <select id="renderMode" name="renderMode" lay-filter="renderMode">
+                  <option value="tile">瓦片</option>
+                  <option value="image">图片</option>
+                </select>
+              </div>
             </div>
         </form>
     </div>
