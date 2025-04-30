@@ -16,3 +16,4 @@ yarn.lock
 /public/static/libs/cdn/zondyclient/
 /public/static/libs/cdn/leaflet/
 /public/static/libs/cdn/mapboxgl/
+/public/static/libs/cdn/cesium/
