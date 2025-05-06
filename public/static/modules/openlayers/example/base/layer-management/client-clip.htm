@@ -12,9 +12,10 @@
     var multiPolygonCoords = {
       type:'MultiPolygon',
       coordinates:[
-        [[[70,0],[138,0],[138,56],[70,56],[70,0]]]
+        [[[70,60],[104,50],[138,60],[138,10],[104,0],[70,10],[70,60]]]
       ],
     }
+    var wuhanCoordinates = []
     var { protocol, ip, port } = window.webclient
 
     function init() {
@@ -44,6 +45,36 @@
       } else if (value === 'TileLayer') {
         addTileLayer()
       }
+    }
+
+    // 切换裁剪区域
+    function changeClippingArea(value){
+      var value = document.getElementById('clippingArea').value; 
+      debugger
+      if (value === 'Wuhan') {
+        multiPolygonCoords = {
+          type:'MultiPolygon',
+          coordinates:wuhanCoordinates,
+        }
+      } else if (value === 'Polygon') {
+        multiPolygonCoords = {
+          type:'MultiPolygon',
+          coordinates:[
+            [[[70,60],[104,50],[138,60],[138,10],[104,0],[70,10],[70,60]]]
+          ],
+        }
+      } else if (value === 'Globe') {
+        multiPolygonCoords = {
+          type:'MultiPolygon',
+          coordinates:[
+            [[[-180,90],[180,90],[180,-90],[-180,-90],[-180,90]]]
+          ],
+        }
+      }
+      // 重新设置图层裁剪区域
+      currentLayer.setClippingArea(multiPolygonCoords)
+      // 需刷新地图，才能显示重设的裁剪区域效果
+      map.render()
     }
 
     // 加载地图文档图层
@@ -102,6 +133,7 @@
               coordinates = coordinates.concat(feature.geometry.coordinates)
             }
           });
+          wuhanCoordinates = coordinates
           multiPolygonCoords = {
             type:'multipolygon',
             coordinates: coordinates
@@ -114,21 +146,6 @@
           console.error('There was a problem with the fetch operation:', error);
         });
     }
-
-    // 动态设置裁剪区域
-    function changeClippingArea(){
-      multiPolygonCoords = {
-        type:'MultiPolygon',
-        coordinates:[
-          [[[70,0],[138,0],[138,56],[70,56],[70,0]]]
-        ],
-      }
-      // 重新设置图层裁剪区域
-      currentLayer.setClippingArea(multiPolygonCoords)
-      // 需刷新地图，才能显示重设的裁剪区域效果
-      map.render()
-    }
-
   </script>
 </head>
 
@@ -141,7 +158,12 @@
       <option value="MapDocTileLayer">MapDocTileLayer</option>
       <option value="TileLayer">TileLayer</option>
     </select>
-    <button onclick="changeClippingArea()">重新设置裁剪区域</button>
+    裁剪区域设置
+    <select id="clippingArea" onchange="changeClippingArea()">
+      <option value="Wuhan">武汉区域</option>
+      <option value="Polygon">六边形区域</option>
+      <option value="Globe">全球区域</option>
+    </select>
   </div>
 </body>
 <style>
@@ -150,6 +172,7 @@
   }
   .menuContain {
     position: absolute;
+    left: 80px;
   }
 </style>
 </html>
