@@ -37,7 +37,7 @@
       "http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/dayantaresult/tileset.json",
       "http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.1/dayanta/tileset.json",
     ]
-    let selectedUrl = modelUrls[0]
+    let selectedUrl = modelUrls[1]
 
     //地图初始化函数
     function init() {
@@ -66,7 +66,7 @@
     function addLayer() {
       layer = new Cesium3DTilesCacheLayer({
         // 服务基地址
-        url: 'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/dayantaresult/tileset.json',
+        url: selectedUrl,
         // 初始化参数
         extensionOptions: {
           // 开启自动跳转
