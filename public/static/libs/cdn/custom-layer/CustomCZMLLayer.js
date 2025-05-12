@@ -1,9 +1,9 @@
 // import { CustomLayer, defaultValue, LoadStatus } from "@mapgis/webclient-common";
-var CustomLayer = zondy.layer.CustomLayer
+var Layer = zondy.layer.Layer
 var defaultValue = zondy.util.defaultValue
 var LoadStatus = zondy.enum.LoadStatus
 
-class CustomCZMLLayer extends CustomLayer {
+class CustomCZMLLayer extends Layer {
   constructor(options) {
     super(options)
     options = defaultValue(options, {})
@@ -12,6 +12,11 @@ class CustomCZMLLayer extends CustomLayer {
      * @member {String} CZMLLayer.prototype.url
      */
     this.url = defaultValue(options.url, '')
+    /**
+     * 自定义图层类型
+     * @member {String} CZMLLayer.prototype.customLayerType
+     */
+    this.customLayerType = 'custom-czml'
   }
 
   /**

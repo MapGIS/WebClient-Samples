@@ -114,8 +114,6 @@
 
       // 添加自定义图层
       function addCustomLayer() {
-        // 注册自定义LayerType枚举键值对
-        LayerType.register("customCZML", "custom-czml");
         // 创建CustomCZMLLayer图层实例。CustomCZMLLayer类请参考"static/libs/cdn/custom-layer/CustomCZMLLayer.js"
         const layer = new zondy.layer.CustomCZMLLayer({
           //czml数据url
@@ -128,73 +126,55 @@
         initCustomLayerEvent()
         // map中加载自定义图层
         map.add(customLayer)
-        // 引擎中添加（自定义图层对应的）引擎图层innerLayer
-        addInnerLayer().then(function(result){
-          innerLayer = result
-        })
-        currentCustmLayerIndex =  map.layers.findIndex((layer)=>layer.id === customLayer.id)
-        document.getElementById("currentCustmLayerIndex").innerText = currentCustmLayerIndex
       }
 
       // 移除自定义图层
       function removeCustomLayer() {
         // map中移除自定义图层
         map.remove(customLayer)
-        // 引擎中移除（自定义图层对应的）引擎图层innerLayer
-        removeInnerLayer()
       }
     
-    // 初始化自定义图层相关的事件
-      function initCustomLayerEvent(){
-        // 图层改变（添加、移除、排序）事件
-        view.on(ViewEventType.layerChange, function (event) {
-            // 图层添加事件
-          if (event.added && event.added.length > 0) {
-            const targetLayer = event.added.find(function (layer){ return layer.id === customLayer.id })
-            if (targetLayer) {
-              console.log('map中已添加图层：', targetLayer)
-              // #SampleCode1.在图层添加事件中，在引擎中添加引擎图层innerLayer
-              // addInnerLayer()
-            }
-          } else if (event.removed && event.removed.length > 0) {
-            // 图层移除事件
-            const targetLayer = event.removed.find(function (layer){ return layer.id === customLayer.id })
-            if (targetLayer) {
-              console.log('map中已移除图层', targetLayer)
-              // #SampleCode2.在图层添加事件中，在引擎中移除引擎图层innerLayer
-              // removeInnerLayer()
-            }
-          } else if (event.moved && event.moved.length > 0) {
-            // 图层排序事件
-            const targetLayer = event.moved.find(function (layer){ return layer.id === customLayer.id })
-            if (targetLayer) {
-              const layerIndex = map.layers.findIndex((layer)=>layer.id === targetLayer.id)
-              console.log('map中图层顺序已改变，图层顺序为：', layerIndex)
-            }
-          }
-        })
-        // 图层属性更新事件
-        view.on(ViewEventType.layerUpdate, function (event){
-          if (event.layer.id === customLayer.id) {
-            event.updateContent.forEach(function (content){
-              // 图层显隐属性更新事件
-              if (content.operationType === 'property' && content.name === 'visible' && !isNull(content.params[0])) {
-                console.log('图层显隐属性已改变，显隐属性布尔值为：', content.params[0])
-                // #SampleCode3.在图层显隐属性更新事件中，设置引擎图层innerLayer的显隐属性
-                // changeInnerLayerVisible(content.params[0])
-              }
-            })
-          }
-        })
-      }
-
       // 更新图层显隐
       function changeVisible(){
         customCZMLLayerVisible = !customCZMLLayerVisible 
         // 设置图层的显隐属性
         customLayer.visible = customCZMLLayerVisible
-        // 设置引擎图层innerLayer的显隐属性。(或者在图层添加事件中执行，请看 #SampleCode1)
-        changeInnerLayerVisible(customCZMLLayerVisible)
+      }
+
+      // 初始化自定义图层相关的事件
+      function initCustomLayerEvent(){
+        // 图层添加事件
+        customLayer.on(LayerEventType.layerAdd, function (event) {
+          currentCustmLayerIndex = event.layerIndex
+          console.log('map中已添加图层，图层顺序为：', currentCustmLayerIndex)
+          // #SampleCode1.在图层添加事件中，在引擎中添加引擎图层innerLayer
+          addInnerLayer()
+        })
+        // 图层移除事件
+        customLayer.on(LayerEventType.layerRemove, function (event) {
+          console.log('map中已移除图层：', event)
+          currentCustmLayerIndex = undefined
+          // #SampleCode2.在图层添加事件中，在引擎中移除引擎图层innerLayer
+          removeInnerLayer()
+        })
+        // 图层排序事件
+        customLayer.on(LayerEventType.layerMove, function (event) {
+          currentCustmLayerIndex = event.layerIndex
+          console.log('map中图层顺序已改变，图层顺序为：', currentCustmLayerIndex)
+          // #SampleCode3.在图层顺序已改变事件中，使用innerLayer的顺序结果。当前图层为czml，始终在一些图层上，故只做一个结果显示
+          useInnerLayerIndex(currentCustmLayerIndex)
+        })
+        // 图层属性更新事件
+        customLayer.on(LayerEventType.layerUpdate, function (event) {
+          event.updateContent.forEach(function (content){
+            // 图层显隐属性更新事件
+            if (content.operationType === 'property' && content.name === 'visible' && !isNull(content.params[0])) {
+              console.log('图层显隐属性已改变，显隐属性布尔值为：', content.params[0])
+              // #SampleCode4.在图层显隐属性更新事件中，设置引擎图层innerLayer的显隐属性
+              changeInnerLayerVisible(content.params[0])
+            }
+          })
+        })
       }
 
       // 引擎中添加（自定义图层对应的）引擎图层innerLayer。(或者在图层移除事件中执行，请看 #SampleCode2)
@@ -206,12 +186,13 @@
             ),
           )
           .then((dataSource) => {
+            innerLayer = dataSource
             resolve(dataSource)
           });
         })
       }
 
-      // 引擎中移除（自定义图层对应的）引擎图层innerLayer。(或者在图层显隐属性更新事件中执行，请看 #SampleCode3)
+      // 引擎中移除（自定义图层对应的）引擎图层innerLayer。(或者在图层显隐属性更新事件中执行，请看 #SampleCode4)
       function removeInnerLayer(){
         if(innerViewer && innerLayer){
           innerViewer.dataSources.remove(innerLayer)
@@ -239,6 +220,10 @@
           }
         }
         map.reorder(customLayer,currentCustmLayerIndex)
+      }
+
+      // 使用图层顺序结果值
+      function useInnerLayerIndex(currentCustmLayerIndex){
         document.getElementById("currentCustmLayerIndex").innerText = currentCustmLayerIndex
       }
 
