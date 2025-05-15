@@ -40,6 +40,7 @@
       const { Map } = zondy
       const { SceneView } = zondy.cesium
       const { IGSSceneLayer, WMTSLayer } = zondy.layer
+      const { SceneSubLayerType } = zondy.enum
 
       //地图初始化函数
       function init() {
@@ -69,11 +70,6 @@
                     {
                       // 子图层id
                       id: '0-0',
-                      // 子图层初始化参数
-                      extensionOptions: {
-                        // 开启自动跳转
-                        autoReset: true
-                      }
                     }
                   ]
                 }
@@ -81,7 +77,28 @@
             }
           ]
         })
-        map.add(layer)
+        // 设置视图跳转到第一个模型缓存子图层的位置
+        layer.load().then((layer)=>{
+          let isAutoReset = false
+          for(let i = 0; i<layer.scenes.length; i++){
+            for (let j = 0; j<layer.scenes[i]._allSublayers.length; j++) {
+              const sublayer = layer.scenes[i]._allSublayers.items[j]
+              if (sublayer.type === SceneSubLayerType.modelCache) {
+                if(sublayer.extensionOptions) {
+                  sublayer.extensionOptions.autoReset = true
+                } else {
+                  sublayer.extensionOptions = { autoReset: true }
+                }
+                isAutoReset = true
+                break
+              }
+              if (isAutoReset) {
+                break
+              }
+            }
+          }
+          map.add(layer)
+        })
         // 图层加载完毕
         layer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
