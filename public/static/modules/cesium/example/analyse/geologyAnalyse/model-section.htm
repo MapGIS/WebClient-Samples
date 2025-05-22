@@ -231,8 +231,8 @@
         map.add(igsSceneLayer)
         // 图层加载完毕
         igsSceneLayer.on('layerview-created', function (result) {
-          let layer = sceneView.getInnerLayer(result.layer)
-          modelLyr = Array.isArray(layer) ? layer[0] : layer
+          let layer = sceneView.getInnerLayer(result.layer, '0')
+          modelLyr = layer
         })
       }
 
