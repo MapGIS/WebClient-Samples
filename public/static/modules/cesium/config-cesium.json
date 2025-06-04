@@ -1965,6 +1965,12 @@
           "file": "wind3D",
           "icon": "wind3D.png",
           "diffcult": "1"
+        },
+        {
+          "name": "流体模拟",
+          "file": "fluid",
+          "icon": "fluid.png",
+          "diffcult": "1"
         }
       ]
     },
