@@ -40,7 +40,7 @@
       const { Map } = zondy
       const { SceneView } = zondy.cesium
       const { IGSSceneLayer, WMTSLayer } = zondy.layer
-      const { SceneSubLayerType } = zondy.enum
+      const { SubLayerType } = zondy.enum
 
       //地图初始化函数
       function init() {
@@ -81,9 +81,9 @@
         layer.load().then((layer)=>{
           let isAutoReset = false
           for(let i = 0; i<layer.scenes.length; i++){
-            for (let j = 0; j<layer.scenes[i]._allSublayers.length; j++) {
-              const sublayer = layer.scenes[i]._allSublayers.items[j]
-              if (sublayer.type === SceneSubLayerType.modelCache) {
+            for (let j = 0; j<layer.scenes[i].allSublayers.length; j++) {
+              const sublayer = layer.scenes[i].allSublayers.items[j]
+              if (sublayer.type === SubLayerType.IGSSceneSubM3DCache) {
                 if(sublayer.extensionOptions) {
                   sublayer.extensionOptions.autoReset = true
                 } else {
