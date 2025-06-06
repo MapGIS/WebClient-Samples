@@ -37,7 +37,9 @@
         fluid,
         pane,
         singleColorTable,
-        multipleColorTable
+        multipleColorTable,
+        rigidEntity,
+        rigidEntityTransparent
 
       // 地图初始化函数
       async function init() {
@@ -289,6 +291,30 @@
             fluid.speed = e.value
           })
 
+        fluidFolder
+          .addButton({
+            title: '开始模拟'
+          })
+          .on('click', () => {
+            fluid.start()
+          })
+
+        fluidFolder
+          .addButton({
+            title: '暂停模拟'
+          })
+          .on('click', () => {
+            fluid.pause()
+          })
+
+        fluidFolder
+          .addButton({
+            title: '销毁流体模拟对象'
+          })
+          .on('click', () => {
+            fluid.destroy()
+          })
+
         fluidColorTableFolder
           .addBlade({
             view: 'list',
@@ -531,6 +557,7 @@
             let handler = new Cesium.ScreenSpaceEventHandler(
               viewer.scene.canvas
             )
+
             handler.setInputAction(function (movement) {
               const ray = viewer.camera.getPickRay(movement.position)
               const cartesian = viewer.scene.globe.pick(ray, viewer.scene)
@@ -538,6 +565,7 @@
                 viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian)
               positions.push(cartographic.longitude, cartographic.latitude, 0)
             }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+
             handler.setInputAction(function (movement) {
               const ray = viewer.camera.getPickRay(movement.position)
               const cartesian = viewer.scene.globe.pick(ray, viewer.scene)
@@ -548,9 +576,26 @@
                 positions = []
                 return
               }
-              window.greenBox = viewer.entities.add({
-                name: 'polylineVolume with beveled corners and outline',
+              rigidEntityTransparent = viewer.entities.add({
+                name: 'Green box with beveled corners and outline',
                 polylineVolume: {
+                  // positions: Cesium.Cartesian3.fromDegreesArrayHeights(positions),
+                  positions:
+                    Cesium.Cartesian3.fromRadiansArrayHeights(positions),
+                  shape: [
+                    new Cesium.Cartesian2(-5, -100),
+                    new Cesium.Cartesian2(5, -100),
+                    new Cesium.Cartesian2(5, 100),
+                    new Cesium.Cartesian2(-5, 100)
+                  ],
+                  cornerType: Cesium.CornerType.BEVELED,
+                  material: Cesium.Color.WHITE.withAlpha(0.5)
+                }
+              })
+              rigidEntity = new Cesium.Entity({
+                name: 'Green box with beveled corners and outline',
+                polylineVolume: {
+                  // positions: Cesium.Cartesian3.fromDegreesArrayHeights(positions),
                   positions:
                     Cesium.Cartesian3.fromRadiansArrayHeights(positions),
                   shape: [
@@ -563,8 +608,12 @@
                   material: Cesium.Color.WHITE.withAlpha(1)
                 }
               })
-              fluid.update({
-                heightMapUpdateCallback: () => {}
+              fluid.addObjects({
+                objects: [rigidEntity],
+                heightMapUpdateCallback: () => {
+                  viewer.entities.add(rigidEntity)
+                  viewer.entities.remove(rigidEntityTransparent)
+                }
               })
               positions = []
               document.body.style.cursor = 'default'
@@ -577,9 +626,11 @@
             title: '移除刚体'
           })
           .on('click', () => {
-            viewer.entities.remove(window.greenBox)
-            fluid.update({
-              heightMapUpdateCallback: () => {}
+            fluid.removeObjects({
+              objects: [rigidEntity],
+              heightMapUpdateCallback: () => {
+                viewer.entities.remove(rigidEntity)
+              }
             })
           })
 
