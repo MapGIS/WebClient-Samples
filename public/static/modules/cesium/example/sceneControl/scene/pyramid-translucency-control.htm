@@ -89,8 +89,15 @@
         change: function (value) {
           transparent = value
           layerToChange.style = new Cesium.Cesium3DTileStyle({
-            color: `rgba(255, 255, 255, ${transparent / 10})`,
-          })
+              color:
+                // 非点云类型的模型缓存(b3dm、i3dm等)设置透明度
+                'undefined === ${COLOR}.r ? color( "white" ,' +
+                transparent / 10 +
+                // 点云类型的模型缓存设置透明度
+                ') : rgba(${COLOR}.r * 255, ${COLOR}.g * 255, ${COLOR}.b * 255,' +
+                transparent / 10 +
+                ')'
+            })
           transparentChange(false)
         }
       })
@@ -110,7 +117,14 @@
       M3DLayer.on("layerview-created", function (result) {
         layerToChange = sceneView.getInnerLayer(result.layer)
         layerToChange.style = new Cesium.Cesium3DTileStyle({
-          color: `rgba(255, 255, 255, ${transparent / 10})`,
+          color: 
+            // 非点云类型的模型缓存(b3dm、i3dm等)设置透明度
+            'undefined === ${COLOR}.r ? color( "white" ,' +
+            transparent / 10 +
+            // 点云类型的模型缓存设置透明度
+            ') : rgba(${COLOR}.r * 255, ${COLOR}.g * 255, ${COLOR}.b * 255,' +
+            transparent / 10 +
+            ')'
         })
       })
     }
