@@ -199,11 +199,12 @@
           httpUrl + '/cdn/zondyclient/webclient-leaflet-plugin.min.js'
         )
         window.viewType = 'leaflet'
-        window.createView = function (viewId, map) {
+        window.createView = function (viewId, map, options) {
           createChangeTab(viewId, type, filterEngine)
           return new zondy.leaflet.MapView({
             viewId: viewId,
-            map: map
+            map: map,
+            ...options
           })
         }
         window.scenarioManage = function (config) {
@@ -219,7 +220,7 @@
           httpUrl + '/cdn/zondyclient/webclient-mapboxgl-plugin.min.js'
         )
         window.viewType = 'mapboxgl'
-        window.createView = function (viewId, map) {
+        window.createView = function (viewId, map, options) {
           createChangeTab(viewId, type, filterEngine)
           return new zondy.mapboxgl.MapView({
             viewId: viewId,
@@ -229,7 +230,8 @@
                 glyphs:
                   'http://10.10.130.72:8089/igs/rest/services/VectorTile/湖北省4326矢量瓦片/VectorTileServer/fonts/{fontstack}?range={range}.pbf&f=pbf'
               }
-            }
+            },
+            ...options
           })
         }
         window.scenarioManage = function (config) {
@@ -244,11 +246,12 @@
         inputScript(httpUrl + '/cdn/cesium/Cesium.js')
         inputScript(httpUrl + '/cdn/zondyclient/webclient-cesium-plugin.min.js')
         window.viewType = 'cesium'
-        window.createView = function (viewId, map) {
+        window.createView = function (viewId, map, options) {
           createChangeTab(viewId, type, filterEngine)
           return new zondy.cesium.SceneView({
             viewId: viewId,
-            map: map
+            map: map,
+            ...options
           })
         }
         window.scenarioManage = function (config) {
