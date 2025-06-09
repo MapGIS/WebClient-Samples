@@ -26,6 +26,9 @@
 
   <body>
     <div id="mapgis-3d-viewer"></div>
+    <div id="fluid-tips">
+      提示：请在"流体源控制"选项卡中添加流体源再进行后续操作
+    </div>
     <script type="module">
       'use strict'
       import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
@@ -39,7 +42,8 @@
         singleColorTable,
         multipleColorTable,
         rigidEntity,
-        rigidEntityTransparent
+        rigidEntityTransparent,
+        rectangle
 
       // 地图初始化函数
       async function init() {
@@ -82,19 +86,21 @@
         // 开启地形深度测试
         viewer.scene.globe.depthTestAgainstTerrain = true
         // 设置初始视角
-        viewer.camera.setView({
-          destination: new Cesium.Cartesian3(
-            -2271409.331480808,
-            5014280.460999426,
-            3225998.0381823024
-          )
+        viewer.camera.flyTo({
+          destination: Cesium.Rectangle.fromDegrees(
+            114.32978332427275,
+            30.52283992091235,
+            114.41004647393699,
+            30.556329379876573
+          ),
+          duration: 0
         })
       }
 
       // 添加地形
       async function addTerrain() {
         viewer.terrainProvider = await Cesium.CesiumTerrainProvider.fromUrl(
-          'http://localhost/data/Terrain/武汉地形/'
+          'http://10.10.130.72:8200/3DData/TerrainCache/武汉地形'
         )
       }
 
@@ -134,7 +140,7 @@
         }
 
         // 设置流体模拟的范围
-        const rectangle = Cesium.Rectangle.fromDegrees(
+        rectangle = Cesium.Rectangle.fromDegrees(
           114.32978332427275,
           30.52283992091235,
           114.41004647393699,
@@ -307,14 +313,6 @@
             fluid.pause()
           })
 
-        fluidFolder
-          .addButton({
-            title: '销毁流体模拟对象'
-          })
-          .on('click', () => {
-            fluid.destroy()
-          })
-
         fluidColorTableFolder
           .addBlade({
             view: 'list',
@@ -440,6 +438,9 @@
             label: '显示高光'
           })
           .on('change', (e) => {
+            resetFluidTips(
+              '提示：高光的显示依赖视线的角度和太阳的位置，请拖动底部时间轴并倾斜视角观察'
+            )
             fluid.specular.show = e.value
           })
 
@@ -478,6 +479,9 @@
             label: '显示阴影'
           })
           .on('change', (e) => {
+            resetFluidTips(
+              '提示：阴影的显示依赖太阳的位置，请拖动底部时间轴改变太阳的位置观察'
+            )
             viewer.shadows = e.value
           })
 
@@ -552,6 +556,9 @@
             title: '添加刚体'
           })
           .on('click', () => {
+            resetFluidTips(
+              '提示：鼠标左键选择刚体添加的位置（可选择多个），鼠标右键结束'
+            )
             let positions = []
             document.body.style.cursor = 'crosshair'
             let handler = new Cesium.ScreenSpaceEventHandler(
@@ -659,6 +666,9 @@
             title: '添加点流体源'
           })
           .on('click', () => {
+            resetFluidTips(
+              '提示：请在模拟范围内鼠标左键点击一个位置添加点流体源'
+            )
             document.body.style.cursor = 'crosshair'
             let handler = new Cesium.ScreenSpaceEventHandler(
               viewer.scene.canvas
@@ -666,13 +676,20 @@
             handler.setInputAction((event) => {
               let ray = viewer.camera.getPickRay(event.position)
               let position = viewer.scene.globe.pick(ray, viewer.scene)
-              fluid.fluidSources.add(
-                new zondy.cesium.PointFluidSource({
-                  position: position,
-                  flow: controls.addPointFluidSourceFlow,
-                  radius: controls.addPointFluidSourceRadius
-                })
-              )
+              // 判断选择的坐标点是否在模拟范围之内，若不是则添加点流体源失败
+              if (isPointInRectangle(position, rectangle)) {
+                fluid.fluidSources.add(
+                  new zondy.cesium.PointFluidSource({
+                    position: position,
+                    flow: controls.addPointFluidSourceFlow,
+                    radius: controls.addPointFluidSourceRadius
+                  })
+                )
+              } else {
+                resetFluidTips(
+                  '提示：选择的位置超出了流体模拟范围，点流体源添加失败，请重新添加'
+                )
+              }
               document.body.style.cursor = 'default'
               handler.destroy()
             }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
@@ -713,8 +730,37 @@
             title: '移除全部流体源'
           })
           .on('click', () => {
+            resetFluidTips(
+              '提示：移除全部流体源后，只是流体总量不会增加，已经存在的流体不会消失'
+            )
             fluid.fluidSources.removeAll()
           })
+
+        // 用于添加点流体源时判断添加的坐标点是否在矩形范围内
+        function isPointInRectangle(cartesian, rectangle) {
+          const cartographic =
+            viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian)
+          if (
+            cartographic.latitude > rectangle.north ||
+            cartographic.latitude < rectangle.south
+          ) {
+            return false
+          }
+          let east = rectangle.east
+          if (east < rectangle.west) {
+            east += Cesium.Math.TWO_PI
+          }
+          let lon = cartographic.longitude
+          if (lon < rectangle.west) {
+            lon += Cesium.Math.TWO_PI
+          }
+          return lon >= rectangle.west && lon <= east
+        }
+      }
+
+      // 修改页面右上角的提示内容
+      function resetFluidTips(text) {
+        document.getElementById('fluid-tips').innerText = text
       }
     </script>
 
@@ -724,6 +770,20 @@
         position: absolute;
         top: 10px;
         left: 10px;
+      }
+      /* 提示内容样式 */
+      #fluid-tips {
+        position: absolute;
+        top: 10px;
+        right: 3px;
+        /* left: 50%; */
+        /* transform: translateX(-50%); */
+        background: #28292e;
+        color: #f5f5f5;
+        padding: 5px;
+        user-select: none;
+        font-size: 12px;
+        border-radius: 2px;
       }
     </style>
   </body>
