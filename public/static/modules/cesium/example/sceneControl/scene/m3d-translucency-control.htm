@@ -91,7 +91,16 @@
           change: function (value) {
             transparent = value
             console.log('value: ', value)
-            layerToChange.translucency = transparent / 10
+            layerToChange.style = new Cesium.Cesium3DTileStyle({
+              color:
+                // 非点云类型的模型缓存(b3dm、i3dm等)设置透明度
+                'undefined === ${COLOR}.r ? color( "white" ,' +
+                transparent / 10 +
+                // 点云类型的模型缓存设置透明度
+                ') : rgba(${COLOR}.r * 255, ${COLOR}.g * 255, ${COLOR}.b * 255,' +
+                transparent / 10 +
+                ')'
+            })
             transparentChange(false)
           }
         })
