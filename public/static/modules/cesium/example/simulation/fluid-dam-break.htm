@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>流体模拟 - 筑坝溃坝</title>
+    <!--加载Cesium库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <div id="fluid-tips">
+      提示：等待水流到水坝的位置，点击"移除水坝"可模拟溃坝效果
+    </div>
+    <script type="module">
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
+      // 定义视图、流体模拟相关变量
+      let map,
+        sceneView,
+        viewer,
+        fluid,
+        pane,
+        singleColorTable,
+        multipleColorTable1,
+        multipleColorTable2,
+        rigidEntityTransparent,
+        rectangle,
+        damEntity,
+        debugBoxEntity
+
+      // 地图初始化函数
+      async function init() {
+        // 初始化球体
+        initViewer()
+        // 添加地形
+        await addTerrain()
+        // 添加天地图
+        addTDT()
+        // 初始化流体模拟对象
+        initFluid()
+        // 初始化示例UI组件
+        initUI()
+      }
+
+      init()
+
+      // 初始化球体
+      function initViewer() {
+        // 初始化图层管理容器
+        map = new zondy.Map()
+        // 初始化地图视图对象
+        sceneView = new zondy.cesium.SceneView({
+          // 视图id
+          viewId: 'mapgis-3d-viewer',
+          // 图层管理容器
+          map: map,
+          // 额外参数
+          extensionOptions: {
+            // 开启场景时间轴
+            timeline: true
+          }
+        })
+        // 获取视图对象
+        viewer = sceneView.getInnerView()
+        // 开启场景光照
+        viewer.scene.globe.enableLighting = true
+        // 开启地形深度测试
+        viewer.scene.globe.depthTestAgainstTerrain = true
+      }
+
+      // 添加地形
+      async function addTerrain() {
+        viewer.terrainProvider = await Cesium.CesiumTerrainProvider.fromUrl(
+          'http://10.10.130.72:8200/3DData/TerrainCache/宜昌地形'
+        )
+      }
+
+      // 添加天地图
+      function addTDT() {
+        let TDTLayer = new zondy.layer.WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_c/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        map.add(TDTLayer)
+      }
+
+      // 定义视角观察点
+      const viewPositions = {
+        // 水源位置
+        fluidSource: {
+          destination: Cesium.Cartesian3.fromDegrees(
+            111.11834404116998,
+            30.882855998152486,
+            3611.8358735647444
+          ),
+          orientation: {
+            heading: Cesium.Math.toRadians(164.75043274120054),
+            pitch: Cesium.Math.toRadians(-31.644182988625207),
+            roll: 0
+          }
+        },
+        // 水坝位置1
+        damEntity1: {
+          destination: Cesium.Cartesian3.fromDegrees(
+            111.1420060370129,
+            30.84130578528195,
+            1862.1702072714309
+          ),
+          orientation: {
+            heading: Cesium.Math.toRadians(128.70092423084947),
+            pitch: Cesium.Math.toRadians(-28.62569445920998),
+            roll: 0
+          }
+        },
+        // 水坝位置2
+        damEntity2: {
+          destination: Cesium.Cartesian3.fromDegrees(
+            111.15569218955524,
+            30.809449491373066,
+            1560.922490291569
+          ),
+          orientation: {
+            heading: Cesium.Math.toRadians(33.86979402171798),
+            pitch: Cesium.Math.toRadians(-28.49822060670665),
+            roll: 0
+          }
+        }
+      }
+
+      // 初始化流体模拟对象
+      function initFluid() {
+        // 定义流体模拟的色表：一种是所有高度一致的单一颜色，一种是不同高度区间渐变的多颜色
+        singleColorTable = {
+          0: new Cesium.Color(0.211, 0.243, 0.598, 0.9)
+        }
+        multipleColorTable1 = {
+          0: Cesium.Color.fromCssColorString('#EAF0FF'),
+          10: Cesium.Color.fromCssColorString('#C9D8FE'),
+          30: Cesium.Color.fromCssColorString('#A9C1FF'),
+          50: Cesium.Color.fromCssColorString('#99B5FF'),
+          70: Cesium.Color.fromCssColorString('#789EFF'),
+          100: Cesium.Color.fromCssColorString('#477BFF'),
+          140: Cesium.Color.fromCssColorString('#1E5EFF'),
+          180: Cesium.Color.fromCssColorString('#0045F4'),
+          230: Cesium.Color.fromCssColorString('#0035BB'),
+          280: Cesium.Color.fromCssColorString('#002992'),
+          320: Cesium.Color.fromCssColorString('#001B61'),
+          350: Cesium.Color.fromCssColorString('#001449')
+        }
+        multipleColorTable2 = {
+          0: Cesium.Color.fromCssColorString('#AAF189'),
+          10: Cesium.Color.fromCssColorString('#A7F097'),
+          30: Cesium.Color.fromCssColorString('#66B5FF'),
+          50: Cesium.Color.fromCssColorString('#0003F6'),
+          70: Cesium.Color.fromCssColorString('#FC01FF'),
+          100: Cesium.Color.fromCssColorString('#84003B'),
+          140: Cesium.Color.fromCssColorString('#FDAA05'),
+          180: Cesium.Color.fromCssColorString('#D08A05'),
+          230: Cesium.Color.fromCssColorString('#FC6607'),
+          280: Cesium.Color.fromCssColorString('#FD6700'),
+          320: Cesium.Color.fromCssColorString('#E40200'),
+          350: Cesium.Color.fromCssColorString('#9E0005')
+        }
+
+        // 设置流体模拟的范围
+        rectangle = Cesium.Rectangle.fromDegrees(111.1, 30.75, 111.3, 30.9)
+
+        // 初始化流体模拟的对象
+        fluid = new zondy.cesium.Fluid({
+          viewer,
+          rectangle,
+          color: multipleColorTable1
+        })
+
+        // 创建点流体源对象
+        const pointFluidSource = new zondy.cesium.PointFluidSource({
+          position: Cesium.Cartesian3.fromDegrees(111.10114, 30.85543),
+          radius: 200,
+          flow: 10000
+        })
+        fluid.fluidSources.add(pointFluidSource)
+
+        fluid.readyPromise.then((fluid) => {
+          // 创建水坝实体对象
+          damEntity = new Cesium.Entity({
+            polylineVolume: {
+              positions: Cesium.Cartesian3.fromRadiansArrayHeights([
+                1.9400632586416435, 0.5379608805767346, 0, 1.9403803919346219,
+                0.5380576961291779, 0
+              ]),
+              shape: [
+                new Cesium.Cartesian2(-20, -230),
+                new Cesium.Cartesian2(20, -230),
+                new Cesium.Cartesian2(20, 230),
+                new Cesium.Cartesian2(-20, 230)
+              ],
+              cornerType: Cesium.CornerType.BEVELED,
+              material: Cesium.Color.WHITE.withAlpha(1)
+            }
+          })
+          fluid.addObjects({
+            objects: [damEntity],
+            heightMapUpdateCallback: () => {
+              viewer.entities.add(damEntity)
+            }
+          })
+          viewer.camera.flyTo(viewPositions.fluidSource)
+          // 重新设置一些特效参数
+          fluid.flowParticle.lineWidth = 2
+          fluid.flowParticle.number = 20000
+        })
+
+        viewer.camera.flyTo({
+          destination: rectangle,
+          duration: 0
+        })
+      }
+
+      // 初始化UI组件
+      function initUI() {
+        pane = new Pane({
+          title: '流体模拟操作面板'
+        })
+
+        const sceneControlFolder = pane.addFolder({
+          title: '场景控制',
+          expanded: false
+        })
+
+        const fluidFolder = pane.addFolder({
+          title: '流体控制',
+          expanded: false
+        })
+
+        const fluidEffectFolder = pane.addFolder({
+          title: '流体特效',
+          expanded: false
+        })
+
+        const cameraControlFolder = pane.addFolder({
+          title: '视角控制'
+        })
+
+        const damControlFolder = pane.addFolder({
+          title: '筑坝模拟'
+        })
+
+        const controls = {
+          debugShowFramesPerSecond: false,
+          showFluid: true,
+          showDebugBoxEntity: false,
+          showFlowParticle: false,
+          showFluidSpecular: false,
+          showFluidReflection: false,
+          fluidSpeed: 1050
+        }
+
+        sceneControlFolder
+          .addBinding(controls, 'debugShowFramesPerSecond', {
+            label: '显示帧率'
+          })
+          .on('change', (e) => {
+            viewer.scene.debugShowFramesPerSecond = e.value
+          })
+
+        sceneControlFolder
+          .addBinding(controls, 'showDebugBoxEntity', {
+            label: '显示盒子'
+          })
+          .on('change', (e) => {
+            if (e.value) {
+              debugBoxEntity = viewer.entities.add({
+                rectangle: {
+                  coordinates: rectangle,
+                  heightReference: Cesium.HeightReference.CLAMP_TO_TERRAIN,
+                  extrudedHeight: 3000,
+                  outline: true,
+                  fill: true,
+                  outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
+                  material: Cesium.Color.WHITE.withAlpha(0.2)
+                }
+              })
+            } else {
+              viewer.entities.remove(debugBoxEntity)
+            }
+          })
+
+        fluidFolder
+          .addBinding(controls, 'showFluid', {
+            label: '显示流体'
+          })
+          .on('change', (e) => {
+            fluid.show = e.value
+          })
+
+        fluidFolder
+          .addBinding(controls, 'fluidSpeed', {
+            label: '流动速度',
+            min: 0,
+            max: 2000
+          })
+          .on('change', (e) => {
+            fluid.speed = e.value
+          })
+
+        const startButton = fluidFolder
+          .addButton({
+            title: '开始模拟',
+            disabled: true
+          })
+          .on('click', () => {
+            fluid.start()
+            startButton.disabled = true
+            pauseButton.disabled = false
+          })
+
+        const pauseButton = fluidFolder
+          .addButton({
+            title: '暂停模拟'
+          })
+          .on('click', () => {
+            fluid.pause()
+            startButton.disabled = false
+            pauseButton.disabled = true
+          })
+
+        fluidFolder
+          .addBlade({
+            view: 'list',
+            label: '流体色表',
+            options: [
+              { text: '多色色表1', value: 'MULTIPLE1' },
+              { text: '多色色表2', value: 'MULTIPLE2' },
+              { text: '单色色表', value: 'SINGLE' }
+            ],
+            value: 'MULTIPLE1'
+          })
+          .on('change', (e) => {
+            if (e.value === 'SINGLE') {
+              fluid.color = singleColorTable
+            } else if (e.value === 'MULTIPLE1') {
+              fluid.color = multipleColorTable1
+            } else if (e.value === 'MULTIPLE2') {
+              fluid.color = multipleColorTable2
+            }
+          })
+
+        fluidEffectFolder
+          .addBinding(controls, 'showFlowParticle', {
+            label: '显示粒子'
+          })
+          .on('change', (e) => {
+            fluid.flowParticle.show = e.value
+          })
+
+        fluidEffectFolder
+          .addBinding(controls, 'showFluidSpecular', {
+            label: '显示高光'
+          })
+          .on('change', (e) => {
+            resetFluidTips(
+              '提示：高光的显示依赖视线的角度和太阳的位置，请拖动底部时间轴并倾斜视角观察'
+            )
+            fluid.specular.show = e.value
+          })
+
+        fluidEffectFolder
+          .addBinding(controls, 'showFluidReflection', {
+            label: '显示反射'
+          })
+          .on('change', (e) => {
+            fluid.reflection.show = e.value
+          })
+
+        cameraControlFolder
+          .addButton({
+            title: '全局位置'
+          })
+          .on('click', () => {
+            viewer.camera.flyTo({
+              destination: rectangle
+            })
+          })
+
+        cameraControlFolder
+          .addButton({
+            title: '水源位置'
+          })
+          .on('click', () => {
+            viewer.camera.flyTo(viewPositions.fluidSource)
+          })
+
+        cameraControlFolder
+          .addButton({
+            title: '水坝位置1'
+          })
+          .on('click', () => {
+            viewer.camera.flyTo(viewPositions.damEntity1)
+          })
+
+        cameraControlFolder
+          .addButton({
+            title: '水坝位置2'
+          })
+          .on('click', () => {
+            viewer.camera.flyTo(viewPositions.damEntity2)
+          })
+
+        const addDamButton = damControlFolder
+          .addButton({
+            title: '添加水坝',
+            disabled: true
+          })
+          .on('click', () => {
+            if (!viewer.entities.contains(damEntity)) {
+              fluid.addObjects({
+                objects: [damEntity],
+                heightMapUpdateCallback: () => {
+                  viewer.entities.add(damEntity)
+                }
+              })
+              resetFluidTips(
+                '提示：添加水坝需要更新流体模拟对象，可能会有添加延迟的现象'
+              )
+              addDamButton.disabled = true
+              removeDamButton.disabled = false
+            }
+          })
+
+        const removeDamButton = damControlFolder
+          .addButton({
+            title: '移除水坝',
+            disabled: false
+          })
+          .on('click', () => {
+            fluid.removeObjects({
+              objects: [damEntity],
+              heightMapUpdateCallback: () => {
+                viewer.entities.remove(damEntity)
+              }
+            })
+            resetFluidTips(
+              '提示：移除水坝需要更新流体模拟对象，可能会有移除延迟的现象'
+            )
+            addDamButton.disabled = false
+            removeDamButton.disabled = true
+          })
+
+        damControlFolder
+          .addButton({
+            title: '重置模拟'
+          })
+          .on('click', () => {
+            fluid.destroy()
+            initFluid()
+            if (
+              Cesium.defined(damEntity) &&
+              viewer.entities.contains(damEntity)
+            ) {
+              viewer.entities.remove(damEntity)
+            }
+          })
+      }
+
+      // 修改页面右上角的提示内容
+      function resetFluidTips(text) {
+        document.getElementById('fluid-tips').innerText = text
+      }
+    </script>
+
+    <style>
+      /* tweakpane样式 */
+      .tp-dfwv {
+        position: absolute;
+        top: 15px;
+        /* left: 10px; */
+        width: 240px;
+      }
+
+      /* 提示内容样式 */
+      #fluid-tips {
+        position: absolute;
+        top: 15px;
+        left: 5px;
+        /* left: 50%; */
+        /* transform: translateX(-50%); */
+        background: #37383d;
+        color: #f5f5f5;
+        padding: 5px 7px;
+        user-select: none;
+        font-size: 12px;
+        border-radius: 2px;
+      }
+
+      /* 调整帧率控件的位置 */
+      .cesium-performanceDisplay-defaultContainer {
+        left: 0px;
+        right: auto;
+      }
+    </style>
+  </body>
+</html>
