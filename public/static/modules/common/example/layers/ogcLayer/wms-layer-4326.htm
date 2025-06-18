@@ -20,7 +20,7 @@
       'use strict'
       // 定义二维视图的主要类
 
-      let map, view, layer, sublayers = [], layerOpacity = 1, layerRenderMode = 'tile', layerOptions = {}
+      let map, view, layer, layerOpacity = 1, layerRenderMode = 'tile', layerOptions = {}
       const {
         WMSLayer
       } = zondy.layer
@@ -96,9 +96,7 @@
           // 图层透明度
           opacity: layerOpacity,
           // 渲染模式
-          renderMode: layerRenderMode,
-          // 设置子图层属性，可选项
-          sublayers: []
+          renderMode: layerRenderMode
         }
       }
 
