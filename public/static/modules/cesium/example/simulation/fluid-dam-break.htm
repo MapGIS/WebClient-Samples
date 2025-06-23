@@ -45,7 +45,9 @@
         rigidEntityTransparent,
         rectangle,
         damEntity,
-        debugBoxEntity
+        debugBoxEntity,
+        debugLineEntity,
+        transparentDamEntity
 
       // 地图初始化函数
       async function init() {
@@ -221,10 +223,28 @@
               material: Cesium.Color.WHITE.withAlpha(1)
             }
           })
+          transparentDamEntity = new Cesium.Entity({
+            polylineVolume: {
+              positions: Cesium.Cartesian3.fromRadiansArrayHeights([
+                1.9400632586416435, 0.5379608805767346, 0, 1.9403803919346219,
+                0.5380576961291779, 0
+              ]),
+              shape: [
+                new Cesium.Cartesian2(-20, -230),
+                new Cesium.Cartesian2(20, -230),
+                new Cesium.Cartesian2(20, 230),
+                new Cesium.Cartesian2(-20, 230)
+              ],
+              cornerType: Cesium.CornerType.BEVELED,
+              material: Cesium.Color.WHITE.withAlpha(0.5)
+            }
+          })
+          //viewer.entities.add(transparentDamEntity)
           fluid.addObjects({
             objects: [damEntity],
             heightMapUpdateCallback: () => {
               viewer.entities.add(damEntity)
+              //viewer.entities.remove(transparentDamEntity)
             }
           })
           viewer.camera.flyTo(viewPositions.fluidSource)
@@ -260,12 +280,12 @@
           expanded: false
         })
 
-        const cameraControlFolder = pane.addFolder({
-          title: '视角控制'
-        })
-
         const damControlFolder = pane.addFolder({
           title: '筑坝模拟'
+        })
+
+        const cameraControlFolder = pane.addFolder({
+          title: '视角控制'
         })
 
         const controls = {
@@ -296,15 +316,35 @@
                 rectangle: {
                   coordinates: rectangle,
                   heightReference: Cesium.HeightReference.CLAMP_TO_TERRAIN,
-                  extrudedHeight: 3000,
+                  extrudedHeight: 2000,
                   outline: true,
                   fill: true,
                   outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
                   material: Cesium.Color.WHITE.withAlpha(0.2)
                 }
               })
+              debugLineEntity = viewer.entities.add({
+                polyline: {
+                  positions: Cesium.Cartesian3.fromRadiansArray([
+                    rectangle.west,
+                    rectangle.north,
+                    rectangle.east,
+                    rectangle.north,
+                    rectangle.east,
+                    rectangle.south,
+                    rectangle.west,
+                    rectangle.south,
+                    rectangle.west,
+                    rectangle.north
+                  ]),
+                  width: 1,
+                  material: Cesium.Color.white,
+                  clampToGround: true
+                }
+              })
             } else {
               viewer.entities.remove(debugBoxEntity)
+              viewer.entities.remove(debugLineEntity)
             }
           })
 
@@ -436,10 +476,12 @@
           })
           .on('click', () => {
             if (!viewer.entities.contains(damEntity)) {
+              viewer.entities.add(transparentDamEntity)
               fluid.addObjects({
                 objects: [damEntity],
                 heightMapUpdateCallback: () => {
                   viewer.entities.add(damEntity)
+                  viewer.entities.remove(transparentDamEntity)
                 }
               })
               resetFluidTips(
@@ -504,7 +546,7 @@
       #fluid-tips {
         position: absolute;
         top: 15px;
-        left: 5px;
+        left: 15px;
         /* left: 50%; */
         /* transform: translateX(-50%); */
         background: #37383d;
@@ -517,7 +559,7 @@
 
       /* 调整帧率控件的位置 */
       .cesium-performanceDisplay-defaultContainer {
-        left: 0px;
+        left: 10px;
         right: auto;
       }
     </style>

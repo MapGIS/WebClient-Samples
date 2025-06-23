@@ -43,7 +43,9 @@
         multipleColorTable,
         rigidEntity,
         rigidEntityTransparent,
-        rectangle
+        rectangle,
+        debugBoxEntity,
+        debugLineEntity
 
       // 地图初始化函数
       async function init() {
@@ -85,16 +87,6 @@
         viewer.scene.globe.enableLighting = true
         // 开启地形深度测试
         viewer.scene.globe.depthTestAgainstTerrain = true
-        // 设置初始视角
-        viewer.camera.flyTo({
-          destination: Cesium.Rectangle.fromDegrees(
-            114.32978332427275,
-            30.52283992091235,
-            114.41004647393699,
-            30.556329379876573
-          ),
-          duration: 0
-        })
       }
 
       // 添加地形
@@ -109,6 +101,23 @@
         const tileset = await Cesium.MapGISM3DSet.fromUrl(
           'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/武汉建筑轮廓白/武汉建筑轮廓白.mcj'
         )
+        const cartographic = Cesium.Cartographic.fromCartesian(
+          tileset.boundingSphere.center
+        )
+        const translation = Cesium.Cartesian3.subtract(
+          Cesium.Cartesian3.fromRadians(
+            cartographic.longitude,
+            cartographic.latitude,
+            25
+          ),
+          Cesium.Cartesian3.fromRadians(
+            cartographic.longitude,
+            cartographic.latitude,
+            0.0
+          ),
+          new Cesium.Cartesian3()
+        )
+        tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation)
         viewer.scene.primitives.add(tileset)
       }
 
@@ -140,12 +149,7 @@
         }
 
         // 设置流体模拟的范围
-        rectangle = Cesium.Rectangle.fromDegrees(
-          114.32978332427275,
-          30.52283992091235,
-          114.41004647393699,
-          30.556329379876573
-        )
+        rectangle = Cesium.Rectangle.fromDegrees(114.29, 30.51, 114.35, 30.556)
 
         // 初始化流体模拟的对象
         fluid = new zondy.cesium.Fluid({
@@ -156,7 +160,42 @@
         })
 
         // 显示流体模拟盒子
-        fluid.showBox()
+        debugBoxEntity = viewer.entities.add({
+          rectangle: {
+            coordinates: rectangle,
+            heightReference: Cesium.HeightReference.CLAMP_TO_TERRAIN,
+            extrudedHeight: 1000,
+            outline: true,
+            fill: true,
+            outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
+            material: Cesium.Color.WHITE.withAlpha(0.1)
+          }
+        })
+        debugLineEntity = viewer.entities.add({
+          polyline: {
+            positions: Cesium.Cartesian3.fromRadiansArray([
+              rectangle.west,
+              rectangle.north,
+              rectangle.east,
+              rectangle.north,
+              rectangle.east,
+              rectangle.south,
+              rectangle.west,
+              rectangle.south,
+              rectangle.west,
+              rectangle.north
+            ]),
+            width: 1,
+            material: Cesium.Color.white,
+            clampToGround: true
+          }
+        })
+
+        // 设置初始视角
+        viewer.camera.flyTo({
+          destination: rectangle,
+          duration: 0
+        })
       }
 
       // 初始化UI组件
@@ -216,12 +255,12 @@
           // 流体基础
           showFluid: true,
           fluidSpeed: 240,
-          debugShowBoxGeometry: true,
+          showDebugBoxEntity: true,
           // 流体粒子
           fadeOpacity: 0.05,
           flowParticleColor: { r: 255, g: 0, b: 0, a: 1 },
           flowParticleLineWidth: 4,
-          showFlowParticle: true,
+          showFlowParticle: false,
           flowParticleNumber: 10000 * 25,
           // 白浪效果
           showFluidFoam: false,
@@ -268,14 +307,44 @@
           })
 
         fluidFolder
-          .addBinding(controls, 'debugShowBoxGeometry', {
+          .addBinding(controls, 'showDebugBoxEntity', {
             label: '显示盒子'
           })
           .on('change', (e) => {
             if (e.value) {
-              fluid.showBox()
+              debugBoxEntity = viewer.entities.add({
+                rectangle: {
+                  coordinates: rectangle,
+                  heightReference: Cesium.HeightReference.CLAMP_TO_TERRAIN,
+                  extrudedHeight: 1000,
+                  outline: true,
+                  fill: true,
+                  outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
+                  material: Cesium.Color.WHITE.withAlpha(0.1)
+                }
+              })
+              debugLineEntity = viewer.entities.add({
+                polyline: {
+                  positions: Cesium.Cartesian3.fromRadiansArray([
+                    rectangle.west,
+                    rectangle.north,
+                    rectangle.east,
+                    rectangle.north,
+                    rectangle.east,
+                    rectangle.south,
+                    rectangle.west,
+                    rectangle.south,
+                    rectangle.west,
+                    rectangle.north
+                  ]),
+                  width: 1,
+                  material: Cesium.Color.white,
+                  clampToGround: true
+                }
+              })
             } else {
-              fluid.hideBox()
+              viewer.entities.remove(debugBoxEntity)
+              viewer.entities.remove(debugLineEntity)
             }
           })
 
