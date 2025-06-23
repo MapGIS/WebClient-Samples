@@ -45,7 +45,8 @@
         rigidEntityTransparent,
         rectangle,
         damEntity,
-        debugBoxEntity
+        debugBoxEntity,
+        debugLineEntity
 
       // 地图初始化函数
       async function init() {
@@ -87,6 +88,17 @@
         viewer.scene.globe.enableLighting = true
         // 开启地形深度测试
         viewer.scene.globe.depthTestAgainstTerrain = true
+
+        // const iso8601 = '2025-06-23T01:00:00Z'
+        const iso8601 = '2025-06-24T11:00:00Z'
+        const currentTime = Cesium.JulianDate.fromIso8601(iso8601)
+        const endTime = Cesium.JulianDate.addDays(
+          currentTime,
+          1,
+          new Cesium.JulianDate()
+        )
+        viewer.clock.currentTime = currentTime
+        viewer.timeline.zoomTo(currentTime, endTime)
       }
 
       // 添加地形
@@ -211,7 +223,17 @@
         })
 
         viewer.camera.flyTo({
-          destination: rectangle,
+          destination: {
+            x: -2264561.8572952473,
+            y: 5013322.543154248,
+            z: 3222712.873754528
+          },
+
+          orientation: {
+            heading: 6.283185307179583,
+            pitch: -1.57079628737013,
+            roll: 0
+          },
           duration: 0
         })
       }
@@ -271,15 +293,35 @@
                 rectangle: {
                   coordinates: rectangle,
                   heightReference: Cesium.HeightReference.CLAMP_TO_TERRAIN,
-                  extrudedHeight: 3000,
+                  extrudedHeight: 1000,
                   outline: true,
                   fill: true,
                   outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
                   material: Cesium.Color.WHITE.withAlpha(0.2)
                 }
               })
+              debugLineEntity = viewer.entities.add({
+                polyline: {
+                  positions: Cesium.Cartesian3.fromRadiansArray([
+                    rectangle.west,
+                    rectangle.north,
+                    rectangle.east,
+                    rectangle.north,
+                    rectangle.east,
+                    rectangle.south,
+                    rectangle.west,
+                    rectangle.south,
+                    rectangle.west,
+                    rectangle.north
+                  ]),
+                  width: 1,
+                  material: Cesium.Color.white,
+                  clampToGround: true
+                }
+              })
             } else {
               viewer.entities.remove(debugBoxEntity)
+              viewer.entities.remove(debugLineEntity)
             }
           })
 
@@ -320,6 +362,15 @@
             fluid.pause()
             startButton.disabled = false
             pauseButton.disabled = true
+          })
+
+        fluidFolder
+          .addButton({
+            title: '重置模拟'
+          })
+          .on('click', () => {
+            fluid.destroy()
+            initFluid()
           })
 
         fluidFolder
@@ -392,6 +443,69 @@
               destination: rectangle
             })
           })
+        cameraControlFolder
+          .addButton({
+            title: '观察位置1'
+          })
+          .on('click', () => {
+            viewer.camera.flyTo({
+              destination: {
+                x: -2263929.9007312604,
+                y: 5012089.912440023,
+                z: 3220276.926252974
+              },
+
+              orientation: {
+                heading: 0.6009682004166397,
+                pitch: -0.4428856040397662,
+                roll: 0.000012209678028618498
+              }
+            })
+            console.info('viewer.camera.position', viewer.camera.position)
+            console.info('viewer.camera.orientation', {
+              heading: viewer.camera.heading,
+              pitch: viewer.camera.pitch,
+              roll: viewer.camera.roll
+            })
+          })
+        cameraControlFolder
+          .addButton({
+            title: '观察位置2'
+          })
+          .on('click', () => {
+            viewer.camera.flyTo({
+              destination: {
+                x: -2264781.1163732423,
+                y: 5011088.141823714,
+                z: 3221207.3555455175
+              },
+
+              orientation: {
+                heading: 4.465955131677486,
+                pitch: -0.43565544186154614,
+                roll: 6.283178084427997
+              }
+            })
+          })
+        cameraControlFolder
+          .addButton({
+            title: '观察位置3'
+          })
+          .on('click', () => {
+            viewer.camera.flyTo({
+              destination: {
+                x: -2265042.6374235083,
+                y: 5010809.961972139,
+                z: 3221154.6514551593
+              },
+
+              orientation: {
+                heading: 5.268442554621668,
+                pitch: -0.030734930319843867,
+                roll: 6.283172718900088
+              }
+            })
+          })
       }
     </script>
 
@@ -408,7 +522,7 @@
       #fluid-tips {
         position: absolute;
         top: 15px;
-        left: 5px;
+        left: 15px;
         /* left: 50%; */
         /* transform: translateX(-50%); */
         background: #37383d;
@@ -421,7 +535,7 @@
 
       /* 调整帧率控件的位置 */
       .cesium-performanceDisplay-defaultContainer {
-        left: 0px;
+        left: 10px;
         right: auto;
       }
     </style>
