@@ -518,6 +518,8 @@
           .on('click', () => {
             fluid.destroy()
             initFluid()
+            addDamButton.disabled = true
+            removeDamButton.disabled = false
             if (
               Cesium.defined(damEntity) &&
               viewer.entities.contains(damEntity)
