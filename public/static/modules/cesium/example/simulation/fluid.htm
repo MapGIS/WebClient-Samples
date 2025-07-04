@@ -111,10 +111,12 @@
       function initFluid() {
         // 定义流体模拟的色表：一种是所有高度一致的单一颜色，一种是不同高度区间渐变的多颜色
         singleColorTable = {
-          0: new Cesium.Color(0.211, 0.243, 0.598, 0.9)
+          0: new Cesium.Color(0.211, 0.243, 0.598, 0),
+          5: new Cesium.Color(0.211, 0.243, 0.598, 0.9)
         }
         multipleColorTable = {
-          0: new Cesium.Color(0, 0, 0.4, 1),
+          0: new Cesium.Color(0, 0, 0, 0),
+          5: new Cesium.Color(0, 0, 0.4, 1),
           30: new Cesium.Color(0, 1, 1, 1),
           60: new Cesium.Color(0, 1, 0, 1),
           90: new Cesium.Color(1, 1, 0, 1),

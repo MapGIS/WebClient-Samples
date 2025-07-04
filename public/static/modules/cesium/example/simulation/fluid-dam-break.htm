@@ -156,10 +156,12 @@
       function initFluid() {
         // 定义流体模拟的色表：一种是所有高度一致的单一颜色，一种是不同高度区间渐变的多颜色
         singleColorTable = {
-          0: new Cesium.Color(0.211, 0.243, 0.598, 0.9)
+          0: new Cesium.Color(0.211, 0.243, 0.598, 0),
+          4: new Cesium.Color(0.211, 0.243, 0.598, 0.9)
         }
         multipleColorTable1 = {
-          0: Cesium.Color.fromCssColorString('#EAF0FF'),
+          0: new Cesium.Color(0, 0, 0, 0),
+          4: Cesium.Color.fromCssColorString('#EAF0FF'),
           10: Cesium.Color.fromCssColorString('#C9D8FE'),
           30: Cesium.Color.fromCssColorString('#A9C1FF'),
           50: Cesium.Color.fromCssColorString('#99B5FF'),
@@ -173,7 +175,8 @@
           350: Cesium.Color.fromCssColorString('#001449')
         }
         multipleColorTable2 = {
-          0: Cesium.Color.fromCssColorString('#AAF189'),
+          0: new Cesium.Color(0, 0, 0, 0),
+          4: Cesium.Color.fromCssColorString('#AAF189'),
           10: Cesium.Color.fromCssColorString('#A7F097'),
           30: Cesium.Color.fromCssColorString('#66B5FF'),
           50: Cesium.Color.fromCssColorString('#0003F6'),
