@@ -225,7 +225,7 @@
           return new zondy.mapboxgl.MapView({
             viewId: viewId,
             map: map,
-            extendOptions: {
+            extensionOptions: {
               style: {
                 glyphs:
                   'http://10.10.130.72:8089/igs/rest/services/VectorTile/湖北省4326矢量瓦片/VectorTileServer/fonts/{fontstack}?range={range}.pbf&f=pbf'
