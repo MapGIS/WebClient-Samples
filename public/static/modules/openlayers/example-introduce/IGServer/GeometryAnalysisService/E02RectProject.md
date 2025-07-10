@@ -85,7 +85,7 @@
             desProjParam,
             //设置Options参数,包括服务器地址、端口号、返回结果格式
             {
-                ip: "192.168.82.91",
+                ip: "10.10.130.72",
                 port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
                 resultFormat: "json"
             }

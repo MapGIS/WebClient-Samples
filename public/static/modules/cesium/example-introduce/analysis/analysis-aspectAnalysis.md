@@ -41,7 +41,7 @@
     });
     //加载三维地形地图文档（服务地址，配置参数）
     var { protocol, ip, port } = window.webclient;
-    var terrainlayer = terrain.append(`http://192.168.82.91:6163/igs/rest/g3d/terrain`, {});
+    var terrainlayer = terrain.append(`http://10.10.130.72:6163/igs/rest/g3d/terrain`, {});
     //初始化视图功能管理类
     var sceneManager = new CesiumZondy.Manager.SceneManager({
         viewer: webGlobe.viewer

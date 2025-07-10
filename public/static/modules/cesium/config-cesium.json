@@ -1965,6 +1965,24 @@
           "file": "wind3D",
           "icon": "wind3D.png",
           "diffcult": "1"
+        },
+        {
+          "name": "流体模拟",
+          "file": "fluid",
+          "icon": "fluid.png",
+          "diffcult": "1"
+        },
+        {
+          "name": "流体模拟 - 筑坝溃坝",
+          "file": "fluid-dam-break",
+          "icon": "fluid-dam-break.png",
+          "diffcult": "1"
+        },
+        {
+          "name": "流体模拟 - 城市内涝",
+          "file": "fluid-urban-flood",
+          "icon": "fluid-urban-flood.png",
+          "diffcult": "1"
         }
       ]
     },

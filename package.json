@@ -1,6 +1,6 @@
 {
   "name": "webclient-javascript-website",
-  "version": "17.5.0",
+"version":"17.5.11",
   "private": true,
   "scripts": {
     "start": "npm run serve",

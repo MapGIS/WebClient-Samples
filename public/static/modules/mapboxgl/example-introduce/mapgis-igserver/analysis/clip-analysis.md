@@ -31,7 +31,7 @@
     //实例化Zondy.Service.ClipByCircle类
     var clipParam = new Zondy.Service.ClipByCircle({
       //IGServer所在ip地址
-      ip: '192.168.82.91',
+      ip: '10.10.130.72',
       //IGServer请求端口号
       port: '6163',
       //设置圆心坐标
@@ -57,7 +57,7 @@
     //将结果图层添加到地图视图中显示
     var resultLayer = new mapboxgl.Zondy.Map.MapVectorLayer(encodeURIComponent(resultBaseUrl + resultLayerUrl), {
       //IGServer所在ip地址
-      ip: '192.168.82.91',
+      ip: '10.10.130.72',
       //IGServer请求端口号
       port: '6163',
       //图层guid
@@ -70,7 +70,7 @@
 
 #### 【圆裁剪类】`Zondy.Service.ClipByCircle(option)`
 
-`父类`：<a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Service.ClipBase.html">Zondy.Service.ClipBase</a>
+`父类`：<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.ClipBase.html">Zondy.Service.ClipBase</a>
 
 | 参数名 | 类型   | 描述       |
 | ------ | ------ | ---------- |

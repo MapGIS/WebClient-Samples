@@ -60,7 +60,7 @@ http {
 
     server {
         listen       6163;
-        server_name  192.168.82.91;
+        server_name  10.10.130.72;
         root   html;
         index  index.html index.htm;
         location / {
@@ -70,7 +70,7 @@ http {
     }
     server {
         listen       443 ssl;
-        server_name  192.168.82.91;
+        server_name  10.10.130.72;
 
         ssl_certificate      cert/develop.pem;
         ssl_certificate_key  cert/develop.key;

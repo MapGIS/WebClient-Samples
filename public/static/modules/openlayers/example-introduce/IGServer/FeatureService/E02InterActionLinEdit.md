@@ -54,7 +54,7 @@
     ```javascript
         //初始化矢量图层
         vectorLayer = new Zondy.Map.GdbpLayer("MapGIS IGS VectorLayer", ["gdbp://MapGisLocal/OpenLayerVecterMap/ds/地图编辑缓存经纬度/sfcls/mylinelayer"], {
-            ip: "192.168.82.91",
+            ip: "10.10.130.72",
             port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
             isBaseLayer: true
         });
@@ -149,7 +149,7 @@
             featureSet.addFeature(newFeature)
             //创建一个地图编辑对象
             var editLayerFeature = new Zondy.Service.EditLayerFeature('gdbp://MapGisLocal/OpenLayerVecterMap/ds/地图编辑缓存经纬度/sfcls/mylinelayer', {
-                ip: '192.168.82.91',
+                ip: '10.10.130.72',
                 port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
             })
             editLayerFeature.add(featureSet, onAddLineSuccess)
@@ -177,7 +177,7 @@
         //删除线要素
         function deleteLineByService(featureIds) {
             var deleteService = new Zondy.Service.EditLayerFeature('gdbp://MapGisLocal/OpenLayerVecterMap/ds/地图编辑缓存经纬度/sfcls/mylinelayer', {
-                ip: '192.168.82.91',
+                ip: '10.10.130.72',
                 port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
             })
             deleteService.deletes(featureIds, onDeleteSuccess)
@@ -235,7 +235,7 @@
             resultLine.SFEleArray[0].AttValue[8] = document.getElementById('CName').value
             //创建一个编辑服务类
             var editService = new Zondy.Service.EditLayerFeature('gdbp://MapGisLocal/OpenLayerVecterMap/ds/地图编辑缓存经纬度/sfcls/mylinelayer', {
-                ip: '192.168.82.91',
+                ip: '10.10.130.72',
                 port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
             })
             editService.update(resultLine, onLineUpdateSuccess)

@@ -5,20 +5,20 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>统一专题图</title>
     <!--加载不同版本Cesium库-->
-    <script src="http://192.168.82.91:8086/static/libs/loadCesium.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
     <!--plugin脚本库-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://192.168.82.91:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
 
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/layui/layui.js"></script>
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/cdn/layui/css/layui.css"/>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"/>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://192.168.82.91:8086/static/libs/css/style.css"/>
+    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
     <link
       rel="stylesheet"
-      href="http://192.168.82.91:8086/static/libs/css/visual.css"
+      href="http://10.10.130.72:8086/static/libs/css/visual.css"
     />
     <script>
       'use strict'
@@ -42,9 +42,9 @@
 
       //获取点renderer
       function getRendererOfPoint() {
-        // 参考API: http://192.168.82.91:8086/static/modules/common/api/common-mapgis/SimpleRenderer.html
+        // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/SimpleRenderer.html
         return new SimpleRenderer({
-          // 参考API: http://192.168.82.91:8086/static/modules/common/api/common-mapgis/SimpleMarkerSymbol.html
+          // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/SimpleMarkerSymbol.html
           symbol: new SimpleMarkerSymbol({
             // 填充颜色
             color: isRandom ? randomColor() : '#82F7FE99',
@@ -89,7 +89,7 @@
       function addGeoJSONLayerOfPoint() {
         const renderer = getRendererOfPoint()
         layerOfPoint = new GeoJSONLayer({
-          url: 'http://192.168.82.91:8200/Vector/json/地级市.json',
+          url: 'http://10.10.130.72:8200/Vector/json/地级市.json',
           renderer: renderer
         })
         //加载图层
@@ -106,9 +106,9 @@
       // GeoJSONLayer线要素
       function addGeoJSONLayerOfLine() {
         const renderer = getRendererOfLine()
-        // 参考API: http://192.168.82.91:8086/static/modules/common/api/common-mapgis/GeoJSONLayer.html
+        // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/GeoJSONLayer.html
         layerOfLine = new GeoJSONLayer({
-          url: 'http://192.168.82.91:8200/Vector/json/高速公路.json',
+          url: 'http://10.10.130.72:8200/Vector/json/高速公路.json',
           renderer: renderer
         })
         //加载图层
@@ -119,7 +119,7 @@
       function addGeoJSONLayerOfRegion() {
         const renderer = getRendererOfRegion()
         layerOfRegion = new GeoJSONLayer({
-          url: 'http://192.168.82.91:8200/Vector/json/湖北省市级区划.json',
+          url: 'http://10.10.130.72:8200/Vector/json/湖北省市级区划.json',
           renderer: renderer
         })
         //加载图层
@@ -129,9 +129,9 @@
       // IGSFeature点要素
       function addIGSFeatureLayerOfPoint() {
         const renderer = getRendererOfPoint()
-        // 参考API: http://192.168.82.91:8086/static/modules/common/api/common-mapgis/IGSFeatureLayer.html
+        // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/IGSFeatureLayer.html
         layerOfPoint = new IGSFeatureLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/Map/湖北省4326/FeatureServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/FeatureServer',
           sublayerId: '5',
           renderer: renderer
         })
@@ -150,7 +150,7 @@
       function addIGSFeatureLayerOfLine() {
         const renderer = getRendererOfLine()
         layerOfLine = new IGSFeatureLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/Map/湖北省4326/FeatureServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/FeatureServer',
           sublayerId: '2-23',
           renderer: renderer
         })
@@ -162,7 +162,7 @@
       function addIGSFeatureLayerOfRegion() {
         const renderer = getRendererOfRegion()
         layerOfRegion = new IGSFeatureLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/Map/湖北省4326/FeatureServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/FeatureServer',
           sublayerId: '0',
           renderer: renderer
         })
@@ -174,7 +174,7 @@
       function addWFSLayerOfPoint() {
         const renderer = getRendererOfPoint()
         layerOfPoint = new WFSLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WFSServer',
           sublayerId: 'Map_湖北省4326:t70',
           opacity: 0.1,
           renderer: renderer
@@ -194,7 +194,7 @@
       function addWFSLayerOfLine() {
         const renderer = getRendererOfLine()
         layerOfLine = new WFSLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WFSServer',
           sublayerId: 'Map_湖北省4326:t36',
           opacity: 0.1,
           renderer: renderer
@@ -207,7 +207,7 @@
       function addWFSLayerOfRegion() {
         const renderer = getRendererOfRegion()
         layerOfRegion = new WFSLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WFSServer',
           sublayerId: 'Map_湖北省4326:t0',
           opacity: 0.1,
           renderer: renderer
@@ -219,7 +219,7 @@
       //渲染IGSVectorTile专题图
       function addIGSVectorTileLayer() {
         igsVectorTileLayer = new IGSVectorTileLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/VectorTile/湖北省4326矢量瓦片/VectorTileServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/VectorTile/湖北省4326矢量瓦片/VectorTileServer',
           // 根据id显示子图层
           sublayers: [
             { id: '湖北省市级区划_simplerender' },

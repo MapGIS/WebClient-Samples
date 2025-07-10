@@ -38,7 +38,7 @@ path/to/statics/cesium/Cesium.js
 path/to/statics/cesium/webclient-cesium-plugins.min.js
 ```
 
-> 如果在浏览器中 访问 `http://192.168.82.91:xxxx/path/to/statics/cesium/Cesium.js` 成功则说明整个 Cesium 的环境准备已经完毕。
+> 如果在浏览器中 访问 `http://10.10.130.72:xxxx/path/to/statics/cesium/Cesium.js` 成功则说明整个 Cesium 的环境准备已经完毕。
 
 ## 引入
 

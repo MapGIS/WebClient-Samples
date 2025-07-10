@@ -10,7 +10,7 @@ function inputCSS(url) {
 }
 
 function load() {
-  const basePath = 'http://192.168.82.91:8086'
+  const basePath = 'http://10.10.130.72:8086'
   let currentCesiumVersion = localStorage.getItem('currentCesiumVersion')
   if (!currentCesiumVersion) {
     currentCesiumVersion = '10.7.2.10'

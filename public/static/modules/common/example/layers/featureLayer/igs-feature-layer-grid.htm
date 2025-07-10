@@ -6,20 +6,20 @@
     <!-- 引入地图引擎库 -->
     <script
       include="engine:cesium"
-      src="http://192.168.82.91:8086/static/libs/include-lib-local-upgrade.js"
+      src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"
     ></script>
     <!-- 引入token脚本 -->
-    <script src="http://192.168.82.91:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/layui/layui.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
     <link
       rel="stylesheet"
-      href="http://192.168.82.91:8086/static/libs/cdn/layui/css/layui.css"
+      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
     />
     <!--示例公共样式-->
     <link
       rel="stylesheet"
-      href="http://192.168.82.91:8086/static/libs/css/style.css"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
     />
     <script type="text/javascript">
       //使用严格模式
@@ -97,7 +97,7 @@
       // 添加要素图层
       function addLayer() {
         layer = new IGSFeatureLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/Map/深圳市白模/FeatureServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/深圳市白模/FeatureServer',
           // 设置最小比例尺
           minScale: 200000,
           // 设置渲染方式

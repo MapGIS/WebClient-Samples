@@ -82,4 +82,4 @@ import { IGSMapImageLayer, Map } from '@mapgis/webclient-common'
 | 图层模块                                                     | Theme3DLayer                                      |                                                              | 暂不支持                                                     | 三维专题图基类,不能直接实例化 |
 | 图层模块                                                     | UniqueTheme3DLayer                                |                                                              | 暂不支持                                                     | 三维单值专题图                |
 
-- 10.6.2.10中服务模块、几何模块、符号模块以及常量相关接口属于公共接口，请参考Common库中“10.6.2.10到10.6.4.10接口升级” <a href="http://192.168.82.91:8086/#/guideMulti/common/development_common_update" target="_blank">三、《新旧接口对照表》 </a> 
+- 10.6.2.10中服务模块、几何模块、符号模块以及常量相关接口属于公共接口，请参考Common库中“10.6.2.10到10.6.4.10接口升级” <a href="http://10.10.130.72:8086/#/guideMulti/common/development_common_update" target="_blank">三、《新旧接口对照表》 </a> 

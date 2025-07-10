@@ -47,7 +47,7 @@
         tileHeight: 256
     };
     //添加MapGIS IGServer发布的瓦片
-    tilelayer = webGlobe.appendMapGISTile('http://192.168.82.91:6163/igs/rest/mrms/tile/WORLDTILE',options);
+    tilelayer = webGlobe.appendMapGISTile('http://10.10.130.72:6163/igs/rest/mrms/tile/WORLDTILE',options);
     ```
 
     叠加后，可以通过`removeImageryLayer`方法移除瓦片图层；此方法也可用于避免重复叠加，将此前叠加的瓦片图层进行移除；

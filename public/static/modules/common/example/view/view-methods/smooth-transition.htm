@@ -8,23 +8,23 @@
     />
     <title>平滑过渡</title>
     <!--mapboxgl库，矢量瓦片需要依赖该库-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
     <link
       rel="stylesheet"
-      href="http://192.168.82.91:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"
+      href="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"
     />
     <!-- 引入地图引擎库 -->
-    <script src="http://192.168.82.91:8086/static/libs/include-lib-local-upgrade.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://192.168.82.91:8086/static/libs/cdn/layui/layui.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
     <link
       rel="stylesheet"
-      href="http://192.168.82.91:8086/static/libs/cdn/layui/css/layui.css"
+      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
     />
     <!--示例公共样式-->
     <link
       rel="stylesheet"
-      href="http://192.168.82.91:8086/static/libs/css/style.css"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
     />
     <script>
       'use strict'
@@ -41,7 +41,7 @@
 
       function addIGSMapImageLayer() {
         layer = new IGSMapImageLayer({
-          url: 'http://192.168.82.91:8089/igs/rest/services/Map/湖北省4326/MapServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/MapServer',
           httpMethod: 'GET',
           // 影像的展现形式，可选'tile' 、'image'。选项为'tile'时，加载影像时以瓦片的方式平铺。当选项为'image'时，加载影像会请求一张覆盖当前屏幕的图像。
           renderMode: 'image'

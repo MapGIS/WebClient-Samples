@@ -30,7 +30,7 @@
 ``` javascript
 var map = new mapboxgl.Map({
     container: 'map', // 绑定div
-    style: 'http://192.168.82.91:6163/igs/rest/mrms/vtiles/styles/街道样式.json',
+    style: 'http://10.10.130.72:6163/igs/rest/mrms/vtiles/styles/街道样式.json',
     center: [106.563777, 29.578285],
     zoom: 3
 });

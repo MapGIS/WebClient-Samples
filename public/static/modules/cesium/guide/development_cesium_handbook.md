@@ -70,7 +70,7 @@
 
 ### 数据准备
 
-&ensp;&ensp;&ensp;&ensp;本示例使用MapGIS官方云端（192.168.82.91:8086）已经发布的名称为“DaYanTa”的M3D数据服务进行演示。若您需要显示自己的数据，需要在开发前进行数据处理，如创建/附加地理数据库、导入数据、生成M3D缓存数据等，最后通过**MapGIS Server Manager**配置GIS服务环境并发布三维地图服务。
+&ensp;&ensp;&ensp;&ensp;本示例使用MapGIS官方云端（10.10.130.72:8086）已经发布的名称为“DaYanTa”的M3D数据服务进行演示。若您需要显示自己的数据，需要在开发前进行数据处理，如创建/附加地理数据库、导入数据、生成M3D缓存数据等，最后通过**MapGIS Server Manager**配置GIS服务环境并发布三维地图服务。
 
 <center>
   <img src="./static/modules/cesium/source/img/MapGIS发布服务.png" alt="MapGIS服务发布" style="zoom:80%;" />
@@ -183,7 +183,7 @@
             });
             //加载M3D地图文档（服务地址，配置参数）
             obliqueLayerArr = m3dLayer.append(
-                `http://192.168.82.91:6163/igs/rest/g3d/DaYanTa`, 
+                `http://10.10.130.72:6163/igs/rest/g3d/DaYanTa`, 
                 {
                     autoReset: true //允许自动定位
                 }
@@ -400,7 +400,7 @@
 
 #### 发布M3D地图文档
 
-1. 登录进入MapGIS Server Manager管理界面，如MapGIS IGServer .NET的访问地址为【http://192.168.82.91:9999/】，用户名与密码默认为【admin/sa.mapgis】；
+1. 登录进入MapGIS Server Manager管理界面，如MapGIS IGServer .NET的访问地址为【http://10.10.130.72:9999/】，用户名与密码默认为【admin/sa.mapgis】；
 
 <center>
   <img src="./static/modules/cesium/source/img/dev/014-登录MapGIS Server Manager.png" alt="登录MapGIS Server Manager" style="zoom:80%;" />
@@ -451,7 +451,7 @@
 
 ### 天地图
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/third/third-tianditu" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/third/third-tianditu" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1011-天地图.png" alt="天地图" style="zoom:80%;" />
 </a>
 
@@ -499,7 +499,7 @@
 
 ### 百度地图
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/third/third-baidu" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/third/third-baidu" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1012-百度地图.png" alt="百度地图" style="zoom:80%;" />
 </a>
 
@@ -521,7 +521,7 @@
 
 ### 高德地图
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/third/third-amap" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/third/third-amap" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1013-高德地图.png" alt="高德地图" style="zoom:80%;" />
 </a>
 
@@ -542,7 +542,7 @@
 
 ### OpenWeather地图 
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/third/third-openweather" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/third/third-openweather" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1014-OpenWeather地图.png" alt="OpenWeather地图" style="zoom:80%;" />
 </a>
 
@@ -574,7 +574,7 @@
 
 &ensp;&ensp;&ensp;&ensp;**以加载M3D的景观模型为例**：
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/m3d/m3d-landscape" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/m3d/m3d-landscape" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1021-M3D景观模型.png" alt="M3D图层" style="zoom:80%;" />
 </a>
 
@@ -585,7 +585,7 @@
       viewer: webGlobe.viewer
    });
    //加载M3D地图文档（服务地址，配置参数）
-   var landscapeLayer = m3dLayer.append('http://192.168.82.91:6163/igs/rest/g3d/ZondyModels', {
+   var landscapeLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/ZondyModels', {
       //是否自动定位到数据位置
       autoReset: false,
       //模型细节显示控制参数：较大值可提高渲染性能，较低值可提高视觉质量
@@ -600,7 +600,7 @@
 
 ### 矢量服务（二维地图文档）
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/mapgis/mapgis-2d-doc" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/mapgis/mapgis-2d-doc" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1031-二维地图文档.png" alt="二维地图文档" style="zoom:80%;" />
 </a>
 
@@ -613,12 +613,12 @@
     viewer: webGlobe.viewer,
   })
   //添加MapGIS IGServer发布的二维地图文档服务
-  vecDoc = layer.append2DDocTile('http://192.168.82.91:6163/igs/rest/mrms/docs/北京市', {})
+  vecDoc = layer.append2DDocTile('http://10.10.130.72:6163/igs/rest/mrms/docs/北京市', {})
   ```
 
 ### 瓦片服务
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/mapgis/mapgis-2d-doc" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/mapgis/mapgis-2d-doc" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1032-二维瓦片.png" alt="二维瓦片" style="zoom:80%;" />
 </a>
 
@@ -646,12 +646,12 @@
     tileHeight: 256,
   }
   //添加MapGIS IGServer发布的二维瓦片服务
-  var layer = tilelayer.appendMapGISTile('http://192.168.82.91:6163/igs/rest/mrms/tile/北京市', options)
+  var layer = tilelayer.appendMapGISTile('http://10.10.130.72:6163/igs/rest/mrms/tile/北京市', options)
   ```
 
 ### 地形服务
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/mapgis/mapgis-2d-doc" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/mapgis/mapgis-2d-doc" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1033-三维地形.png" alt="三维地形" style="zoom:80%;" />
 </a>
 
@@ -664,7 +664,7 @@
     viewer: webGlobe.viewer,
   })
   //加载三维地图文档（服务地址，配置参数）
-  var terrainlayer = layer.append('http://192.168.82.91:6163/igs/rest/g3d/terrain', {})
+  var terrainlayer = layer.append('http://10.10.130.72:6163/igs/rest/g3d/terrain', {})
   ```
 
 ## OGC服务
@@ -693,7 +693,7 @@
 
 &ensp;&ensp;&ensp;&ensp;具体实现：构造`CesiumZondy.Layer.OGCLayer`M3D 图层管理对象，调用`appendWMSTile()`方法，并配置服务地址、图层名称、附加信息，即可实现 WMS 地图服务数据的加载，在此传入的是 IGServer 中发布的 WMS 地图服务地址，可做参考。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/ogc/ogc-WMS" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/ogc/ogc-WMS" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1041-WMS.png" alt="WMS地图" style="zoom:80%;" />
 </a>
 
@@ -706,7 +706,7 @@
   //添加WMS服务地图
   var wmsLayer = ogcLayer.appendWMSTile(
     //地图服务URL地址
-    'http://192.168.82.91:6163/igs/rest/ogc/doc/北京市/WMSServer',
+    'http://10.10.130.72:6163/igs/rest/ogc/doc/北京市/WMSServer',
     //图层名
     '北京市,绿地_1,水域_3,大学,学校,动物园',
     //附加属性
@@ -723,7 +723,7 @@
 
 &ensp;&ensp;&ensp;&ensp;具体实现：调用`CesiumZondy.Layer.OGCLayer`的`appendWMTSTile()`方法，并配置服务地址、图层名称、最大级数等信息，即可实现 WMTS 地图服务数据的加载，在此传入的是 IGServer 中发布的 WMTS 地图服务地址，可做参考。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/ogc/ogc-WMTS" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/ogc/ogc-WMTS" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1042-WMTS.png" alt="WMTS地图" style="zoom:80%;" />
 </a>
 
@@ -736,7 +736,7 @@
   //添加WMTS地图服务
   var wmtsLayer = ogcLayer.appendWMTSTile(
     //瓦片服务地址
-    'http://192.168.82.91:6163/igs/rest/ogc/WMTSServer',
+    'http://10.10.130.72:6163/igs/rest/ogc/WMTSServer',
     //图层名称
     'beijing',
     'EPSG:4326_北京市_028mm_GB',
@@ -771,7 +771,7 @@
 
 &ensp;&ensp;&ensp;&ensp;具体实现：针对3DTiles数据支持本地数据和网络数据加载，关键接口为`CesiumZondy.Manager.CommonDataManager`类提供的`append3DTile()`方法与`remove3DTile()`方法，实现 3D Tiles 数据的加载与移除功能。加载数据须设置 3DTiles 数据的 URL 参数，通过加载成功回调函数定位跳转到所加载的 3DTiles 数据范围。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-3Dtiles" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-3Dtiles" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1051-data-3Dtiles.png" alt="3DTiles数据" style="zoom:80%;" />
 </a>
 
@@ -806,7 +806,7 @@
 
 &ensp;&ensp;&ensp;&ensp;具体实现：关键接口为`CesiumZondy.Manager.CommonDataManager`类提供的`appendModel()`方法，设置模型 id、模型文件 URL 路径、模型所在经纬度、高度、缩放比参数信息，即可实现 GLTF 模型的加载。如果模型自带动画，需要设置`webGlobe.viewer.clock.shouldAnimate`参数为 true 来开启动画。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-addgltf" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-addgltf" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1052-data-addgltf.png" alt=" GLTF数据" style="zoom:80%;" />
 </a>
 
@@ -835,7 +835,7 @@
 
   &ensp;&ensp;&ensp;&ensp;**批量加载 GLTF 模型**：支持在三维场景中批量添加多个 GLTF 模型数据。常用于需要一次性添加多个模型的应用场景，多个模型可为相同数据，也可以是不同数据，参数单独设置，简化代码操作步骤。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-addgltfs" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-addgltfs" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1053-data-addgltfs.png" alt="批量GLTF数据" style="zoom:80%;" />
 </a>
 
@@ -916,7 +916,7 @@
 
 &ensp;&ensp;&ensp;&ensp;具体实现：关键接口为`CesiumZondy.Manager.CommonDataManager`类提供的`appendCZML()`方法，传入 CZML 文件的地址即可实现 CZML 数据的加载，并可添加回调函数根据 CZML 文件中某一模型 ID 判断是否添加成功；对应可通过`removeDataSource()`方法移除。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-czml" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-czml" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1054-data-czml.png" alt="CZML数据" style="zoom:80%;" />
 </a>
 
@@ -953,7 +953,7 @@
 
 &ensp;&ensp;&ensp;&ensp;在此以本地文件为例：
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-geojson" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-geojson" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1055-data-geojson.png" alt="GeoJSON数据" style="zoom:80%;" />
 </a>
 
@@ -978,7 +978,7 @@
 
 &ensp;&ensp;&ensp;&ensp;在此以本地文件为例：
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-kml" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-kml" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1056-data-kml.png" alt="KML数据" style="zoom:80%;" />
 </a>
 
@@ -1003,7 +1003,7 @@
 
 &ensp;&ensp;&ensp;&ensp;在此以本地文件为例：
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-kmz" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-kmz" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1057-data-kmz.png" alt="KMZ数据" style="zoom:80%;" />
 </a>
 
@@ -1025,7 +1025,7 @@
 
 &ensp;&ensp;&ensp;&ensp;**本地图片**：
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-outlineImage" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-outlineImage" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1058-data-img1.png" alt="本地图片" style="zoom:80%;" />
 </a>
 
@@ -1049,7 +1049,7 @@
 
 &ensp;&ensp;&ensp;&ensp;**在线图片**：
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/data/data-onlineImage" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/data/data-onlineImage" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1059-data-img2.png" alt="在线图片" style="zoom:80%;" />
 </a>
 
@@ -1091,7 +1091,7 @@
 
 &ensp;&ensp;&ensp;&ensp;具体实现：先初始化 Cesium 三维球控件 `Cesium.WebSceneControl()` ，然后初始化视图功能管理类 `CesiumZondy.Manager.SceneManager()` ，调用视图功能管理类的 `showPosition()` 方法显示位置信息；再初始化通用功能管理类`CesiumZondy.Manager.CommonFuncManager()` ，调用`createNavigationTool()`方法显示常用导航控件。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/scene/scene-showPosition" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/scene/scene-showPosition" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1101-scene-showPosition.png" alt="常用控件" style="zoom:80%;" />
 </a>
 
@@ -1138,7 +1138,7 @@
 
 &ensp;&ensp;&ensp;&ensp;**<font color=red>常用场景模式</font>**
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/scene/scene-sceneMode" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/scene/scene-sceneMode" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1102-scene-sceneMode.png" alt="场景模式" style="zoom:80%;" />
 </a>
 
@@ -1214,7 +1214,7 @@
 | CesiumZondy.Manager.SceneManager / closeRotation() | 关闭自转|
 | CesiumZondy.Manager.SceneManager / changeSkyBox() | 修改天空盒|
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/scene/scene-operation" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/scene/scene-operation" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1103-scene-operation.png" alt="场景操作" style="zoom:80%;" />
 </a>
 
@@ -1289,7 +1289,7 @@ ceneManager.closeRotation();//关闭自转
 | CesiumZondy.Manager.SceneManager / flyToEx() | 视点跳转扩展方法，根据经纬度，以及可扩展的参数（包括视角高度、持续时间、方位角、俯仰角、翻滚角）进行视点跳转 |
 | CesiumZondy.Manager.SceneManager/ flyToFeatureById() | 根据 ID 飞行到特定要素位置，即通过图层的某个要素进行定位跳转|
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/scene/scene-fly" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/scene/scene-fly" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1104-scene-fly.png" alt="视点跳转" style="zoom:80%;" />
 </a>
 
@@ -1336,7 +1336,7 @@ ceneManager.closeRotation();//关闭自转
 
   ```Javascript
   //加载M3D地图文档（服务地址，配置参数）
-  Layer2 = m3dLayer.append('http://192.168.82.91:6163/igs/rest/g3d/buildings1', {
+  Layer2 = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/buildings1', {
     autoReset: false,
     //模型细节显示控制参数：较大值可提高渲染性能，较低值可提高视觉质量
     maximumScreenSpaceError: 0
@@ -1497,7 +1497,7 @@ ceneManager.closeRotation();//关闭自转
 
 #### 绘制点实体
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-point" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-point" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1201-drawGraphic-point.png" alt="绘制点" style="zoom:80%;" />
 </a>
 
@@ -1534,11 +1534,11 @@ ceneManager.closeRotation();//关闭自转
 
 #### 绘制立体线/贴地形线
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-line" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-line" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1202-drawGraphic-line.png" alt="绘制立体线" style="zoom:45%;" />
 </a>
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-terrainline" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-terrainline" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1202-drawGraphic-terrainline.png" alt="绘制贴地形线" style="zoom:45%;" />
 </a>
 
@@ -1574,11 +1574,11 @@ ceneManager.closeRotation();//关闭自转
 
 #### 绘制立体区/贴地形区
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-polygon" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-polygon" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1203-drawGraphic-polygon.png" alt="绘制立体区" style="zoom:45%;" />
 </a>
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-terrainpolygon" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-terrainpolygon" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1203-drawGraphic-terrainpolygon.png" alt="绘制贴地形区" style="zoom:45%;" />
 </a>
 
@@ -1638,7 +1638,7 @@ ceneManager.closeRotation();//关闭自转
 
 #### 绘制贴地球线
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-groundline" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-groundline" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1204-drawGraphic-groundline.png" alt="绘制贴地球线" style="zoom:80%;" />
 </a>
 
@@ -1663,7 +1663,7 @@ ceneManager.closeRotation();//关闭自转
 
 #### 绘制贴地球区
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-groundpolygon" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-groundpolygon" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1205-drawGraphic-groundpolygon.png" alt="绘制贴地球区" style="zoom:80%;" />
 </a>
 
@@ -1692,7 +1692,7 @@ ceneManager.closeRotation();//关闭自转
 
 #### 绘制带洞区
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-hole" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-hole" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1206-drawGraphic-hole.png" alt="绘制带洞区" style="zoom:80%;" />
 </a>
 
@@ -1735,7 +1735,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;具体实现：通过几何绘制控制`CesiumZondy.Manager.EntityController`的方法实现点、线、区的添加绘制，结合三维场景鼠标事件即 `Cesium.WebSceneControl()` 对象的 `registerMouseEvent()` 方法实现鼠标交互绘制图形功能。其中，可通过 `Cesium.DrawPolygonTool()` 在三维场景中添加交互式绘制区控件，实现交互式绘制区功能。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-interaction" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-interaction" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1207-drawGraphic-interaction.png" alt="交互绘制" style="zoom:80%;" />
 </a>
 
@@ -1814,7 +1814,7 @@ ceneManager.closeRotation();//关闭自转
 
 ### 图片标注
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-icon" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-icon" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1208-drawGraphic-icon.png" alt="图片标注" style="zoom:80%;" />
 </a>
 
@@ -1834,7 +1834,7 @@ ceneManager.closeRotation();//关闭自转
 
 ### 文本标注
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-label" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-label" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1209-drawGraphic-label.png" alt="文本标注" style="zoom:80%;" />
 </a>
 
@@ -1878,7 +1878,7 @@ ceneManager.closeRotation();//关闭自转
 
 ### 图文标注
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-labelicon" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-labelicon" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1210-drawGraphic-labelicon.png" alt="图文标注" style="zoom:80%;" />
 </a>
 
@@ -1965,7 +1965,7 @@ ceneManager.closeRotation();//关闭自转
 
 ### Popup标注
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/drawGraphic/drawGraphic-popup" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/drawGraphic/drawGraphic-popup" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1211-drawGraphic-popup.png" alt="气泡标注" style="zoom:80%;" />
 </a>
 
@@ -2025,7 +2025,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;具体实现：先初始化查询参数`CesiumZondy.Query.MapDocQuery`类对象，设置查询属性条件等参数后，调用`beginQuery()`方法进行查询，然后在回调中获取处理查询到的要素信息，解析所需的几何信息与属性信息进行展示。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/query/query-2dByAtt" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/query/query-2dByAtt" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1301-query-2dByAtt.png" alt="二维地图文档要素查询" style="zoom:80%;" />
 </a>
 
@@ -2103,7 +2103,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;具体实现：先构造`CesiumZondy.Query.G3DDocQuery`三维地图文档查询对象，配置相关参数后调用 `queryG3DFeature`方法执行查询，然后在回调中获取处理查询到的要素信息，并在三维场景中展示。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/query/query-geomquery" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/query/query-geomquery" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1302-query-geomquery.png" alt="三维模型数据查询" style="zoom:80%;" />
 </a>
 
@@ -2134,7 +2134,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;M3D单体查询，针对的是M3D数据，实现在三维场景中展示 M3D 模型数据并实现单体查询功能。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/query/query-m3dquery" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/query/query-m3dquery" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1303-query-m3dquery.png" alt="M3D单体查询" style="zoom:80%;" />
 </a>
 
@@ -2209,7 +2209,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;通视分析，用于检测当前三维场景中两点之间是否可以没有阻碍的看到。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-visibility" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-visibility" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1401-analysis-visibility.png" alt="通视分析" style="zoom:80%;" />
 </a>
 
@@ -2259,7 +2259,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;此功能对已加载的M3D数据进行任意距离的剖切，动态的显示或隐藏一部分数据。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-dynamiccut" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-dynamiccut" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1402-analysis-dynamiccut.png" alt="动态剖切" style="zoom:80%;" />
 </a>
 
@@ -2307,7 +2307,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;开挖分析，指对已加载的M3D数据进行任意距离深度开挖，动态的显示或隐藏一部分数据。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-excavate" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-excavate" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1403-analysis-excavate.png" alt="开挖分析" style="zoom:80%;" />
 </a>
 
@@ -2323,12 +2323,12 @@ ceneManager.closeRotation();//关闭自转
       viewer: webGlobe.viewer
   });
   var drilllayer = m3dLayer.append(
-      "http://192.168.82.91:6163/igs/rest/g3d/钻孔_2_钻孔模型s", {
+      "http://10.10.130.72:6163/igs/rest/g3d/钻孔_2_钻孔模型s", {
           autoReset: false,
       }
   );
   //加载M3D地图文档（服务地址，配置参数）
-  landscapeLayer = m3dLayer.append('http://192.168.82.91:6163/igs/rest/g3d/钻孔分层点_Sur_000_Ent', {});
+  landscapeLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/钻孔分层点_Sur_000_Ent', {});
   ```
 
 **Step 2. <font color=red>创建切面</font>**：
@@ -2397,7 +2397,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;卷帘分析目前通过剖切功能实现，即对已加载的两个M3D数据进行任意距离的剖切，动态的显示或隐藏一部分数据，一个显示的同时不显示另一个数据，打到卷帘效果。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-rollershutters" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-rollershutters" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1404-analysis-rollershutters.png" alt="卷帘分析" style="zoom:80%;" />
 </a>
 
@@ -2453,7 +2453,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;洪水淹没分析，即在三维场景下动态模拟洪水淹没分析的场景，根据设定的高程与范围分析洪水淹没区域，可应用在抗洪抢险、水库管理等领域，辅助决策。支持三维模型、地形等数据应用场景。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-floor" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-floor" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1405-analysis-floor.png" alt="洪水淹没分析" style="zoom:80%;" />
 </a>
 
@@ -2504,7 +2504,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;可视域分析，用于检测当前三维场景中某个点朝一个方向看的时候可以看到的区域。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-visiblerange" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-visiblerange" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1406-analysis-visiblerange.png" alt="可视域分析" style="zoom:80%;" />
 </a>
 
@@ -2520,7 +2520,7 @@ ceneManager.closeRotation();//关闭自转
       viewer: webGlobe.viewer
   });
   //加载M3D地图文档（服务地址，配置参数）
-  landscapeLayer = m3dLayer.append('http://192.168.82.91:6163/igs/rest/g3d/ZondyModels', {});
+  landscapeLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/ZondyModels', {});
   ```
 
 **Step 2. <font color=red>创建可视域分析</font>**：
@@ -2572,7 +2572,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;天际线分析，用于检测当前视角的天际线，并绘制在三维场景中。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-skyline" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-skyline" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1407-analysis-skyline.png" alt="天际线分析" style="zoom:80%;" />
 </a>
 
@@ -2589,7 +2589,7 @@ ceneManager.closeRotation();//关闭自转
       viewer: webGlobe.viewer
   });
   //加载M3D地图文档（服务地址，配置参数）
-  landscapeLayer = m3dLayer.append('http://192.168.82.91:6163/igs/rest/g3d/ZondyModels', {});
+  landscapeLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/ZondyModels', {});
   ```
 
 **Step 2. <font color=red>创建天际线分析</font>**：
@@ -2653,7 +2653,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;模型压平，即将加载完成的M3D数据进行压平处理。一般可通过交互式方式实现模型压平功能。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-modelflatten" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-modelflatten" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1408-analysis-modelflatten.png" alt="模型压平" style="zoom:80%;" />
 </a>
 
@@ -2731,7 +2731,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;此功能用于地形数据的坡向分析。 坡向是指地表面上一点的切平面的法线在水平面的投影与该点的正北方向的夹角，描述该点高程值改变量的最大变化方向。坡向分析作用是：决定地表面局部地面接收阳光和重新分配太阳辐射量的重要地形因子，直接造成局部地区气候特征差异，影响各项农业生产指标。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-aspectAnalysis" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-aspectAnalysis" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1409-analysis-aspectAnalysis.png" alt="坡向分析" style="zoom:80%;" />
 </a>
 
@@ -2748,7 +2748,7 @@ ceneManager.closeRotation();//关闭自转
   });
   //加载三维地形地图文档（服务地址，配置参数）
   var { protocol, ip, port } = window.webclient;
-  var terrainlayer = terrain.append(`http://192.168.82.91:6163/igs/rest/g3d/terrain`, {});
+  var terrainlayer = terrain.append(`http://10.10.130.72:6163/igs/rest/g3d/terrain`, {});
   //初始化视图功能管理类
   var sceneManager = new CesiumZondy.Manager.SceneManager({
       viewer: webGlobe.viewer
@@ -2781,7 +2781,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;此功能用于地形数据的坡度分析。 坡度是指过地表一点的切平面与水平面的夹角，描述地表面在该点的倾斜程度。坡度分析的作用是：影响地表物质流动与能量转换的规模与强度，制约生产力空间布局。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-slopeAnalysis" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-slopeAnalysis" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1410-analysis-slopeAnalysis.png" alt="坡度分析" style="zoom:80%;" />
 </a>
 
@@ -2799,7 +2799,7 @@ ceneManager.closeRotation();//关闭自转
   });
   //加载三维地形地图文档（服务地址，配置参数）
   var { protocol, ip, port } = window.webclient;
-  var terrainlayer = terrain.append(`http://192.168.82.91:6163/igs/rest/g3d/terrain`, {});
+  var terrainlayer = terrain.append(`http://10.10.130.72:6163/igs/rest/g3d/terrain`, {});
   //初始化视图功能管理类
   var sceneManager = new CesiumZondy.Manager.SceneManager({
       viewer: webGlobe.viewer
@@ -2832,7 +2832,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;此功能提供用于计算将一定范围内的地形填平到某一高度时，需要挖开或填充的空间体积，可以应用于智慧城市，地质，公安等多个领域的业务功能，实用性强。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-cube" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-cube" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1411-analysis-cube.png" alt="填挖方计算" style="zoom:80%;" />
 </a>
 
@@ -2898,7 +2898,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;此功能用于在三维场景中实现动画漫游功能，即让模型沿着路径漫游，默认为第一人称漫游，可修改动画漫游方式。本示例实现让飞机模型按既定的路径漫游。在实际应用中，可结合具体应用场景开发，如绘制路径进行动画漫游等功能需求等。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/analysis/analysis-animation" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/analysis/analysis-animation" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1412-analysis-animation.png" alt="动画漫游" style="zoom:80%;" />
 </a>
 
@@ -2987,7 +2987,7 @@ ceneManager.closeRotation();//关闭自转
 
 ### 降雨特效
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView/clientView-rain" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView/clientView-rain" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1501-clientView-rain.png" alt="降雨特效" style="zoom:80%;" />
 </a>
 
@@ -3007,7 +3007,7 @@ ceneManager.closeRotation();//关闭自转
 
 ### 降雪特效
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView/clientView-snow" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView/clientView-snow" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1502-clientView-snow.png" alt="降雪特效" style="zoom:80%;" />
 </a>
 
@@ -3026,7 +3026,7 @@ ceneManager.closeRotation();//关闭自转
 
 ### 雾特效
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView/clientView-fog" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView/clientView-fog" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1503-clientView-fog.png" alt="雾特效" style="zoom:80%;" />
 </a>
 
@@ -3046,7 +3046,7 @@ ceneManager.closeRotation();//关闭自转
 
 ### 火焰特效
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView/clientView-fire" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView/clientView-fire" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1504-clientView-fire.png" alt="火焰特效" style="zoom:100%;" />
 </a>
 
@@ -3099,7 +3099,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;烟雾粒子特效，与火焰粒子特效相同，可以模拟火灾等各类火焰烟雾、水汽烟雾相关的场景。可通过自定义粒子特效接口实现烟雾粒子特效。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView/clientView-smoke" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView/clientView-smoke" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1505-clientView-smoke.png" alt="烟雾特效" style="zoom:100%;" />
 </a>
 
@@ -3168,7 +3168,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;模型漫游，此功能用于在三维场景中添加模型动态运动显示效果。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/track/track-flow" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/track/track-flow" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1601-track-flow.png" alt="模型漫游" style="zoom:80%;" />
 </a>
 
@@ -3210,7 +3210,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;动态航线，此功能用于动态显示两点之间的动态飞行轨迹效果。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/track/track-dynamicflight" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/track/track-dynamicflight" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1602-track-dynamicflight.png" alt="动态航线" style="zoom:80%;" />
 </a>
 
@@ -3269,7 +3269,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;热力图，此功能用于在当前三维场景中添加热力图显示效果。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView/clientView-heatmap" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView/clientView-heatmap" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1701-clientView-heatmap.png" alt="热力图" style="zoom:80%;" />
 </a>
 
@@ -3288,7 +3288,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;动态圆，此功能用于在当前场景中绘制动态的圆显示效果，可应用于任意场景中。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView/clientView-dynamiccircle" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView/clientView-dynamiccircle" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1702-clientView-dynamiccircle.png" alt="动态圆" style="zoom:80%;" />
 </a>
 
@@ -3330,7 +3330,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;雷达扫描圆，此功能用于在当前场景中添加雷达扫描圆显示效果，可应用于任意场景中。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView/clientView-radarscanning" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView/clientView-radarscanning" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1703-clientView-radarscanning.png" alt="雷达扫描圆" style="zoom:80%;" />
 </a>
 
@@ -3386,7 +3386,7 @@ ceneManager.closeRotation();//关闭自转
 &ensp;&ensp;&ensp;&ensp;**以散点图-空气质量为例：实现在三维场景中加载ECharts散点图，基于全国主要城市空气质量数据实现散点图的可视化。**通过关键接口`CesiumZondy.Overlayer.EchartsLayer()`来实现ECharts图层的加载。
 
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView_Echarts/echarts-air" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView_Echarts/echarts-air" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1801-echarts-air.png" alt="Echarts散点图-空气质量" style="zoom:80%;" />
 </a>
 
@@ -3534,7 +3534,7 @@ ceneManager.closeRotation();//关闭自转
 
 &ensp;&ensp;&ensp;&ensp;**以MapV热力图为例**：实现在三维场景中加载MapV热力图，热力图采用特殊高亮的形式显示访客热衷的页面区域和访客所在的地理区域。通过关键接口 `CesiumZondy.Overlayer.MapvLayer()` 来实现MapV图层的加载。
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientView_MapV/mapv-heater" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientView_MapV/mapv-heater" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/1901-mapv-heater.png" alt="MapV热力图" style="zoom:80%;" />
 </a>
 
@@ -3615,7 +3615,7 @@ ceneManager.closeRotation();//关闭自转
 &ensp;&ensp;&ensp;&ensp;**以缓冲区分析为例**，给定一个缓冲半径进行缓冲区分析，单位支持 `miles 米`，`kilometers 千米`，`degrees 度`。
 
 
-<a href="http://192.168.82.91:8089/#/modules/cesium/clientAnalysis/clientAnalysis-buffer" target="_blank">
+<a href="http://10.10.130.72:8089/#/modules/cesium/clientAnalysis/clientAnalysis-buffer" target="_blank">
  <img src="./static/modules/cesium/source/img/dev/2001-clientAnalysis-buffer.png" alt="客户端缓冲区分析" style="zoom:80%;" />
 </a>
 

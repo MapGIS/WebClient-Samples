@@ -64,7 +64,7 @@
     //初始化面积测量服务
     var calArea = new Zondy.Service.CalArea(dots, {
       //IP地址
-      ip: '192.168.82.91',
+      ip: '10.10.130.72',
       //端口号
       port: '6163',
     })
@@ -122,7 +122,7 @@ MapGIS 点几何形状对象类，描述构成点形状的空间几何信息。
 | --------------- | ------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | **x**           | Number | 点 x 轴坐标                                                                                                                                                                                                                     |
 | **y**           | Number | 点 y 轴坐标                                                                                                                                                                                                                     |
-| **opt_options** | Object | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和 <a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Object.Tangram">Zondy.Object.Tangram</a>类的属性。例如：{key1：value1, key2：value2…} |
+| **opt_options** | Object | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和 <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Tangram">Zondy.Object.Tangram</a>类的属性。例如：{key1：value1, key2：value2…} |
 
 - `opt_options`属性主要参数
 
@@ -158,24 +158,24 @@ MapGIS 点几何形状对象类，描述构成点形状的空间几何信息。
 | 参数名   | 类型                                                                                                                    | 描述                               |
 | -------- | ----------------------------------------------------------------------------------------------------------------------- | ---------------------------------- |
 | desSrsID | Number                                                                                                                  | 目的空间参照系 ID                  |
-| gdbInfo  | <a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Object.CGDBInfo">Zondy.Object.CGDBInfo</a> | 关于指定空间参照系的地理数据库信息 |
+| gdbInfo  | <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.CGDBInfo">Zondy.Object.CGDBInfo</a> | 关于指定空间参照系的地理数据库信息 |
 
 #### 5.【面积测量功能服务类】`Zondy.Service.CalArea(obj, opt_options)`
 
 | 参数        | 类型                                                                                                                          | 描述                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        |
 | ----------- | ----------------------------------------------------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| obj         | Array-[<a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Object.Point2D">Zondy.Object.Point2D</a>] | 需要计算的点数组，为保证多边形闭合，起点和终点需重合。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
-| opt_options | Object                                                                                                                        | 可选项，设置其他属性键值对对象。对象中的属性来自<a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Service.CalServiceBase">Zondy.Service.CalServiceBase</a>、<br/> <a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Service.GeometryAnalysisBase">Zondy.Service.GeometryAnalysisBase</a>类、<br/><a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Service.HttpRequest">Zondy.Service.HttpRequest</a>类的属性。<br/>例如：{key1： value1, key2 ：value2 …} |
+| obj         | Array-[<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Point2D">Zondy.Object.Point2D</a>] | 需要计算的点数组，为保证多边形闭合，起点和终点需重合。                                                                                                                                                                                                                                                                                                                                                                                                                                                                                      |
+| opt_options | Object                                                                                                                        | 可选项，设置其他属性键值对对象。对象中的属性来自<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.CalServiceBase">Zondy.Service.CalServiceBase</a>、<br/> <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.GeometryAnalysisBase">Zondy.Service.GeometryAnalysisBase</a>类、<br/><a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.HttpRequest">Zondy.Service.HttpRequest</a>类的属性。<br/>例如：{key1： value1, key2 ：value2 …} |
 
 ##### 【method】`execute(onSuccess,onError,requestType,options)`：面积测量功能服务的执行函数
 
 通过传入投影转换参数或者 投影转换参数信息（通过空间参照系 ID） 进行计算，建议普通用户采用传入空间参照系 ID 方式。
 
-- `execute`主要参数（来自<a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Service.CalServiceBase">Zondy.Service.CalServiceBase</a>）
+- `execute`主要参数（来自<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.CalServiceBase">Zondy.Service.CalServiceBase</a>）
 
 | 参数名    | 类型                                                                                                                                                                                                                                                                          | 说明                                   |
 | --------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------- |
-| projParam | <a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Service.CProjectParam">Zondy.Service.CProjectParam </a>\|<a target="_blank" href="http://192.168.82.91:8086/docs/mapboxgl/Zondy.Service.CProjectBySRSID">Zondy.Service.CProjectBySRSID</a> | 投影转换参数                           |
+| projParam | <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.CProjectParam">Zondy.Service.CProjectParam </a>\|<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.CProjectBySRSID">Zondy.Service.CProjectBySRSID</a> | 投影转换参数                           |
 | onSuccess | Function                                                                                                                                                                                                                                                                      | 成功回调函数                           |
 | onError   | Function                                                                                                                                                                                                                                                                      | 失败回调函数                           |
 | options   | Object                                                                                                                                                                                                                                                                        | （可选）设置其他扩展 ajax 请求补充参数 |

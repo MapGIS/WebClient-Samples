@@ -45,7 +45,7 @@
     //添加WMTS地图服务
     var wmtsLayer = ogcLayer.appendWMTSTile(
       //瓦片服务地址
-      'http://192.168.82.91:6163/igs/rest/ogc/WMTSServer',
+      'http://10.10.130.72:6163/igs/rest/ogc/WMTSServer',
       //图层名称
       'beijing',
       'EPSG:4326_北京市_028mm_GB',

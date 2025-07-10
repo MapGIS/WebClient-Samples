@@ -187,7 +187,7 @@
 | baseUrl         | String | null        | 基地址   |
 | domain          | String | null        | 域名     |
 | networkProtocol | String | "http"      | 网络协议 |
-| ip              | String | "192.168.82.91" | 服务 ip  |
+| ip              | String | "10.10.130.72" | 服务 ip  |
 | port            | String | "6163"      | 服务端口 |
 | partUrl         | String | null        | 服务地址 |
 
@@ -210,7 +210,7 @@
 | PntInfo   | Zondy.Object.Theme.CPntInfo | null   | （可选）点图形信息 |
 
 **详细信息见 OpenLayers API**
-http://192.168.82.91:8086/docs/openlayers/module-%25E4%25B8%2593%25E9%25A2%2598%25E5%259B%25BE%25E6%259C%258D%25E5%258A%25A1.ThemeOper.html
-http://192.168.82.91:8086/docs/openlayers/theme_ThemeOper.js.html
-http://192.168.82.91:8086/docs/openlayers/ServiceBase.js.html
-http://192.168.82.91:8086/docs/openlayers/module-%25E4%25B8%2593%25E9%25A2%2598%25E5%259B%25BE%25E6%259C%258D%25E5%258A%25A1.CThemeInfo.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E4%25B8%2593%25E9%25A2%2598%25E5%259B%25BE%25E6%259C%258D%25E5%258A%25A1.ThemeOper.html
+http://10.10.130.72:8086/docs/openlayers/theme_ThemeOper.js.html
+http://10.10.130.72:8086/docs/openlayers/ServiceBase.js.html
+http://10.10.130.72:8086/docs/openlayers/module-%25E4%25B8%2593%25E9%25A2%2598%25E5%259B%25BE%25E6%259C%258D%25E5%258A%25A1.CThemeInfo.html

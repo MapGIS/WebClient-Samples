@@ -1,0 +1,745 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>流体模拟</title>
+    <!--加载Cesium库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <div id="fluid-tips">
+      提示：请在"流体源控制"选项卡中添加流体源再进行后续操作
+    </div>
+    <script type="module">
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
+      // 定义视图、流体模拟相关变量
+      let map,
+        sceneView,
+        viewer,
+        fluid,
+        pane,
+        singleColorTable,
+        multipleColorTable,
+        rigidEntity,
+        rigidEntityTransparent,
+        rectangle,
+        debugBoxEntity,
+        debugLineEntity
+
+      // 地图初始化函数
+      async function init() {
+        // 初始化球体
+        initViewer()
+        // 添加地形
+        await addTerrain()
+        // 添加天地图
+        addTDT()
+        // 初始化流体模拟对象
+        initFluid()
+        // 初始化示例UI组件
+        initUI()
+      }
+
+      init()
+
+      // 初始化球体
+      function initViewer() {
+        // 初始化图层管理容器
+        map = new zondy.Map()
+        // 初始化地图视图对象
+        sceneView = new zondy.cesium.SceneView({
+          // 视图id
+          viewId: 'mapgis-3d-viewer',
+          // 图层管理容器
+          map: map,
+          // 额外参数
+          extensionOptions: {
+            // 开启场景时间轴
+            timeline: true
+          }
+        })
+        // 获取视图对象
+        viewer = sceneView.getInnerView()
+        // 开启场景光照
+        viewer.scene.globe.enableLighting = true
+        // 开启地形深度测试
+        viewer.scene.globe.depthTestAgainstTerrain = true
+      }
+
+      // 添加地形
+      async function addTerrain() {
+        viewer.terrainProvider = await Cesium.CesiumTerrainProvider.fromUrl(
+          'http://10.10.130.72:8200/3DData/TerrainCache/汶川地形'
+        )
+      }
+
+      // 添加天地图
+      function addTDT() {
+        let TDTLayer = new zondy.layer.WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_c/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        map.add(TDTLayer)
+      }
+
+      // 初始化流体模拟对象
+      function initFluid() {
+        // 定义流体模拟的色表：一种是所有高度一致的单一颜色，一种是不同高度区间渐变的多颜色
+        singleColorTable = {
+          0: new Cesium.Color(0.211, 0.243, 0.598, 0),
+          5: new Cesium.Color(0.211, 0.243, 0.598, 0.9)
+        }
+        multipleColorTable = {
+          0: new Cesium.Color(0, 0, 0, 0),
+          5: new Cesium.Color(0, 0, 0.4, 1),
+          30: new Cesium.Color(0, 1, 1, 1),
+          60: new Cesium.Color(0, 1, 0, 1),
+          90: new Cesium.Color(1, 1, 0, 1),
+          120: new Cesium.Color(1, 0, 0, 1)
+        }
+
+        // 设置流体模拟的范围
+        rectangle = Cesium.Rectangle.fromRadians(
+          1.8056479629446497,
+          0.5454023008789217,
+          1.806246308720173,
+          0.5459620493789348
+        )
+
+        // 初始化流体模拟的对象
+        fluid = new zondy.cesium.Fluid({
+          viewer,
+          rectangle,
+          color: multipleColorTable,
+          sampleMode: 'linear'
+        })
+
+        // 显示流体模拟盒子
+        debugBoxEntity = viewer.entities.add({
+          rectangle: {
+            coordinates: rectangle,
+            heightReference: Cesium.HeightReference.CLAMP_TO_TERRAIN,
+            extrudedHeight: 1500,
+            outline: true,
+            fill: true,
+            outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
+            material: Cesium.Color.WHITE.withAlpha(0.05)
+          }
+        })
+        debugLineEntity = viewer.entities.add({
+          polyline: {
+            positions: Cesium.Cartesian3.fromRadiansArray([
+              rectangle.west,
+              rectangle.north,
+              rectangle.east,
+              rectangle.north,
+              rectangle.east,
+              rectangle.south,
+              rectangle.west,
+              rectangle.south,
+              rectangle.west,
+              rectangle.north
+            ]),
+            width: 1,
+            material: Cesium.Color.white,
+            clampToGround: true
+          }
+        })
+
+        // 设置初始视角
+        viewer.camera.flyTo({
+          destination: rectangle,
+          duration: 0
+        })
+      }
+
+      // 初始化UI组件
+      function initUI() {
+        pane = new Pane({
+          title: '流体模拟操作面板'
+        })
+
+        const tab = pane.addTab({
+          pages: [{ title: '流体控制' }, { title: '特效调整' }]
+        })
+
+        const sceneControlFolder = tab.pages[0].addFolder({
+          title: '场景控制'
+        })
+
+        const fluidFolder = tab.pages[0].addFolder({
+          title: '流体基础'
+        })
+
+        const fluidColorTableFolder = tab.pages[0].addFolder({
+          title: '流体色表'
+        })
+
+        const fluidSourceControlFolder = tab.pages[0].addFolder({
+          title: '流体源控制'
+        })
+
+        const fluidShadowFolder = tab.pages[1].addFolder({
+          title: '流体阴影'
+        })
+
+        const flowParticleFolder = tab.pages[1].addFolder({
+          title: '流体粒子'
+        })
+
+        const fluidFoamFolder = tab.pages[1].addFolder({
+          title: '白浪效果'
+        })
+
+        const fluidSpecularFolder = tab.pages[1].addFolder({
+          title: '高光效果'
+        })
+
+        const fluidReflectionFolder = tab.pages[1].addFolder({
+          title: '反射效果'
+        })
+
+        const controls = {
+          // 场景控制
+          debugShowFramesPerSecond: false,
+          depthTestAgainstTerrain: true,
+          // 流体基础
+          showFluid: true,
+          fluidSpeed: 240,
+          showDebugBoxEntity: true,
+          // 流体粒子
+          fadeOpacity: 0.05,
+          flowParticleColor: { r: 255, g: 0, b: 0, a: 1 },
+          flowParticleLineWidth: 4,
+          showFlowParticle: false,
+          flowParticleNumber: 10000 * 25,
+          // 白浪效果
+          showFluidFoam: false,
+          fluidFoamSize: 0.7,
+          fluidFoamDensity: 2,
+          fluidFoamIntensity: 2,
+          fluidFoamColor: { r: 255, g: 255, b: 255, a: 1 },
+          // 高光效果
+          showFluidSpecular: false,
+          fluidSpecularBrightness: 0.8,
+          fluidSpecularSize: 50,
+          fluidSpecularLength: 35,
+          // 阴影效果
+          showFluidShadows: false,
+          fluidShadowsDarkness: 0.3,
+          fluidShadowsMaximumDistance: 5000,
+          fluidShadowsSoftShadows: false,
+          // 反射效果
+          showFluidReflection: false,
+          fluidReflectionOpacity: 0.5,
+          fluidReflectionMaxDistance: 500,
+          fluidReflectionThickness: 0,
+          // 添加点流体源的参数
+          addPointFluidSourceRadius: 200,
+          addPointFluidSourceFlow: 300,
+          // 添加全域流体源的参数
+          addVolumeFluidSourceIntensity: 10
+        }
+
+        sceneControlFolder
+          .addBinding(controls, 'debugShowFramesPerSecond', {
+            label: '显示帧率'
+          })
+          .on('change', (e) => {
+            viewer.scene.debugShowFramesPerSecond = e.value
+          })
+
+        sceneControlFolder
+          .addBinding(controls, 'depthTestAgainstTerrain', {
+            label: '深度测试'
+          })
+          .on('change', (e) => {
+            viewer.scene.globe.depthTestAgainstTerrain = e.value
+          })
+
+        fluidFolder
+          .addBinding(controls, 'showDebugBoxEntity', {
+            label: '显示盒子'
+          })
+          .on('change', (e) => {
+            if (e.value) {
+              debugBoxEntity = viewer.entities.add({
+                rectangle: {
+                  coordinates: rectangle,
+                  heightReference: Cesium.HeightReference.CLAMP_TO_TERRAIN,
+                  extrudedHeight: 1000,
+                  outline: true,
+                  fill: true,
+                  outlineColor: Cesium.Color.WHITE.withAlpha(0.9),
+                  material: Cesium.Color.WHITE.withAlpha(0.1)
+                }
+              })
+              debugLineEntity = viewer.entities.add({
+                polyline: {
+                  positions: Cesium.Cartesian3.fromRadiansArray([
+                    rectangle.west,
+                    rectangle.north,
+                    rectangle.east,
+                    rectangle.north,
+                    rectangle.east,
+                    rectangle.south,
+                    rectangle.west,
+                    rectangle.south,
+                    rectangle.west,
+                    rectangle.north
+                  ]),
+                  width: 1,
+                  material: Cesium.Color.white,
+                  clampToGround: true
+                }
+              })
+            } else {
+              viewer.entities.remove(debugBoxEntity)
+              viewer.entities.remove(debugLineEntity)
+            }
+          })
+
+        fluidFolder
+          .addBinding(controls, 'showFluid', {
+            label: '显示流体'
+          })
+          .on('change', (e) => {
+            fluid.show = e.value
+          })
+
+        fluidFolder
+          .addBinding(controls, 'fluidSpeed', {
+            label: '流动速度',
+            min: 0,
+            max: 500
+          })
+          .on('change', (e) => {
+            fluid.speed = e.value
+          })
+
+        fluidFolder
+          .addButton({
+            title: '开始模拟'
+          })
+          .on('click', () => {
+            fluid.start()
+          })
+
+        fluidFolder
+          .addButton({
+            title: '暂停模拟'
+          })
+          .on('click', () => {
+            fluid.pause()
+          })
+
+        fluidColorTableFolder
+          .addBlade({
+            view: 'list',
+            label: '流体色表',
+            options: [
+              { text: '多色色表', value: 'MULTIPLE' },
+              { text: '单色色表', value: 'SINGLE' }
+            ],
+            value: 'MULTIPLE'
+          })
+          .on('change', (e) => {
+            if (e.value === 'SINGLE') {
+              fluid.color = singleColorTable
+            } else if (e.value === 'MULTIPLE') {
+              fluid.color = multipleColorTable
+            }
+          })
+
+        flowParticleFolder
+          .addBinding(controls, 'showFlowParticle', {
+            label: '显示粒子'
+          })
+          .on('change', (e) => {
+            fluid.flowParticle.show = e.value
+          })
+
+        flowParticleFolder
+          .addBinding(controls, 'fadeOpacity', {
+            label: '消散速度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            fluid.flowParticle.fadeOpacity = e.value
+          })
+
+        flowParticleFolder
+          .addBinding(controls, 'flowParticleColor', {
+            label: '粒子颜色'
+          })
+          .on('change', (e) => {
+            fluid.flowParticle.color = Cesium.Color.fromBytes(
+              e.value.r,
+              e.value.g,
+              e.value.b,
+              e.value.a * 255
+            )
+          })
+
+        flowParticleFolder
+          .addBinding(controls, 'flowParticleLineWidth', {
+            label: '粒子线宽',
+            min: 1,
+            max: 10
+          })
+          .on('change', (e) => {
+            fluid.flowParticle.lineWidth = e.value
+          })
+
+        flowParticleFolder
+          .addBinding(controls, 'flowParticleNumber', {
+            label: '粒子数量',
+            min: 10000,
+            max: 500000
+          })
+          .on('change', (e) => {
+            fluid.flowParticle.number = e.value
+          })
+
+        fluidFoamFolder
+          .addBinding(controls, 'showFluidFoam', {
+            label: '显示白浪'
+          })
+          .on('change', (e) => {
+            fluid.foam.show = e.value
+          })
+
+        fluidFoamFolder
+          .addBinding(controls, 'fluidFoamSize', {
+            label: '白浪大小',
+            min: 0,
+            max: 5
+          })
+          .on('change', (e) => {
+            fluid.foam.size = e.value
+          })
+
+        fluidFoamFolder
+          .addBinding(controls, 'fluidFoamDensity', {
+            label: '白浪密度',
+            min: 0,
+            max: 10
+          })
+          .on('change', (e) => {
+            fluid.foam.density = e.value
+          })
+
+        fluidFoamFolder
+          .addBinding(controls, 'fluidFoamIntensity', {
+            label: '白浪强度',
+            min: 0,
+            max: 10
+          })
+          .on('change', (e) => {
+            fluid.foam.intensity = e.value
+          })
+
+        fluidFoamFolder
+          .addBinding(controls, 'fluidFoamColor', {
+            label: '白浪颜色'
+          })
+          .on('change', (e) => {
+            fluid.foam.color = Cesium.Color.fromBytes(
+              e.value.r,
+              e.value.g,
+              e.value.b,
+              e.value.a * 255
+            )
+          })
+
+        fluidSpecularFolder
+          .addBinding(controls, 'showFluidSpecular', {
+            label: '显示高光'
+          })
+          .on('change', (e) => {
+            resetFluidTips(
+              '提示：高光的显示依赖视线的角度和太阳的位置，请拖动底部时间轴并倾斜视角观察'
+            )
+            fluid.specular.show = e.value
+          })
+
+        fluidSpecularFolder
+          .addBinding(controls, 'fluidSpecularBrightness', {
+            label: '高光强度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            fluid.specular.brightness = e.value
+          })
+
+        fluidSpecularFolder
+          .addBinding(controls, 'fluidSpecularSize', {
+            label: '高光大小',
+            min: 0,
+            max: 100
+          })
+          .on('change', (e) => {
+            fluid.specular.size = e.value
+          })
+
+        fluidSpecularFolder
+          .addBinding(controls, 'fluidSpecularLength', {
+            label: '高光长度',
+            min: 0,
+            max: 100
+          })
+          .on('change', (e) => {
+            fluid.specular.length = e.value
+          })
+
+        fluidShadowFolder
+          .addBinding(controls, 'showFluidShadows', {
+            label: '显示阴影'
+          })
+          .on('change', (e) => {
+            resetFluidTips(
+              '提示：阴影的显示依赖太阳的位置，请拖动底部时间轴改变太阳的位置观察'
+            )
+            viewer.shadows = e.value
+          })
+
+        fluidShadowFolder
+          .addBinding(controls, 'fluidShadowsDarkness', {
+            label: '阴影明暗',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            fluid.shadow.darkness = e.value
+          })
+
+        fluidShadowFolder
+          .addBinding(controls, 'fluidShadowsMaximumDistance', {
+            label: '最大距离',
+            min: 0,
+            max: 10000
+          })
+          .on('change', (e) => {
+            fluid.shadow.maximumDistance = e.value
+          })
+
+        fluidShadowFolder
+          .addBinding(controls, 'fluidShadowsSoftShadows', {
+            label: '柔和阴影'
+          })
+          .on('change', (e) => {
+            fluid.shadow.softShadows = e.value
+          })
+
+        fluidReflectionFolder
+          .addBinding(controls, 'showFluidReflection', {
+            label: '显示反射'
+          })
+          .on('change', (e) => {
+            fluid.reflection.show = e.value
+          })
+
+        fluidReflectionFolder
+          .addBinding(controls, 'fluidReflectionOpacity', {
+            label: '反射透明',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            fluid.reflection.opacity = e.value
+          })
+
+        fluidReflectionFolder
+          .addBinding(controls, 'fluidReflectionMaxDistance', {
+            label: '反射距离',
+            min: 0,
+            max: 1000
+          })
+          .on('change', (e) => {
+            fluid.reflection.maxDistance = e.value
+          })
+
+        fluidReflectionFolder
+          .addBinding(controls, 'fluidReflectionThickness', {
+            label: '反射厚度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            fluid.reflection.thickness = e.value
+          })
+
+        fluidSourceControlFolder
+          .addBinding(controls, 'addPointFluidSourceRadius', {
+            label: '半径大小',
+            min: 0,
+            max: 1000
+          })
+          .on('change', (e) => {
+            controls.addPointFluidSourceRadius = e.value
+          })
+
+        fluidSourceControlFolder
+          .addBinding(controls, 'addPointFluidSourceFlow', {
+            label: '流量大小',
+            min: 0,
+            max: 1000
+          })
+          .on('change', (e) => {
+            controls.addPointFluidSourceFlow = e.value
+          })
+
+        fluidSourceControlFolder
+          .addButton({
+            title: '添加点流体源'
+          })
+          .on('click', () => {
+            resetFluidTips(
+              '提示：请在模拟范围内鼠标左键点击一个位置添加点流体源'
+            )
+            document.body.style.cursor = 'crosshair'
+            let handler = new Cesium.ScreenSpaceEventHandler(
+              viewer.scene.canvas
+            )
+            handler.setInputAction((event) => {
+              let ray = viewer.camera.getPickRay(event.position)
+              let position = viewer.scene.globe.pick(ray, viewer.scene)
+              // 判断选择的坐标点是否在模拟范围之内，若不是则添加点流体源失败
+              if (isPointInRectangle(position, rectangle)) {
+                fluid.fluidSources.add(
+                  new zondy.cesium.PointFluidSource({
+                    position: position,
+                    flow: controls.addPointFluidSourceFlow,
+                    radius: controls.addPointFluidSourceRadius
+                  })
+                )
+              } else {
+                resetFluidTips(
+                  '提示：选择的位置超出了流体模拟范围，点流体源添加失败，请重新添加'
+                )
+              }
+              document.body.style.cursor = 'default'
+              handler.destroy()
+            }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+          })
+
+        fluidSourceControlFolder.addBlade({
+          view: 'separator'
+        })
+
+        fluidSourceControlFolder
+          .addBinding(controls, 'addVolumeFluidSourceIntensity', {
+            label: '流量大小',
+            min: 0,
+            max: 100
+          })
+          .on('change', (e) => {
+            controls.addVolumeFluidSourceIntensity = e.value
+          })
+
+        fluidSourceControlFolder
+          .addButton({
+            title: '添加全域流体源'
+          })
+          .on('click', () => {
+            fluid.fluidSources.add(
+              new zondy.cesium.VolumeFluidSource({
+                intensity: 50
+              })
+            )
+          })
+
+        fluidSourceControlFolder.addBlade({
+          view: 'separator'
+        })
+
+        fluidSourceControlFolder
+          .addButton({
+            title: '移除全部流体源'
+          })
+          .on('click', () => {
+            resetFluidTips(
+              '提示：移除全部流体源后，只是流体总量不会增加，已经存在的流体不会消失'
+            )
+            fluid.fluidSources.removeAll()
+          })
+
+        // 用于添加点流体源时判断添加的坐标点是否在矩形范围内
+        function isPointInRectangle(cartesian, rectangle) {
+          const cartographic =
+            viewer.scene.globe.ellipsoid.cartesianToCartographic(cartesian)
+          if (
+            cartographic.latitude > rectangle.north ||
+            cartographic.latitude < rectangle.south
+          ) {
+            return false
+          }
+          let east = rectangle.east
+          if (east < rectangle.west) {
+            east += Cesium.Math.TWO_PI
+          }
+          let lon = cartographic.longitude
+          if (lon < rectangle.west) {
+            lon += Cesium.Math.TWO_PI
+          }
+          return lon >= rectangle.west && lon <= east
+        }
+      }
+
+      // 修改页面右上角的提示内容
+      function resetFluidTips(text) {
+        document.getElementById('fluid-tips').innerText = text
+      }
+    </script>
+
+    <style>
+      /* tweakpane样式 */
+      .tp-dfwv {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
+      /* 提示内容样式 */
+      #fluid-tips {
+        position: absolute;
+        top: 10px;
+        right: 3px;
+        /* left: 50%; */
+        /* transform: translateX(-50%); */
+        background: #28292e;
+        color: #f5f5f5;
+        padding: 5px;
+        user-select: none;
+        font-size: 12px;
+        border-radius: 2px;
+      }
+    </style>
+  </body>
+</html>
