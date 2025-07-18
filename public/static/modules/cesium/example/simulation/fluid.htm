@@ -237,7 +237,7 @@
           flowParticleColor: { r: 255, g: 0, b: 0, a: 1 },
           flowParticleLineWidth: 4,
           showFlowParticle: false,
-          flowParticleNumber: 10000 * 25,
+          flowParticleNumber: 500,
           // 白浪效果
           showFluidFoam: false,
           fluidFoamSize: 0.7,
@@ -420,8 +420,8 @@
         flowParticleFolder
           .addBinding(controls, 'flowParticleNumber', {
             label: '粒子数量',
-            min: 10000,
-            max: 500000
+            min: 100,
+            max: 10000
           })
           .on('change', (e) => {
             fluid.flowParticle.number = e.value
