@@ -261,9 +261,9 @@
           fluidReflectionThickness: 0,
           // 添加点流体源的参数
           addPointFluidSourceRadius: 200,
-          addPointFluidSourceFlow: 300,
+          addPointFluidSourceFlow: 3000000,
           // 添加全域流体源的参数
-          addVolumeFluidSourceIntensity: 10
+          addVolumeFluidSourceIntensity: 600000
         }
 
         sceneControlFolder
@@ -610,7 +610,7 @@
           .addBinding(controls, 'addPointFluidSourceFlow', {
             label: '流量大小',
             min: 0,
-            max: 1000
+            max: 10000000
           })
           .on('change', (e) => {
             controls.addPointFluidSourceFlow = e.value
@@ -658,7 +658,7 @@
           .addBinding(controls, 'addVolumeFluidSourceIntensity', {
             label: '流量大小',
             min: 0,
-            max: 100
+            max: 10000000
           })
           .on('change', (e) => {
             controls.addVolumeFluidSourceIntensity = e.value
@@ -671,7 +671,7 @@
           .on('click', () => {
             fluid.fluidSources.add(
               new zondy.cesium.VolumeFluidSource({
-                intensity: 50
+                intensity: controls.addVolumeFluidSourceIntensity
               })
             )
           })
