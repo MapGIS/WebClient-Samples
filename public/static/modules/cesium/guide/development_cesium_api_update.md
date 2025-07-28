@@ -13,6 +13,18 @@
 
 <br />
 
+# V10.7.6.10 接口变更表
+
+| <span style="display:inline-block;width: 50px"> 命名空间 </span> | 类名                   | <span style="display:inline-block;width: 60px">类中文说明</span> | <span style="display:inline-block;width: 70px"> 类变更<br />类型 </span> | 成员名(方法/属性/枚举/常量/事件) | <span style="display:inline-block;width: 70px"> 成员变更<br />类型 </span> | <span style="display:inline-block;width: 80px"> 被替代接口<br />（废弃） </span> | 变更内容说明                                                 |
+| ------------------------------------------------------------ | ---------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | -------------------------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| Cesium                                                       | Viewer                 | 视图                                                         | 更新                                                         | options.logoScale                | 新增                                                         |                                                              | Viewer的构造参数新增logoScale商标缩放系数，该系数需大于等于0.2。默认为1倍，图标大小为宽98px、高28px。 |
+| Cesium                                                       | SectionPolygonGeometry | 剖面区几何                                                   | 新增                                                         |                                  |                                                              |                                                              | 10.7.6.10上新增SectionPolygonGeometry接口， 处理剖面区几何。API请参考 http://10.10.130.72:8086/static/modules/cesium/api/cesium/SectionPolygonGeometry.html?classFilter=SectionPolygonGeometry |
+| Cesium                                                       | SectionPlaneGeometry   | 剖面几何                                                     | 更新                                                         | isHorizontal                     | 新增                                                         |                                                              | 是否生成水平面，默认为false。设置为true时，会生成水平切面    |
+| Cesium                                                       | SectionPlaneGeometry   | 剖面几何                                                     | 更新                                                         | createPlaneGeometryByPositions   | 新增                                                         |                                                              | 根据空间中的四个点构建一个剖面几何                           |
+| Cesium                                                       | SectionPlaneGeometry   | 剖面几何                                                     | 更新                                                         | createPlaneGeometryByHeight      | 新增                                                         |                                                              | 根据多个MapGISM3DSet和统一的海拔高度构建一个水平的剖面几何   |
+
+<br />
+
 # V10.7.4.10 接口变更表
 
 所属命名空间（所属库）变更表:
