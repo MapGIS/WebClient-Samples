@@ -182,9 +182,7 @@
             heightReference: Cesium.HeightReference.CLAMP_TO_GROUND
           },
           // 完成漫游后的回调函数
-          complete: function () {
-            viewer.entities.remove(info)
-          },
+          complete: function () {},
           // 路径插值算法。可选：拉格朗日算法Cesium.LagrangePolynomialApproximation、线性插值 Cesium.LinearApproximation、埃尔米特插值插值Cesium.HermitePolynomialApproximation
           interpolationAlgorithm: Cesium.LagrangePolynomialApproximation,
           //是否获取当前点坐标，为true时，需配合返回当前点坐标的回调函数callBack一起使用
