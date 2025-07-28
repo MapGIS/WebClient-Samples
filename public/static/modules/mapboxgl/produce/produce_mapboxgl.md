@@ -129,6 +129,37 @@
 
 ## 版本说明
 
+### <font color=red>V10.7.6.10</font>
+
+<font size=4>**webclient-mapboxgl-plugin**</font>
+
+1. 功能新增
+
+- 此版本无更新
+
+2. 功能优化
+
+- 此版本无更新
+
+3. API接口变更
+- 此版无变更
+
+<font size=4>**webclient-mapboxgl**</font>
+
+1. 功能新增
+
+- 支持百度、高德瓦片服务纠偏显示
+
+2. 功能优化
+
+- 优化不同裁图瓦片叠加时的空间裁剪效果
+
+3. API接口变更
+
+- API接口变更
+<a href="http://10.10.130.72:8086/#/guideMulti/mapboxgl/development_mapboxgl_api_update" target="_blank">webclient-mapboxgl 接口变更表</a>
+
+
 ### <font color=red>V10.7.4.10</font>
 
 <font size=4>**webclient-mapboxgl-plugin**</font>
