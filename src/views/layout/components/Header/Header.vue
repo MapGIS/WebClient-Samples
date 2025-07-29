@@ -29,7 +29,7 @@
               <el-submenu :index="`${itemF.title}-${itemS.title}`" :key="iS" v-if="typeof(itemS.children) !== 'undefined' && itemS.children.length > 0" :show-timeout="timeout" :hide-timeout="timeout" popper-class="el-submenu-header" :popper-append-to-body="isToBody">
                 <template slot="title">{{ itemS.title }}</template>
                 <template v-for="(itemT, iT) in itemS.children">
-                  <el-menu-item :index="`唯一标识${iF}-${iS}-${iT}`" :key="iT" class="el-menu-item-header" @click="returnLastActive()" v-if="isLink(itemT.url) || isDocs(itemT.url)">
+                  <el-menu-item :index="`唯一标识${iF}-${iS}-${iT}`" :key="iT" class="el-menu-item-header" @click="returnLastActive()" v-if="isLink(itemT.url) || isDocs(itemT.url) || isVue3Rsource(itemT.url)">
                     <div>
                       <a :href="itemT.url" target="_blank">{{ itemT.title }}</a>
                     </div>
@@ -39,7 +39,7 @@
                   </el-menu-item>
                 </template>
               </el-submenu>
-              <el-menu-item :index="`唯一标识${itemF.title}-${itemS.title}`" :key="iS" class="el-menu-item-header" @click="returnLastActive()" v-else-if="isLink(itemS.url) || isDocs(itemS.url)">
+              <el-menu-item :index="`唯一标识${itemF.title}-${itemS.title}`" :key="iS" class="el-menu-item-header" @click="returnLastActive()" v-else-if="isLink(itemS.url) || isDocs(itemS.url) || isVue3Rsource(itemS.url)">
                 <div>
                   <a :href="itemS.url" target="_blank">{{ itemS.title }}</a>
                 </div>
@@ -50,7 +50,7 @@
             </template>
           </el-submenu>
         </el-menu-item>
-        <el-menu-item :index="`唯一标识${itemF.title}`" :key="iF" class="el-menu-item-header" @click="returnLastActive()" v-else-if="isLink(itemF.url) || isDocs(itemF.url)">
+        <el-menu-item :index="`唯一标识${itemF.title}`" :key="iF" class="el-menu-item-header" @click="returnLastActive()" v-else-if="isLink(itemF.url) || isDocs(itemF.url) || isVue3Rsource(itemF.url)">
           <div>
             <a :href="itemF.url" target="_blank">{{ itemF.title }}</a>
           </div>
@@ -187,13 +187,19 @@ export default {
       }
     },
     isLink(link) {
-      if (link.indexOf('http') >= 0 || link.indexOf('storybook') >= 0 || link.indexOf('example') >= 0) {
+      if (link.indexOf('http') >= 0 || link.indexOf('storybook') >= 0) {
         return true;
       }
       return false;
     },
     isDocs(link) {
-      if (link.indexOf('/api/') >= 0 || link.indexOf('/docs/') >= 0) {
+      if (link.indexOf('/api/') >= 0) {
+        return true;
+      }
+      return false;
+    },
+    isVue3Rsource(link) {
+      if (link.indexOf('/vue3/') >= 0 && (link.indexOf('/examples/') >= 0 || link.indexOf('/docs/') >= 0 || link.indexOf('/storybook/') >= 0)) {
         return true;
       }
       return false;
