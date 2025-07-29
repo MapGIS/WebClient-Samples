@@ -212,19 +212,19 @@
         "children": [
           {
             "title": "Common",
-            "url": "/static/modules/component-vue3/examples/common/index.html"
+            "url": "/vue3/common/examples/index.html"
           },
           {
             "title": "Cesium",
-            "url": "/static/modules/component-vue3/examples/cesium/index.html"
+            "url": "/vue3/cesium/examples/index.html"
           },
           {
             "title": "MapboxGL",
-            "url": "/static/modules/component-vue3/examples/mapboxgl/index.html"
+            "url": "/vue3/mapboxgl/examples/index.html"
           },
           {
             "title": "UI",
-            "url": "/static/modules/component-vue3/examples/ui/index.html"
+            "url": "/vue3/ui/examples/index.html"
           }
         ]
       },
@@ -233,19 +233,19 @@
         "children": [
           {
             "title": "Common",
-            "url": "/static/modules/component-vue3/api/common/index.html"
+            "url": "/vue3/common/docs/index.html"
           },
           {
             "title": "Cesium",
-            "url": "/static/modules/component-vue3/api/cesium/index.html"
+            "url": "/vue3/cesium/docs/index.html"
           },
           {
             "title": "MapboxGL",
-            "url": "/static/modules/component-vue3/api/mapboxgl/index.html"
+            "url": "/vue3/mapboxgl/docs/index.html"
           },
           {
             "title": "UI",
-            "url": "/static/modules/component-vue3/api/ui/index.html"
+            "url": "/vue3/ui/docs/index.html"
           }
         ]
       },
@@ -255,24 +255,28 @@
         "children": [
           {
             "title": "Common",
-            "url": "/static/modules/component-vue3/storybook/common/index.html"
+            "url": "/vue3/common/storybook/index.html"
           },
           {
             "title": "Cesium",
-            "url": "/static/modules/component-vue3/storybook/cesium/index.html"
+            "url": "/vue3/cesium/storybook/index.html"
           },
           {
             "title": "MapboxGL",
-            "url": "/static/modules/component-vue3/storybook/mapboxgl/index.html"
+            "url": "/vue3/mapboxgl/storybook/index.html"
           },
           {
             "title": "UI",
-            "url": "/static/modules/component-vue3/storybook/ui/index.html"
+            "url": "/vue3/ui/storybook/index.html"
           }
         ]
       },
       {
         "group": "Vue 2 组件",
+        "title": "产品介绍",
+        "url": "/produce/component/introduction"
+      },
+      {
         "title": "开发教程",
         "url": "/guide/component/development_component"
       },

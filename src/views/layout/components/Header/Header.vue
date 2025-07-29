@@ -187,13 +187,13 @@ export default {
       }
     },
     isLink(link) {
-      if (link.indexOf('http') >= 0 || link.indexOf('storybook') >= 0) {
+      if (link.indexOf('http') >= 0 || link.indexOf('storybook') >= 0 || link.indexOf('example') >= 0) {
         return true;
       }
       return false;
     },
     isDocs(link) {
-      if (link.indexOf('/api/') >= 0) {
+      if (link.indexOf('/api/') >= 0 || link.indexOf('/docs/') >= 0) {
         return true;
       }
       return false;
