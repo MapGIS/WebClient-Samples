@@ -282,7 +282,7 @@
       },
       {
         "title": "开发示例",
-        "url": "/storybook/index.html?path=/story/基础介绍-0-介绍--page"
+        "url": "/static/modules/component/storybook/index.html?path=/story/基础介绍-0-介绍--page"
       },
       {
         "title": "开发API",

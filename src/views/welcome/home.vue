@@ -21,6 +21,7 @@
                                     :subtitle="dev.subtitle"
                                     :index="dev.index"
                                     :routeGallery="dev.routeGallery"
+                                    :routeGalleryList="dev.routeGalleryList"
                                     :routeAPI="dev.routeAPI"
                                     :routeAPIList="dev.routeAPIList"
                             />
