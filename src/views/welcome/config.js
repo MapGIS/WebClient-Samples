@@ -70,20 +70,72 @@ export const Develops = [
   },
   {
     icon: "./static/assets/home/vue-new.png",
-    routeGallery: "http://192.168.82.91:8086/storybook/index.html",
+    routeGallery: "",
+    routeGalleryList: [
+      {
+        group: "Vue 3 组件",
+        groupIcon: "beta",
+        title: "Commons",
+        url: "/vue3/common/examples/index.html"
+      },
+      {
+        title: "Cesium",
+        url: "/vue3/cesium/examples/index.html"
+      },
+      {
+        title: "MapboxGL",
+        url: "/vue3/mapboxgl/examples/index.html"
+      },
+      {
+        title: "UI",
+        url: "/vue3/ui/examples/index.html"
+      },
+      {
+        group: "Vue 2 组件",
+        title: "示例",
+        url: "/static/modules/component/storybook/index.html?path=/story/基础介绍-0-介绍--page"
+      }
+    ],
     routeAPI: "",
-    routeAPIList: [{
-      "title": "Cesium-API",
-        "url": "./static/modules/component/api/vue-cesium/index.html"
-      },{
-        "title": "MapboxGL-API",
-        "url": "/static/modules/component/api/vue-mapboxgl/index.html"
-      },{
-        "title": "UI-API",
-        "url": "/static/modules/component/api/vue-ui/index.html"
-      }],
+    routeAPIList: [
+      {
+        group: "Vue 3 组件",
+        groupIcon: "beta",
+        title: "Common",
+        url: "/vue3/common/docs/index.html"
+      },
+      {
+        title: "Cesium",
+        url: "/vue3/cesium/docs/index.html"
+      },
+      {
+        title: "MapboxGL",
+        url: "/vue3/mapboxgl/docs/index.html"
+      },
+      {
+        title: "UI",
+        url: "/vue3/ui/docs/index.html"
+      },
+      {
+        group: "Vue 2 组件",
+        title: "Cesium",
+        url: "./static/modules/component/api/vue-cesium/index.html"
+      },
+      {
+        title: "MapboxGL",
+        url: "/static/modules/component/api/vue-mapboxgl/index.html"
+      },
+      {
+        title: "UI",
+        url: "/static/modules/component/api/vue-ui/index.html"
+      }
+    ],
     title: "组件",
-    subtitle: ["VUE-MapboxGL、VUE-Cesium、", "MapGIS UI组件库", "适合WebGIS二三维组件应用开发"],
+    subtitle: [
+      "VUE-MapboxGL、VUE-Cesium、",
+      "MapGIS UI组件库",
+      "适合WebGIS二三维组件应用开发"
+    ],
     index: "/",
   },
   // {
