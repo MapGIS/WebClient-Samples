@@ -57,7 +57,7 @@
 
 &ensp;&ensp;&ensp;&ensp;本示例使用MapGIS官方云端（10.10.130.72）已经发布的名称为“北京市”（或“SampleDoc”）的地图文档进行演示。若您需要显示自己的地图文档，需要先附加待显示地图数据所在的地理数据库，然后通过**MapGIS Server Manager**配置GIS服务环境并发布地图服务。
 
-<center>![](C:/Users/杨琨/Downloads/Cesium_API结构.png)
+<center>
   <img src="./static/modules/openlayers/source/img/MapGIS发布服务.png" alt="MapGIS服务发布" style="zoom:80%;" />
   <br>
   <div class="notes">MapGIS Server Manager发布服务</div>
