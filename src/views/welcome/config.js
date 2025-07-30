@@ -70,7 +70,7 @@ export const Develops = [
   },
   {
     icon: "./static/assets/home/vue-new.png",
-    routeGallery: "http://192.168.82.91:8086/storybook/index.html",
+    routeGallery: "/static/modules/component/storybook/index.html?path=/story/基础介绍-0-介绍--page",
     routeAPI: "",
     routeAPIList: [{
       "title": "Cesium-API",
