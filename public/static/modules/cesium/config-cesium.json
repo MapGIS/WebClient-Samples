@@ -1031,6 +1031,12 @@
               "file": "image-layer-elevation-mode-setting",
               "icon": "image-layer-elevation-mode-setting.png",
               "diffcult": "1"
+            },
+            {
+              "name": "模型缓存图层样式设置",
+              "file": "model-appearance-control",
+              "icon": "model-appearance-control.png",
+              "diffcult": "1"
             }
           ]
         }
