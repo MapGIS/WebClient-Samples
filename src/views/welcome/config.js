@@ -75,7 +75,7 @@ export const Develops = [
       {
         group: "Vue 3 组件",
         groupIcon: "beta",
-        title: "Commons",
+        title: "Common",
         url: "/vue3/common/examples/index.html"
       },
       {
