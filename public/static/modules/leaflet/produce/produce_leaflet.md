@@ -71,7 +71,7 @@
 | 开发库                           | 说明                                                         |
 | :------------------------------- | :----------------------------------------------------------- |
 | @mapgis/webclient-leaflet-plugin | Leaflet 插件库，在插件层实现地图引擎和逻辑层的适配。<br/>1、提供Leaflet 引擎对于二三维通用模块的实现。<br/>2、提供Leaflet 引擎对控件、工具的实际渲染功能。<br/>3、提供统一的视图对象操作地图。<br/>4、提供其他适合Leaflet 插件层实现的功能。 |
-| @mapgis/leaflet                  | 地图引擎库，提供 leaflet 引擎基础功能                        |
+| @mapgis/leaflet                  | 地图引擎库，提供 leaflet 引擎基础功能<br/><font size=2>备注：10.7.6.10 及以后的版本，不再维护 `@mapgis/leaflet` 库，推荐使用官方 `leaflet` v1.9.2</font> |
 | @mapgis/webclient-common         | 公用 JS 库。<br/>1、提供基础对象接口的定义。<br/>2、提供 IGS 等服务接口的封装。<br/>3、提供地图（场景）管理接口的定义。<br/>4、提供草图编辑、空间分析、专题图、行业标绘、视频调绘，以及其它与引擎无关的功能。 |
 
 > 核心库分别提供ES5压缩版（webclient-leaflet-plugin.min.js）与ES6压缩版（webclient-leaflet-plugin-es6.js）两个版本。
@@ -139,7 +139,7 @@
 3. API接口变更
 <a href="http://10.10.130.72:8086/#/guideMulti/leaflet/development_leaflet_plugin_api_update" target="_blank">webclient-leaflet-plugin 接口变更表</a>
 
-备注：从10.7.6.10版本开始不再维护 `@mapgis/leaflet` 库，推荐使用官方 `leaflet` v1.9.2
+备注：10.7.6.10 及以后的版本，不再维护 `@mapgis/leaflet` 库，推荐使用官方 `leaflet` v1.9.2
 
 ### <font color=red>V10.7.4.10</font>
 
