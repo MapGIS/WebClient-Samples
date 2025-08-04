@@ -2,16 +2,25 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
     <title>统计专题图(旧版)</title>
     <!--该库集成了leaflet与MapGIS IGServer for JavaScript脚本库-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/leaflet/leaflet.css"/>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/leaflet/leaflet.css"
+    />
     <script src="http://10.10.130.72:8086/static/libs/cdn/leaflet/leaflet.js"></script>
     <!--plugin库-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-leaflet-plugin.min.js"></script>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
     <script type="text/javascript">
       //使用严格模式
       'use strict'
@@ -19,8 +28,7 @@
       let map, mapView, innerView, igsTileLayer, themeLayer
       const { Map } = zondy
       const { IGSTileLayer, IGSFeatureLayer } = zondy.layer
-      const { MapView } = zondy.leaflet
-      const { GraphThemeLayer } = zondy.leaflet.layer
+      const { MapView, GraphThemeLayer } = zondy.leaflet
 
       /** 初始化地图显示*/
       function init() {
@@ -502,97 +510,97 @@
     </script>
   </head>
   <style>
-      body {
-          height: 700px;
-      }
+    body {
+      height: 700px;
+    }
 
-      .editPane {
-          position: absolute;
-          right: 155px;
-          text-align: center;
-          background: #fff;
-          z-index: 1000;
-          border-radius: 4px;
-      }
+    .editPane {
+      position: absolute;
+      right: 155px;
+      text-align: center;
+      background: #fff;
+      z-index: 1000;
+      border-radius: 4px;
+    }
 
-      .tooltip-inner {
-          width: 68px;
-          background-color: transparent;
-          color: #515151;
-      }
+    .tooltip-inner {
+      width: 68px;
+      background-color: transparent;
+      color: #515151;
+    }
 
-      .graph {
-          margin: 5px;
-          width: 26px;
-          height: 26px;
-          border: none;
-          border-radius: 4px;
-          background-size: 100%;
-      }
+    .graph {
+      margin: 5px;
+      width: 26px;
+      height: 26px;
+      border: none;
+      border-radius: 4px;
+      background-size: 100%;
+    }
 
-      #bar {
-          background-image: url('./static/assets/graphic-image/bar.png');
-      }
+    #bar {
+      background-image: url('./static/assets/graphic-image/bar.png');
+    }
 
-      #bar3d {
-          background-image: url('./static/assets/graphic-image/bar3D.png');
-      }
+    #bar3d {
+      background-image: url('./static/assets/graphic-image/bar3D.png');
+    }
 
-      #line {
-          background-image: url('./static/assets/graphic-image/ling.png');
-      }
+    #line {
+      background-image: url('./static/assets/graphic-image/ling.png');
+    }
 
-      #point {
-          background-image: url('./static/assets/graphic-image/point.png');
-      }
+    #point {
+      background-image: url('./static/assets/graphic-image/point.png');
+    }
 
-      #pie {
-          background-image: url('./static/assets/graphic-image/pie.png');
-      }
+    #pie {
+      background-image: url('./static/assets/graphic-image/pie.png');
+    }
 
-      #ring {
-          background-image: url('./static/assets/graphic-image/ring.png');
-      }
+    #ring {
+      background-image: url('./static/assets/graphic-image/ring.png');
+    }
 
-      .btn-default.active {
-          color: rgb(51, 51, 51);
-          background-color: rgb(230, 230, 230);
-          border-color: rgb(173, 173, 173);
-          background-image: none;
-      }
+    .btn-default.active {
+      color: rgb(51, 51, 51);
+      background-color: rgb(230, 230, 230);
+      border-color: rgb(173, 173, 173);
+      background-image: none;
+    }
 
-      .btn.active {
-          background-image: none;
-          box-shadow: rgba(0, 0, 0, 0.121569) 0px 3px 5px inset;
-          outline: 0px;
-      }
+    .btn.active {
+      background-image: none;
+      box-shadow: rgba(0, 0, 0, 0.121569) 0px 3px 5px inset;
+      outline: 0px;
+    }
 
-      .btn-default {
-          color: rgb(51, 51, 51);
-          background-color: rgb(255, 255, 255);
-          border-color: rgb(204, 204, 204);
-      }
+    .btn-default {
+      color: rgb(51, 51, 51);
+      background-color: rgb(255, 255, 255);
+      border-color: rgb(204, 204, 204);
+    }
 
-      .btn {
-          display: inline-block;
-          margin-bottom: 0px;
-          font-size: 14px;
-          font-weight: 400;
-          line-height: 1.42857;
-          text-align: center;
-          white-space: nowrap;
-          vertical-align: middle;
-          touch-action: manipulation;
-          cursor: pointer;
-          user-select: none;
-          background-image: none;
-          padding: 6px 12px;
-          border-width: 1px;
-          border-style: solid;
-          border-color: transparent;
-          border-image: initial;
-          border-radius: 4px;
-      }
+    .btn {
+      display: inline-block;
+      margin-bottom: 0px;
+      font-size: 14px;
+      font-weight: 400;
+      line-height: 1.42857;
+      text-align: center;
+      white-space: nowrap;
+      vertical-align: middle;
+      touch-action: manipulation;
+      cursor: pointer;
+      user-select: none;
+      background-image: none;
+      padding: 6px 12px;
+      border-width: 1px;
+      border-style: solid;
+      border-color: transparent;
+      border-image: initial;
+      border-radius: 4px;
+    }
   </style>
   <body onload="init();">
     <div
