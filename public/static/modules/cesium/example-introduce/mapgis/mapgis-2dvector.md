@@ -47,7 +47,7 @@
         tileHeight: 256
     };
     //添加二维矢量地图文档
-    vecDoc = webGlobe.append2DDocTile('http://10.10.130.72:6163/igs/rest/mrms/docs/WorldJWVector', options);
+    vecDoc = webGlobe.append2DDocTile('http://webclient.smaryun.com:6163/igs/rest/mrms/docs/WorldJWVector', options);
     ```
 
 5. 鼠标位置显示控件：创建`id="coordinate_location"`的div作为容器，用于显示鼠标当前位置的经纬度、高程、视角高度信息；然后调用`showPosition()`方法为三维场景控件设置鼠标位置显示控件。

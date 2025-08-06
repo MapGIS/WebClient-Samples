@@ -5,14 +5,14 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>加载自定义裁图方式地图</title>
     <!--加载不同版本Cesium库-->
-    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/loadCesium.js"></script>
     <!--引入proj4.js库-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/proj4/proj4.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/proj4/proj4.js"></script>
     <!--plugin脚本库-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
+    <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/css/style.css"/>
     <script>
       'use strict'
       //定义三维视图的主要类
@@ -42,7 +42,7 @@
           ]
         }
 
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/CustomTilingScheme.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/CustomTilingScheme.html
         var tilingScheme = new zondy.cesium.CustomTilingScheme({
           wkt: '+proj=tmerc +lat_0=0 +lon_0=114 +k=1 +x_0=500000 +y_0=0 +ellps=GRS80 +units=m +no_defs',
           proj4: proj4,
@@ -56,9 +56,9 @@
             3471062.732487645
           )
         })
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/UrlTemplateImageryProvider.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/UrlTemplateImageryProvider.html
         var imageryProvider = new zondy.cesium.UrlTemplateImageryProvider({
-          url: 'http://10.10.130.72:8089/igs/rest/services/Tile/武汉市_4547_custom_1-10/TileServer/tileImage/{z}/{y}/{x}?f=image',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Tile/武汉市_4547_custom_1-10/TileServer/tileImage/{z}/{y}/{x}?f=image',
           tilingScheme: tilingScheme
         })
         // 加载imageryProvider

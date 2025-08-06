@@ -5,17 +5,17 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>伦敦飞机航线</title>
   <!--引入Echarts-->
-  <script src="http://10.10.130.72:8086/static/libs/cdn/echarts/echarts.min-4.0.js"></script>
-  <script src="http://10.10.130.72:8086/static/libs/cdn/echarts/echartsgl.min.js"></script>
+  <script src="http://webclient.smaryun.com/static/libs/cdn/echarts/echarts.min-4.0.js"></script>
+  <script src="http://webclient.smaryun.com/static/libs/cdn/echarts/echartsgl.min.js"></script>
   <!--引入Mapboxgl库-->
-  <script src="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
-  <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"/>
+  <script src="http://webclient.smaryun.com/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
+  <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/cdn/mapboxgl/mapbox-gl.css"/>
   <!--引入shapefile库-->
-  <script src="http://10.10.130.72:8086/static/libs/cdn/shapefile/shapefile.js"></script>
+  <script src="http://webclient.smaryun.com/static/libs/cdn/shapefile/shapefile.js"></script>
   <!--示例公共样式-->
-  <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
+  <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/css/style.css"/>
   <!--引入jquery-->
-  <script src="http://10.10.130.72:8086/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
+  <script src="http://webclient.smaryun.com/static/libs/cdn/jquery/jquery-3.7.1.min.js"></script>
   <style>
     #mapid {
       position: absolute;
@@ -41,7 +41,7 @@
     });
     myChart.showLoading();
     // 数据来自 https://uber.github.io/deck.gl/#/examples/core-layers/line-layer
-    $.get('http://10.10.130.72:8200/Vector/echartsgl/flight/data.txt', function (text) {
+    $.get('http://webclient.smaryun.com:8200/Vector/echartsgl/flight/data.txt', function (text) {
       myChart.hideLoading();
       var data = decodeFlightPathData(text);
 

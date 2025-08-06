@@ -39,7 +39,7 @@
       viewer: webGlobe.viewer,
     })
     //添加MapGIS IGServer发布的二维地图文档服务
-    vecDoc = layer.append2DDocTile('http://10.10.130.72:6163/igs/rest/mrms/docs/北京市', {})
+    vecDoc = layer.append2DDocTile('http://webclient.smaryun.com:6163/igs/rest/mrms/docs/北京市', {})
   ```
 
 ### 关键接口

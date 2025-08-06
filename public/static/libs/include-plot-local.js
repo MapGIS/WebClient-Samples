@@ -332,7 +332,7 @@
 
   load();
   window.webclient = {
-    ip: '10.10.130.72',
+    ip: 'webclient.smaryun.com',
     port: '8086',
     protocol: 'http'
   };

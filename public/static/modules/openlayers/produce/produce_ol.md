@@ -59,7 +59,7 @@
 
 ### 开发包
 
-&ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript（OpenLayers5） SDK，含 WebGIS 开发所需的开发库、API、示例、文档等资源，可访问<a href="http://10.10.130.72:8086/#/index" target="_blank">MapGIS Client for JavaScript 产品门户</a>在线体验，或<a a href="#download">下载资源</a>本地部署。
+&ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript（OpenLayers5） SDK，含 WebGIS 开发所需的开发库、API、示例、文档等资源，可访问<a href="http://webclient.smaryun.com/#/index" target="_blank">MapGIS Client for JavaScript 产品门户</a>在线体验，或<a a href="#download">下载资源</a>本地部署。
 
 ### 开发库
 
@@ -74,14 +74,14 @@
 
 &ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript 为用户提供离在线 API（应用程序编程接口），开发者可以通过 API 查找学习 MapGIS 提供的实现功能的方法。
 
-- <a href="http://10.10.130.72:8086/static/modules/openlayers/api/openlayers-mapgis/index.html" target="_blank">MapGIS Client for JavaScript（OpenLayers5） API</a>
+- <a href="http://webclient.smaryun.com/static/modules/openlayers/api/openlayers-mapgis/index.html" target="_blank">MapGIS Client for JavaScript（OpenLayers5） API</a>
 - <a href="https://openlayers.org/en/latest/apidoc/" target="_blank">OpenLayers5 原生 API</a>
 
 ### 开发示例
 
 &ensp;&ensp;&ensp;&ensp;MapGIS Client for JavaScript（Openlayers5）为用户提供了功能全面的接口示例与配套文档，支持离在线访问，源码与效果可共同展现，同时提供即时编辑与运行功能，可以帮助您进行高效开发。
 
-- 在线使用：<a href="http://10.10.130.72:8086/#/example-gallery/openlayers" target="_blank">MapGIS Client for JavaScript （Openlayers5）示例</a>
+- 在线使用：<a href="http://webclient.smaryun.com/#/example-gallery/openlayers" target="_blank">MapGIS Client for JavaScript （Openlayers5）示例</a>
 - 离线使用：方式一，可在云开发世界下载<a href="http://www.smaryun.com/dev/download_detail.html#/download828" target="_blank">MapGIS Client for JavaScript 开发包</a>，解压后按说明步骤发布即可；方式二，可通过<a href="https://github.com/MapGIS/WebClient-JavaScript" targer="_blank">GitHub</a>、<a href="https://gitee.com/osmapgis/WebClient-JavaScript" targer="_blank">Gitee</a>获取产品源码，按说明文档编译运行。
 
 ## 模块说明

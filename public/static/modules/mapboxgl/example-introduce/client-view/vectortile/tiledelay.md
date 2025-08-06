@@ -17,14 +17,14 @@
         "世界行政区": {
         "type": "vector",
         "tiles": [
-            "http://10.10.130.72:6163/igs/rest/mrms/tile/世界行政区/{z}/{y}/{x}?type=cpbf"
+            "http://webclient.smaryun.com:6163/igs/rest/mrms/tile/世界行政区/{z}/{y}/{x}?type=cpbf"
         ],
         "minZoom": 0,
         "maxZoom": 4
         }
     },
-    "sprite": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite",
-    "glyphs": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
+    "sprite": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/sprite",
+    "glyphs": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
     "layers": [
         {
         "id": "背景",

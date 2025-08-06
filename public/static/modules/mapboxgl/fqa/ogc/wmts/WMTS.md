@@ -1,6 +1,6 @@
 # 0. wmts - 教程
 
-[标准的 WMTS 元数据](http://10.10.130.72:6163/igs/rest/ogc/beijing/WMTSServer)
+[标准的 WMTS 元数据](http://webclient.smaryun.com:6163/igs/rest/ogc/beijing/WMTSServer)
 
 ![说明](./static/modules/mapboxgl/fqa/ogc/wmts/gettile.png)
 
@@ -114,7 +114,7 @@ map.addLayer({
     ```
     2. 示例
     ``` js 
-    >>> http://10.10.130.72:6163/igs/rest/ogc/beijing/WMTSServer/1.0.0/beijing/default/EPSG:4326_北京市_arcgis_GB/{z}/{y}/{x}.png
+    >>> http://webclient.smaryun.com:6163/igs/rest/ogc/beijing/WMTSServer/1.0.0/beijing/default/EPSG:4326_北京市_arcgis_GB/{z}/{y}/{x}.png
     ```
 2. kvp
     1. 规则

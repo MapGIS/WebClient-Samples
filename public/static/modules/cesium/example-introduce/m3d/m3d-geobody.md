@@ -43,7 +43,7 @@
       viewer: webGlobe.viewer,
     })
     //加载M3D地图文档（服务地址，配置参数）
-    var obliqueLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/钻孔分层点_Sur_000_Ent', {})
+    var obliqueLayer = m3dLayer.append('http://webclient.smaryun.com:6163/igs/rest/g3d/钻孔分层点_Sur_000_Ent', {})
   ```
 
 ### 关键接口

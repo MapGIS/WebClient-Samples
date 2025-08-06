@@ -68,7 +68,7 @@
 
 <img src="../static/modules/mapboxgl/example-introduce/client-view/vectortile/upload_success.png" alt="矢量瓦片样式文件上传成功提示" style="zoom: 50%;" />
 
-（7）矢量瓦片样式管理：以上步骤完成后得到矢量瓦片样式URL：`http://10.10.130.72:6163/igs/rest/mrms/vtiles/styles/hubei-id.json`，在`步骤实现`中通过该URL即可访问矢量瓦片地图服务
+（7）矢量瓦片样式管理：以上步骤完成后得到矢量瓦片样式URL：`http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/styles/hubei-id.json`，在`步骤实现`中通过该URL即可访问矢量瓦片地图服务
 
 ### 实现步骤
 
@@ -88,7 +88,7 @@
   ```javascript
     var map = new mapboxgl.Map({
       container: 'map', // 绑定div
-      style: 'http://10.10.130.72:6163/igs/rest/mrms/vtiles/styles/黑暗样式.json',
+      style: 'http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/styles/黑暗样式.json',
       center: [106.563777, 29.578285],
       zoom: 3
     });
