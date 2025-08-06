@@ -45,7 +45,7 @@
     //添加WMS服务地图
     var wmsLayer = ogcLayer.appendWMSTile(
       //地图服务URL地址
-      'http://10.10.130.72:6163/igs/rest/ogc/doc/北京市/WMSServer',
+      'http://webclient.smaryun.com:6163/igs/rest/ogc/doc/北京市/WMSServer',
       //图层名
       '北京市,绿地_1,水域_3,大学,学校,动物园',
       //附加属性

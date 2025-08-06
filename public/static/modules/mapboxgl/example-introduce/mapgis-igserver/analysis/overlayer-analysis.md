@@ -31,7 +31,7 @@
     //实例化OverlayByLayer类
     var overlayParam = new Zondy.Service.OverlayByLayer({
       //IGServer所在ip地址
-      ip: '10.10.130.72',
+      ip: 'webclient.smaryun.com',
       //IGServer请求端口号
       port: '6163',
       //设置被叠加图层URL
@@ -63,7 +63,7 @@
     //将结果图层添加到地图视图中显示
     var resultLayer = new mapboxgl.Zondy.Map.MapVectorLayer(encodeURIComponent(resultBaseUrl + resultLayerUrl), {
       //IGServer所在ip地址
-      ip: '10.10.130.72',
+      ip: 'webclient.smaryun.com',
       //IGServer请求端口号
       port: '6163',
       //图层guid
@@ -76,7 +76,7 @@
 
 #### 【图层叠加分析类】`Zondy.Service.OverlayByLayer(option)`
 
-`父类`：<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.OverlayBase.html">Zondy.Service.OverlayBase</a>
+`父类`：<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Service.OverlayBase.html">Zondy.Service.OverlayBase</a>
 
 | 参数名 | 类型   | 描述       |
 | ------ | ------ | ---------- |

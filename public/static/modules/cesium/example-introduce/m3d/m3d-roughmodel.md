@@ -43,7 +43,7 @@
       viewer: webGlobe.viewer,
     })
     //加载M3D地图文档（服务地址，配置参数）
-    var bimLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/buildings1', {
+    var bimLayer = m3dLayer.append('http://webclient.smaryun.com:6163/igs/rest/g3d/buildings1', {
       //模型细节显示控制参数：较大值可提高渲染性能，较低值可提高视觉质量
       maximumScreenSpaceError: 0,
     })

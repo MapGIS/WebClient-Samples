@@ -149,7 +149,7 @@
     ```javascript
         //实例化地图文档查询服务对象
         var queryService = new Zondy.Service.QueryLayerFeature(queryParam, {
-            ip: '10.10.130.72',
+            ip: 'webclient.smaryun.com',
             port: '6163', //访问IGServer的端口号，.net版为6163，Java版为8089
         })
         //执行查询操作，querySuccess为查询回调函数

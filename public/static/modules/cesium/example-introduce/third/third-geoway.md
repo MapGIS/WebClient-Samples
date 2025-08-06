@@ -64,7 +64,7 @@
 
 | 参数名      | 类 型  | 说 明                                                    |
 | ----------- | ------ | -------------------------------------------------------- |
-| wmtsBaseUrl | String | wmts 服务基地址 ：10.10.130.72:6163/igs/rest/ogc/WMTSServer |
+| wmtsBaseUrl | String | wmts 服务基地址 ：webclient.smaryun.com:6163/igs/rest/ogc/WMTSServer |
 | options     | Object | （可选）附加属性                                         |
 
 - `options`属性主要参数

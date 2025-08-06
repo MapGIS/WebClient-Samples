@@ -53,7 +53,7 @@
 
     ```javascript
         var topParam = new Zondy.Service.TopAnalysis({
-            ip: "10.10.130.72",
+            ip: "webclient.smaryun.com",
             port: "6163"    //访问IGServer的端口号，.net版为6163，Java版为8089
         });
         //调用setPnt方法，设置点类型

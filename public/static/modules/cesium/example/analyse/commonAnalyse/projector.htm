@@ -8,33 +8,33 @@
     />
     <title>场景投放</title>
     <!--加载不同版本Cesium库-->
-    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/loadCesium.js"></script>
     <!--plugin脚本库-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/assets/js/TDT-token.js"></script>
     <!-- videojs -->
     <link
       rel="stylesheet"
       type="text/css"
-      href="http://10.10.130.72:8086/static/libs/cdn/videojs/video-js.min.css"
+      href="http://webclient.smaryun.com/static/libs/cdn/videojs/video-js.min.css"
     />
-    <script src="http://10.10.130.72:8086/static/libs/cdn/videojs/video.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/videojs/videojs-flash.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/videojs/video.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/videojs/videojs-flash.min.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/layui/layui.js"></script>
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+      href="http://webclient.smaryun.com/static/libs/cdn/layui/css/layui.css"
     />
     <!--示例公共样式-->
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/style.css"
+      href="http://webclient.smaryun.com/static/libs/css/style.css"
     />
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/tool.css"
+      href="http://webclient.smaryun.com/static/libs/css/tool.css"
     />
     <script>
       'use strict'
@@ -69,7 +69,7 @@
           targetGeo.height
         )
         // 新建场景投放对象
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium/SceneProjectorEx.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium/SceneProjectorEx.html
         scenePro = new Cesium.SceneProjectorEx({
           // 场景对象，启用自定义渲染通道功能必须传入场景对象
           scene: viewer.scene,
@@ -123,16 +123,16 @@
             break
           case 'IMAGE':
             source =
-              'http://10.10.130.72:8200/NoneSpatialData/image/scenePro.png'
+              'http://webclient.smaryun.com:8200/NoneSpatialData/image/scenePro.png'
             break
           case 'HLS':
             source =
-              'http://10.10.130.72:8200/NoneSpatialData/video/scenePro.m3u8'
+              'http://webclient.smaryun.com:8200/NoneSpatialData/video/scenePro.m3u8'
             break
           case 'VIDEO':
           default:
             source =
-              'http://10.10.130.72:8200/NoneSpatialData/video/scenePro.mp4'
+              'http://webclient.smaryun.com:8200/NoneSpatialData/video/scenePro.mp4'
             break
         }
         return source
@@ -319,7 +319,7 @@
       //添加M3D模型
       function addModel() {
         let M3DModelCacheLayer = new zondy.layer.M3DModelCacheLayer({
-          url: 'http://10.10.130.72:8200/3DData/ModelCache/M3D/1.0/景观示例/景观_建筑模型_1.mcj',
+          url: 'http://webclient.smaryun.com:8200/3DData/ModelCache/M3D/1.0/景观示例/景观_建筑模型_1.mcj',
           // 初始化参数
           extensionOptions: {
             // 开启自动跳转

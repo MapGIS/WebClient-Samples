@@ -19,7 +19,7 @@
 
 <center>
 
-<img src="http://10.10.130.72:8086/static/modules/cesium/source/img/开发指南_1.png" style="zoom:100%;" />
+<img src="http://webclient.smaryun.com/static/modules/cesium/source/img/开发指南_1.png" style="zoom:100%;" />
 
 </center>
 
@@ -27,7 +27,7 @@
 
 <center>
 
-<img src="http://10.10.130.72:8086/static/modules/cesium/source/img/开发指南_2.png" style="zoom:100%;" />
+<img src="http://webclient.smaryun.com/static/modules/cesium/source/img/开发指南_2.png" style="zoom:100%;" />
 
 </center>
 
@@ -113,7 +113,7 @@ npm install
 第二步，资源导入，**将`node_modules/@mapgis`文件夹下的静态资源 `Assets`、`ThirdParty`、`Widgets`、`Workers`、`MapGIS`文件夹，拷贝到项目静态资源目录`public/[你的cesium静态资源文件夹]`中，例如你的 cesium 静态资源文件夹可为`cesiumStatic`。**
 
 第三步，配置全局变量，资源路径全局变量和 Cesium 对象全局变量。**将 webclient-cesium-plugin.min.js 文件、webclient-cesium-plugin-resource 文件夹和 cesium 文件夹拷贝出来，放入项目的静态资源目录。将 Cesium 对象挂载到全局，并配置 cesium 资源路径 window.CESIUM_BASE_URL 和 webclient-cesium-plugin 资源路径 window.MAPGIS_BASE_URL。**
-&ensp;&ensp;&ensp;&ensp;关于 cesium 资源路径和 webclient-cesium-plugin 资源路径的说明，请参考<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_122_update" target="_blank">《**10.7.2.10 到 10.7.4.10 接口升级**》 </a>中的章节 “二、变更 Q&A - 10.7.4.10 版本引入库的方式发生了哪些变化?” 。
+&ensp;&ensp;&ensp;&ensp;关于 cesium 资源路径和 webclient-cesium-plugin 资源路径的说明，请参考<a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium_122_update" target="_blank">《**10.7.2.10 到 10.7.4.10 接口升级**》 </a>中的章节 “二、变更 Q&A - 10.7.4.10 版本引入库的方式发生了哪些变化?” 。
 &ensp;&ensp;&ensp;&ensp;以 VUE 项目为例（React 和 Angular 类似）：在 src/main.js 中导入@mapgis/cesium 库，并配置全局变量 window.Cesium、window.CESIUM_BASE_URL、window.MAPGIS_BASE_URL。
 
 ```javascript

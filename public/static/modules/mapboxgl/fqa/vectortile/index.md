@@ -215,9 +215,9 @@ var map = new mapboxgl.Map({
   style: {
     "version": 8,
     //特别注意，这里是字体库，下面的sprite才是样式库
-    "glyphs": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
+    "glyphs": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
     //特别注意，这里是真正的图片样式库
-    "sprite": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite",
+    "sprite": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/sprite",
   },
 });
 ```
@@ -298,9 +298,9 @@ var map = new mapboxgl.Map({
   style: {
     "version": 8,
     //特别注意，这里是字体库,字体库往往和下面的样式库一起使用
-    "glyphs": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
+    "glyphs": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
     //特别注意，这里是真正的图片样式库
-    "sprite": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite"
+    "sprite": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/sprite"
   },
 });
 ```
@@ -311,7 +311,7 @@ var map = new mapboxgl.Map({
 
 ``` html
 //如使用了"中"字,并且使用的是"黑体",假设"中"字是第450个,450 在256~511之间.则发出请求
-http://10.10.130.72:8822/vectortile/glyphs/黑体/256-511.pbf
+http://webclient.smaryun.com:8822/vectortile/glyphs/黑体/256-511.pbf
 ```
 
 ## Circle样式
@@ -866,9 +866,9 @@ var map = new mapboxgl.Map({
 
     //中地的样式库与字体库
     //特别注意，这里是字体库,字体库往往和下面的样式库一起使用
-    "glyphs": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
+    "glyphs": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
     //特别注意，这里是真正的图片样式库
-    "sprite": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite"
+    "sprite": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/sprite"
   },
 });
 ```

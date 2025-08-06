@@ -65,7 +65,7 @@
    ```javascript
       map.on("load", function () {
          var baseurl =
-         "http://10.10.130.72:6163/igs/rest/ogc/doc/北京市/WFSServer?REQUEST=GetFeature&version=1.1.0&service=wfs&typename=北京市:北京市&maxFeatures=10";
+         "http://webclient.smaryun.com:6163/igs/rest/ogc/doc/北京市/WFSServer?REQUEST=GetFeature&version=1.1.0&service=wfs&typename=北京市:北京市&maxFeatures=10";
          $.ajax({
          url: baseurl,
          type: "get",
@@ -242,6 +242,6 @@
 
 * Example:
   ```javascript
-  http://10.10.130.72:6163/igs/rest/ogc/doc/OGC_4326_CHINA/WFSServer?REQUEST=GetFeature&version=1.1.0&service=wfs&typename=OGC_4326_CHINA:背景图,中国,省级行政区,首都点,省会城市&maxFeatures=10
+  http://webclient.smaryun.com:6163/igs/rest/ogc/doc/OGC_4326_CHINA/WFSServer?REQUEST=GetFeature&version=1.1.0&service=wfs&typename=OGC_4326_CHINA:背景图,中国,省级行政区,首都点,省会城市&maxFeatures=10
   ```
 

@@ -84,7 +84,7 @@
     //实例化FeatureBuffByMultiplyRing类，设置要素缓冲分析必要参数，输出分析结果到缓冲分析结果图层
     var featureBufByMR = new Zondy.Service.FeatureBuffByMultiplyRing({
       //IGServer所在ip地址
-      ip: '10.10.130.72',
+      ip: 'webclient.smaryun.com',
       //IGServer请求端口号
       port: '6163',
       //设置多圈缓冲分析的缓冲半径字符串
@@ -117,7 +117,7 @@
     //将结果图层添加到地图视图中显示
     var resultLayer = new mapboxgl.Zondy.Map.MapVectorLayer(encodeURIComponent(resultLayerUrl), {
       //IGServer所在ip地址
-      ip: '10.10.130.72',
+      ip: 'webclient.smaryun.com',
       //IGServer请求端口号
       port: '6163',
       //图层guid
@@ -138,59 +138,59 @@
 
 | 属性    | 类型                                                                                                                                 | 默认值 | 描述                                   |
 | ------- | ------------------------------------------------------------------------------------------------------------------------------------ | ------ | -------------------------------------- |
-| LinGeom | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.GLine.html">Zondy.Object.GLine</a> ]     | Null   | 线要素几何信息，可包含多个线图形成员。 |
-| PntGeom | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.GPoint.html">Zondy.Object.GPoint</a> ]   | Null   | 点要素几何信息，可包含多个线图形成员。 |
-| RegGeom | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.GRegion.html">Zondy.Object.GRegion</a> ] | Null   | 区要素几何信息，可包含多个线图形成员。 |
+| LinGeom | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.GLine.html">Zondy.Object.GLine</a> ]     | Null   | 线要素几何信息，可包含多个线图形成员。 |
+| PntGeom | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.GPoint.html">Zondy.Object.GPoint</a> ]   | Null   | 点要素几何信息，可包含多个线图形成员。 |
+| RegGeom | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.GRegion.html">Zondy.Object.GRegion</a> ] | Null   | 区要素几何信息，可包含多个线图形成员。 |
 
 ##### 【method】`setPntGeom(pnts)`：设置点要素的几何信息
 
 | 参数 | 类型                                                                                                                              | 描述             |
 | ---- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| pnts | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.GPoint.html">Zondy.Object.GPoint</a>] | 点要素几何信息。 |
+| pnts | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.GPoint.html">Zondy.Object.GPoint</a>] | 点要素几何信息。 |
 
 ##### 【method】`setLine(lines)`：设置线要素的几何信息
 
 | 参数  | 类型                                                                                                                              | 描述             |
 | ----- | --------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| lines | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object. GLine.html">Zondy.Object. GLine</a>] | 线要素几何信息。 |
+| lines | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object. GLine.html">Zondy.Object. GLine</a>] | 线要素几何信息。 |
 
 ##### 【method】`setRegGeom(Regs)`：设置区要素的几何信息
 
 | 参数 | 类型                                                                                                                                | 描述             |
 | ---- | ----------------------------------------------------------------------------------------------------------------------------------- | ---------------- |
-| Regs | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.GRegion.html">Zondy.Object.GRegion</a>] | 区要素几何信息。 |
+| Regs | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.GRegion.html">Zondy.Object.GRegion</a>] | 区要素几何信息。 |
 
 #### 2.【MapGIS 区要素几何图形信息类】`Zondy.Object.GRegion(rings, opt_options)`：MapGIS
 
 | 参数名      | 类型                                                                                                                                 | 描述                                                                                                                                                                                                                                                        |
 | ----------- | ------------------------------------------------------------------------------------------------------------------------------------ | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| rings       | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.AnyLine.html">Zondy.Object.AnyLine </a>] | 构成区要素的线几何图形集合                                                                                                                                                                                                                                  |
-| opt_options | Object                                                                                                                               | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和<a target="_blank"  href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.FeatureGraphicBase.html">Zondy.Object.FeatureGraphicBase</a>类的 属性。例如：{key1：value1, key2：value2…} |
+| rings       | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.AnyLine.html">Zondy.Object.AnyLine </a>] | 构成区要素的线几何图形集合                                                                                                                                                                                                                                  |
+| opt_options | Object                                                                                                                               | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和<a target="_blank"  href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.FeatureGraphicBase.html">Zondy.Object.FeatureGraphicBase</a>类的 属性。例如：{key1：value1, key2：value2…} |
 
 - `opt_options`属性主要参数
 
 | 属性  | 类型                                                                                                                                 | 默认值 | 描述                       |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------ | ------ | -------------------------- |
-| Rings | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.AnyLine.html">Zondy.Object.AnyLine </a>] | Null   | 构成区要素的线几何图形集合 |
+| Rings | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.AnyLine.html">Zondy.Object.AnyLine </a>] | Null   | 构成区要素的线几何图形集合 |
 
 ##### 【method】`setRings(rings)`：设置区要素的几何信息
 
 | 参数  | 说明                                                                                                                                 | 描述                       |
 | ----- | ------------------------------------------------------------------------------------------------------------------------------------ | -------------------------- |
-| rings | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.AnyLine.html">Zondy.Object.AnyLine </a>] | 构成区要素的线几何图形集合 |
+| rings | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.AnyLine.html">Zondy.Object.AnyLine </a>] | 构成区要素的线几何图形集合 |
 
 #### 3.【MapGIS 线几何形状对象类】`Zondy.Object.AnyLine(arcs, opt_options)`
 
 | 参数名      | 类型                                                                                                                         | 描述                                                                                            |
 | ----------- | ---------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------------------------------------------------------- |
-| arcs        | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Arc.html">Zondy.Object.Arc </a>] | 构成区要素的线几何图形集合                                                                      |
+| arcs        | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Arc.html">Zondy.Object.Arc </a>] | 构成区要素的线几何图形集合                                                                      |
 | opt_options | Object                                                                                                                       | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性。例如：{key1：value1, key2：value2…} |
 
 - `opt_options`属性主要参数
 
 | 属性 | 类型                                                                                                                         | 默认值 | 描述                         |
 | ---- | ---------------------------------------------------------------------------------------------------------------------------- | ------ | ---------------------------- |
-| arcs | Array-[ <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Arc.html">Zondy.Object.Arc </a>] | Null   | 构成线的弧段要素几何图形集合 |
+| arcs | Array-[ <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Arc.html">Zondy.Object.Arc </a>] | Null   | 构成线的弧段要素几何图形集合 |
 
 #### 4. 【MapGIS 点几何形状对象类】`Zondy.Object.Point2D(x, y, opt_options)`
 
@@ -198,7 +198,7 @@
 | ----------- | ------ | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | x           | Number | 点 x 轴坐标                                                                                                                                                                                                                            |
 | y           | Number | 点 y 轴坐标                                                                                                                                                                                                                            |
-| opt_options | Object | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和 <a target="_blank"  href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Tangram.html">Zondy.Object.Tangram</a> 类的属性。例如：{key1：value1, key2：value2…} |
+| opt_options | Object | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和 <a target="_blank"  href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Tangram.html">Zondy.Object.Tangram</a> 类的属性。例如：{key1：value1, key2：value2…} |
 
 - `opt_options`属性主要参数
 
@@ -240,7 +240,7 @@
 
 #### 7. 【要素缓冲分析（多圈）】`Zondy.Service.FeatureBuffByMultiplyRing(option)`
 
-`父类`：<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.FeatureBuffBase.html">Zondy.Service.FeatureBuffBase</a>
+`父类`：<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Service.FeatureBuffBase.html">Zondy.Service.FeatureBuffBase</a>
 
 | **参数** | **类型** | **描述**   |
 | -------- | -------- | ---------- |

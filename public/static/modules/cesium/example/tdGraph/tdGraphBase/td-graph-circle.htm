@@ -5,22 +5,22 @@
     <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
     <title>圆</title>
     <!--加载不同版本Cesium库-->
-    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/loadCesium.js"></script>
     <!--plugin脚本库-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/assets/js/TDT-token.js"></script>
 
     <!--html2canvas库-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/html2canvas/html2canvas.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/html2canvas/html2canvas.min.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"/>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/layui/layui.js"></script>
+    <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/cdn/layui/css/layui.css"/>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
+    <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/css/style.css"/>
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/graphic.css"
+      href="http://webclient.smaryun.com/static/libs/css/graphic.css"
     />
     <script>
       'use strict'
@@ -104,7 +104,7 @@
 
       //初始化标绘图层
       function addGraphicLayer() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/GraphicsLayer.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/GraphicsLayer.html
         graphicsLayer = new zondy.cesium.GraphicsLayer(viewer, {
           clickGraphic: function (graphic) {
             if (!graphic) {
@@ -205,7 +205,7 @@
 
       //纯色圆
       function addColorCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic1 = new zondy.cesium.Graphic({
           //类型
           type: 'circle',
@@ -240,7 +240,7 @@
         }).then(function (canvas) {
           //在这里可以拿到base64编码的图片
           let dataUrl = canvas.toDataURL('image/png', 1.0)
-          // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+          // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
           let circleGraphic1 = new zondy.cesium.Graphic({
             //类型
             type: 'circle',
@@ -249,7 +249,7 @@
             //样式
             style: {
               //闪烁圆材质
-              // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium/Material.html
+              // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium/Material.html
               material: Cesium.Material.fromType(Cesium.Material.ImageType, {
                 //图片路径
                 image: dataUrl,
@@ -269,7 +269,7 @@
 
       //闪烁圆
       function addFlickerCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic2 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -282,7 +282,7 @@
             //圆半径
             radius: 200,
             //闪烁圆材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.LineFlickerMaterialType,
               {
@@ -300,7 +300,7 @@
 
       //圆柱体
       function addCircleVolume() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic3 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -324,7 +324,7 @@
 
       //动态圆波
       function addCircleWave() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic4 = new zondy.cesium.Graphic({
           //类型
           type: 'circle',
@@ -337,7 +337,7 @@
             //半径
             radius: 200,
             // 动态圆波材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.CircleWaveMaterialType,
               {
@@ -357,7 +357,7 @@
 
       //扫描圆
       function addScanCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic5 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -370,7 +370,7 @@
             //圆半径
             radius: 400,
             //扫描圆材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.CircleScanMaterialType,
               {
@@ -388,7 +388,7 @@
 
       //脉冲圆
       function addPulseCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic6 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -401,7 +401,7 @@
             //圆半径
             radius: 200,
             //脉冲圆材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.CirclePulseMaterialType,
               {
@@ -419,7 +419,7 @@
 
       //扩散圆
       function addDiffuseCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic7 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -432,7 +432,7 @@
             //圆半径
             radius: 400,
             //扩散圆材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.CircleDiffuseMaterialType,
               {
@@ -450,7 +450,7 @@
 
       //线圈发光圆
       function addScanlineCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic8 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -463,7 +463,7 @@
             //圆半径
             radius: 200,
             //线圈发光圆材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(Cesium.Material.ScanlineType, {
               //材质颜色
               color: Cesium.Color.CYAN,
@@ -478,7 +478,7 @@
 
       //消隐圆
       function addFadeCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic9 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -491,7 +491,7 @@
             //圆半径
             radius: 200,
             //消隐材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.CircleFadeMaterialType,
               {
@@ -509,7 +509,7 @@
 
       //多彩圆
       function addColorfulCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic10 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -522,7 +522,7 @@
             //圆半径
             radius: 200,
             //多彩材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.CircleColorfulMaterialType,
               {
@@ -540,7 +540,7 @@
 
       //模糊圆
       function addBlurCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic11 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -553,7 +553,7 @@
             //圆半径
             radius: 200,
             //模糊材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.CircleBlurMaterialType,
               {
@@ -571,7 +571,7 @@
 
       //螺旋圆
       function addSpiralCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic12 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -584,7 +584,7 @@
             //圆半径
             radius: 200,
             //螺旋材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.CircleSpiralMaterialType,
               {
@@ -602,7 +602,7 @@
 
       //雷达
       function addRadarCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic13 = new zondy.cesium.Graphic({
           //类型
           type: 'circle',
@@ -615,7 +615,7 @@
             //圆半径
             radius: 200,
             //雷达材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.RadarMaterialType,
               {
@@ -633,7 +633,7 @@
 
       //雷达扫描
       function addRadaScanCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic14 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -646,7 +646,7 @@
             //圆半径
             radius: 200,
             //雷达扫描圆材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.RadarScanMaterialType,
               {
@@ -664,7 +664,7 @@
 
       //雷达线圆
       function addRadarLineCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic15 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -677,7 +677,7 @@
             //圆半径
             radius: 200,
             //雷达线圆材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(
               Cesium.Material.RadarLineMaterialType,
               {
@@ -695,7 +695,7 @@
 
       //图片圆
       function addImageCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic16 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -708,11 +708,11 @@
             //圆半径
             radius: 200,
             //图片材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(Cesium.Material.ImageType, {
               //图片路径
               image:
-                'http://10.10.130.72:8200/NoneSpatialData/image/earth.jpg',
+                'http://webclient.smaryun.com:8200/NoneSpatialData/image/earth.jpg',
               //x、y轴重复次数
               repeat: new Cesium.Cartesian2(1.0, 1.0)
             })
@@ -724,7 +724,7 @@
 
       //图片旋转圆
       function addRotateCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic17 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -737,11 +737,11 @@
             //圆半径
             radius: 200,
             //图片材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(Cesium.Material.ImageType, {
               //图片路径
               image:
-                'http://10.10.130.72:8200/NoneSpatialData/image/earth.jpg',
+                'http://webclient.smaryun.com:8200/NoneSpatialData/image/earth.jpg',
               //x、y轴重复次数
               repeat: new Cesium.Cartesian2(1.0, 1.0)
             }),
@@ -759,7 +759,7 @@
 
       //雷达图片
       function addRadarImageCircle() {
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Graphic.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Graphic.html
         let circleGraphic18 = new zondy.cesium.Graphic({
           //标绘类型
           type: 'circle',
@@ -772,13 +772,13 @@
             //圆半径
             radius: 200,
             //图片材质
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/Material.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/Material.html
             material: Cesium.Material.fromType(Cesium.Material.ImageType, {
               //材质颜色
               color: Cesium.Color.DARKGREEN,
               //图片路径
               image:
-                'http://10.10.130.72:8200/NoneSpatialData/image/circle-scan.png',
+                'http://webclient.smaryun.com:8200/NoneSpatialData/image/circle-scan.png',
               //x、y轴重复次数
               repeat: new Cesium.Cartesian2(1.0, 1.0)
             }),

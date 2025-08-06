@@ -112,7 +112,7 @@ components: {
       layerId: 'igsLayer_layerId',
       sourceId: 'igsLayer_sourceId',
       layer: {}, // 图层配置信息
-      igsDocIp: '10.10.130.72', // igs服务ip
+      igsDocIp: 'webclient.smaryun.com', // igs服务ip
       igsDocPort: '6163', // igs服务port
       igsDocName: '北京市', // igs地图服务名
     }

@@ -89,4 +89,4 @@ import { IGSMapImageLayer, Map } from '@mapgis/webclient-common'
 | 服务模块                                                     | GeoPointService                                  |                                                              | 正常                                                         | es的点查询服务             |
 | 服务模块                                                     | SocketService                                    |                                                              | 正常                                                         | Socket的代理类             |
 
-- 10.6.2.10中服务模块、几何模块、符号模块以及常量相关接口属于公共接口，请参考Common库中“10.6.2.10到10.6.4.10接口升级” <a href="http://10.10.130.72:8086/#/guideMulti/common/development_common_update" target="_blank">三、《新旧接口对照表》</a> 
+- 10.6.2.10中服务模块、几何模块、符号模块以及常量相关接口属于公共接口，请参考Common库中“10.6.2.10到10.6.4.10接口升级” <a href="http://webclient.smaryun.com/#/guideMulti/common/development_common_update" target="_blank">三、《新旧接口对照表》</a> 

@@ -35,7 +35,7 @@
 - Example:
   ```Javascript
     //加载数据
-    var tileset = webGlobe.append('http://10.10.130.72:6163/igs/rest/g3d/M3D', {});
+    var tileset = webGlobe.append('http://webclient.smaryun.com:6163/igs/rest/g3d/M3D', {});
   ```
 
 ### 关键接口

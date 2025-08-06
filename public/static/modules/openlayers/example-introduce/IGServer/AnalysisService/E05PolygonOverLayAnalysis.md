@@ -98,7 +98,7 @@
     ```javascript
         //执行多边形叠加分析
         var overlayParam = new Zondy.Service.OverlayByPolygon({
-            ip: "10.10.130.72",
+            ip: "webclient.smaryun.com",
             port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
             //设置被叠加图层URL 
             srcInfo1: "gdbp://MapGisLocal/OpenLayerVecterMap/ds/世界地图经纬度/sfcls/世界政区",
@@ -137,7 +137,7 @@
                     var resultLayerUrl = data.results[0].Value || data.results[0].value;
                     //将结果图层添加到地图视图中显示
                     var resultLayer = new Zondy.Map.GdbpLayer("MapGIS IGS BuffAnalyResultLayer", [resultBaseUrl+resultLayerUrl], {
-                        ip: "10.10.130.72",
+                        ip: "webclient.smaryun.com",
                         port: "6163",    //访问IGServer的端口号，.net版为6163，Java版为8089,
                         isBaseLayer: false
                     });
@@ -193,7 +193,7 @@
 | guid   | String                           |           | 矢量图层缓存的唯一标识          |  
 
 **详细信息见 OpenLayers API** 
-http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.OverlayByPolygon.html
-http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.OverlayBase.html
-http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.AnalysisBase.html
+http://webclient.smaryun.com/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.OverlayByPolygon.html
+http://webclient.smaryun.com/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.OverlayBase.html
+http://webclient.smaryun.com/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.AnalysisBase.html
 

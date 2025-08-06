@@ -40,7 +40,7 @@
       viewer: webGlobe.viewer,
     })
     //加载M3D地图文档（服务地址，配置参数）
-    var landscapeLayer = m3dLayer.append('http://10.10.130.72:6163/igs/rest/g3d/ModelM3D', {
+    var landscapeLayer = m3dLayer.append('http://webclient.smaryun.com:6163/igs/rest/g3d/ModelM3D', {
       //是否自动定位到数据位置
       autoReset: false,
       //模型细节显示控制参数：较大值可提高渲染性能，较低值可提高视觉质量
