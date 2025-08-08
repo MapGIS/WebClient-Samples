@@ -829,6 +829,18 @@
               ]
             },
             {
+              "name": "MapGIS覆盖物服务",
+              "file": "mapgis-covering",
+              "icon": "mapgis-covering.png",
+              "diffcult": "1",
+              "tags": [
+                "覆盖物服务",
+                "covering",
+                "fugaiwu",
+                "SceneLayer"
+              ]
+            },
+            {
               "name": "IS场景服务",
               "file": "s3m-is-scene-layer",
               "icon": "s3m-is-scene-layer.png",
