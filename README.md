@@ -87,14 +87,14 @@ yarn lint
 若将站点部署在内网服务器上时，需要将示例中的依赖库和服务地址改为对应的内网地址
 
 #### 4.1、依赖库地址
-将 “http://192.168.82.91:8086/” 或 “http://webclient.smaryun.com/” 替换为  “http://你的内网服务器地址/”
+将 “http://10.10.130.72:8086/” 或 “http://webclient.smaryun.com/” 替换为  “http://你的内网服务器地址/”
 #### 4.2、服务地址
 
-- 文件服务：将 “http://192.168.82.91:8200/” 或 “http://webclient.smaryun.com:8200/” 替换为  “http://你的内网文件服务地址/”
+- 文件服务：将 “http://10.10.130.72:8200/” 或 “http://webclient.smaryun.com:8200/” 替换为  “http://你的内网文件服务地址/”
 
-- IGS服务1.0：将 “http://192.168.82.91:6163/” 或 “http://webclient.smaryun.com:6163/” 替换为  “http://你的内网IGS1.0服务地址/”
+- IGS服务1.0：将 “http://10.10.130.72:6163/” 或 “http://webclient.smaryun.com:6163/” 替换为  “http://你的内网IGS1.0服务地址/”
 
-- IGS服务2.0：将 “http://192.168.82.91:8089/” 或 “http://webclient.smaryun.com:8089/” 替换为  “http://你的内网IGS2.0服务地址/”
+- IGS服务2.0：将 “http://10.10.130.72:8089/” 或 “http://webclient.smaryun.com:8089/” 替换为  “http://你的内网IGS2.0服务地址/”
 
 #### 4.3、OpenLayers示例引用地址替换
 
@@ -102,7 +102,7 @@ yarn lint
 
 ```
   window.webclient = {
-    ip: "192.168.82.91",
+    ip: "10.10.130.72",
     port: 6163,
     protocol: "http",
   };

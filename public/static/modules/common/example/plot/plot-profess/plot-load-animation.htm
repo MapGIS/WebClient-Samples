@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+  <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>态势图管理</title>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/font-awesome/6.2.0/css/all.min.css"
+    />
     <!-- 引入地图引擎库 -->
     <script src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"></script>
     <!-- 天地图Token -->
@@ -12,9 +16,15 @@
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-plot.min.js"></script>
     <!-- panel -->
     <script src="http://10.10.130.72:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.js"></script>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.css"/>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.css"
+    />
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
     <script type="text/javascript">
       //使用严格模式
       'use strict'
@@ -58,7 +68,7 @@
             center: [117.19, 34.232, 400000],
             // 地图层级
             zoom: 8
-          });
+          })
           // 获取引擎类型
           let type = localStorage.getItem('engine-type')
           // 创建符号管理器
@@ -215,91 +225,91 @@
         initUI()
       }
     </script>
-</head>
+  </head>
 
-<body onload="init();">
-<div id="mapgis-viewer">
-    <div id="content" style="position: relative">
+  <body onload="init();">
+    <div id="mapgis-viewer">
+      <div id="content" style="position: relative">
         <div id="plot-show-table"></div>
+      </div>
     </div>
-</div>
-</body>
-<style>
+  </body>
+  <style>
     #mapgis-viewer {
-        width: 100%;
-        height: 100vh;
-        display: flex;
-        position: relative;
+      width: 100%;
+      height: 100vh;
+      display: flex;
+      position: relative;
     }
     #content {
-        height: 100%;
-        flex: 6.5;
-        position: relative;
+      height: 100%;
+      flex: 6.5;
+      position: relative;
     }
     #plot-show-table {
-        position: absolute;
-        left: 0px;
-        top: 0px;
-        z-index: 999;
+      position: absolute;
+      left: 0px;
+      top: 0px;
+      z-index: 999;
     }
     #plot-show-table .listdom {
-        font-family: Arial;
-        margin-bottom: 5px;
-        width: 100%;
-        border-color: #1970fc;
-        position: relative;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+      font-family: Arial;
+      margin-bottom: 5px;
+      width: 100%;
+      border-color: #1970fc;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
     #plot-show-table .listdom .btn,
     .span {
-        display: block;
-        padding: 5px 12px;
-        font-size: 13px;
-        font-weight: 400;
-        line-height: 1.53846154;
-        text-align: center;
-        white-space: nowrap;
-        cursor: pointer;
-        color: #fff;
-        background-color: #3a85c6;
-        user-select: none;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        width: 100%;
-        box-sizing: border-box;
+      display: block;
+      padding: 5px 12px;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.53846154;
+      text-align: center;
+      white-space: nowrap;
+      cursor: pointer;
+      color: #fff;
+      background-color: #3a85c6;
+      user-select: none;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
     }
     #plot-show-table .listdom .input {
-        opacity: 0;
-        display: block;
-        padding: 5px 12px;
-        font-size: 13px;
-        font-weight: 400;
-        line-height: 1.53846154;
-        text-align: center;
-        white-space: nowrap;
-        cursor: pointer;
-        color: #fff;
-        background-color: #3a85c6;
-        user-select: none;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        width: 100%;
-        box-sizing: border-box;
+      opacity: 0;
+      display: block;
+      padding: 5px 12px;
+      font-size: 13px;
+      font-weight: 400;
+      line-height: 1.53846154;
+      text-align: center;
+      white-space: nowrap;
+      cursor: pointer;
+      color: #fff;
+      background-color: #3a85c6;
+      user-select: none;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      width: 100%;
+      box-sizing: border-box;
     }
     #plot-show-table .listdom .list-item {
-        flex: 1;
-        height: 100%;
-        padding: 5px 12px;
-        border: 1px solid transparent;
-        border-radius: 4px;
-        background-color: #3a85c6;
-        cursor: pointer;
-        color: #fff;
-        box-sizing: border-box;
-        margin: 1px;
-        text-align: center;
+      flex: 1;
+      height: 100%;
+      padding: 5px 12px;
+      border: 1px solid transparent;
+      border-radius: 4px;
+      background-color: #3a85c6;
+      cursor: pointer;
+      color: #fff;
+      box-sizing: border-box;
+      margin: 1px;
+      text-align: center;
     }
-</style>
+  </style>
 </html>
