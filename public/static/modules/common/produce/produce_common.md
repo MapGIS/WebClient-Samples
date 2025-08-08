@@ -127,6 +127,29 @@ npm install @mapgis/webclient-common
 
 ## 版本说明
 
+### <font color=red>V10.7.6.10</font>
+
+1. 功能新增
+
+- 服务接口支持请求头 Header 传 Token
+- 支持加载 IGSImageServer 影像服务
+- 支持接入 IGS 加密瓦片服务
+- 地图服务（IGSMap地图服务、ArcGIS地图服务、WMS服务）支持全屏一张图加载方式
+
+2. 功能优化
+
+- IGSSceneLayer、ISSceneLayer子图层功能增强
+- 草图编辑工具接口的优化并增强，支持动态设置几何图层、提示文字、高程模式
+- SimpleLineSymbol、SimpleFillSymbol、TextSymbol等符号效果的优化和增强
+- 枚举类型的规范化
+
+3. API接口变更
+  <a href="http://10.10.130.72:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
+
+4. 新增示例
+
+- 自定义CZML图层
+
 ### <font color=red>V10.7.4.10</font>
 
 1. 功能新增

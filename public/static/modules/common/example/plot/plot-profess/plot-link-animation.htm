@@ -1,15 +1,21 @@
 <!DOCTYPE html>
 <html xmlns="http://www.w3.org/1999/xhtml">
-<head>
+  <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
     <title>态势推演二三维联动</title>
-    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/font-awesome/6.2.0/css/all.min.css" integrity="sha384-SOnAn/m2fVJCwnbEYgD4xzrPtvsXdElhOVvR8ND1YjB5nhGNwwf7nBQlhfAwHAZC" crossorigin="anonymous"/>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/font-awesome/6.2.0/css/all.min.css"
+    />
     <!--引入MapBox库-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.js"></script>
     <link
-            rel="stylesheet"
-            href="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/mapboxgl/mapbox-gl.css"
     />
     <!--加载不同版本Cesium库-->
     <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
@@ -24,16 +30,22 @@
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-plot.min.js"></script>
     <!-- panel -->
     <script src="http://10.10.130.72:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.js"></script>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.css"/>
-    <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
     <link
-            rel="stylesheet"
-            href="http://10.10.130.72:8086/static/libs/css/link.css"
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/exampleThirdParty/plot-profess/PlotPanel/index.css"
+    />
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
     />
     <link
-            rel="stylesheet"
-            href="http://10.10.130.72:8086/static/libs/css/plot/plot.css"
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/link.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/plot/plot.css"
     />
     <script>
       //使用严格模式
@@ -86,7 +98,7 @@
         // 获取Zondy类
         const zondy = window.zondy
         // 获取标绘类
-        const plot= zondy.plot
+        const plot = zondy.plot
         const {
           // 标绘库路径
           PlotUtilBase,
@@ -228,7 +240,7 @@
           {
             name: '播放动画',
             action: () => {
-              //   animationTool.restore();
+              animationTool.restore()
               animationTool.play()
             }
           },
@@ -335,14 +347,14 @@
           tiles: [
             //来源请求地址，请求天地图提供的全球矢量地图WMTS服务
             'http://t0.tianditu.gov.cn/img_c/wmts?SERVICE=WMTS&REQUEST=GetTile&VERSION=1.0.0&LAYER=img&STYLE=default&TILEMATRIXSET=c&FORMAT=tiles' +
-            '&TILECOL=' +
-            '{x}' +
-            '&TILEROW=' +
-            '{y}' +
-            '&TILEMATRIX=' +
-            '{z}' +
-            '&tk=' +
-            tiandituKey
+              '&TILECOL=' +
+              '{x}' +
+              '&TILEROW=' +
+              '{y}' +
+              '&TILEMATRIX=' +
+              '{z}' +
+              '&tk=' +
+              tiandituKey
           ],
           //栅格瓦片的分辨率
           tileSize: 256
@@ -391,16 +403,16 @@
         )
       }
     </script>
-</head>
+  </head>
 
-<body onload="init()">
-<div id="map">
-    <div id="mouse-position"></div>
-</div>
-<div id="mapgis-3d-viewer">
-    <div id="content" style="position: relative">
-        <div id="plot-show-table"></div>
+  <body onload="init()">
+    <div id="map">
+      <div id="mouse-position"></div>
     </div>
-</div>
-</body>
+    <div id="mapgis-3d-viewer">
+      <div id="content" style="position: relative">
+        <div id="plot-show-table"></div>
+      </div>
+    </div>
+  </body>
 </html>

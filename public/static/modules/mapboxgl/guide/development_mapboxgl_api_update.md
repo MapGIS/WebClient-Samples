@@ -13,6 +13,14 @@
 
 <br />
 
+# V10.7.6.10 接口变更表
+
+| <span style="display:inline-block;width: 50px"> 命名空间 </span> | 类名           | <span style="display:inline-block;width: 60px">类中文说明</span> | <span style="display:inline-block;width: 70px"> 类变更<br />类型 </span> | <span style="display:inline-block;width: 65px"> 成员名(方法/属性/枚举/常量/事件)</span> | <span style="display:inline-block;width: 70px"> 成员变<br />更类型 </span> | <span style="display:inline-block;width: 80px"> 被替代接口<br />（废弃） </span> | 变更内容说明                                                 |
+| ------------------------------------------------------------ | -------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ |
+| mapboxgl                                                     | RequestManager | 请求管理对象                                                 | 新增                                                         |                                                              |                                                              |                                                              | 请求管理对象。API请参考 http://10.10.130.72:8086/static/modules/mapboxgl/api/mapboxgl/RequestManager.html |
+
+<br />
+
 # V10.7.4.10 接口变更表
 
 无变更

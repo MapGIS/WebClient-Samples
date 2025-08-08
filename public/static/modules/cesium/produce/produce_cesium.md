@@ -168,6 +168,48 @@
 
 ## 版本说明
 
+### <font color=red>V10.7.6.10</font>
+
+<font size=4>**webclient-cesium-plugin**</font>
+
+1. 功能新增
+
+- 支持三维仿真可视化：流体模拟仿真和水体效果可视化
+- 面积、长度、角度、三角、方位角测量工具支持显示多个测量结果
+- 新增IGS地图服务、ArcGIS地图服务、WMS服务一张图出图的服务接入Provider
+
+2. 功能优化
+
+- 优化M3D2.0、2.1服务数据的加载性能和效果
+- 优化剖面分析工具和地形分析工具功能效果
+
+3. API接口变更
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">webclient-cesium-plugin 接口变更表</a>
+
+4. 新增示例
+
+- 流体模拟
+- 流体模拟-筑坝溃坝
+- 流体模拟-城市内涝
+
+
+<font size=4>**webclient-cesium**</font>
+
+1. 功能新增
+
+- 支持接入M3D2.2模型服务
+- 动态剖切切割剖面支持水平面
+- 支持logo样式大小设置
+
+2. 功能优化
+
+- 可视域效果的优化和增强
+- 模型压平支持Ceisum 3DTiles 数据
+
+3. API接口变更
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">webclient-cesium 接口变更表</a>
+
+
 ### <font color=red>V10.7.4.10</font>
 
 <font size=4>**webclient-cesium-plugin**</font>

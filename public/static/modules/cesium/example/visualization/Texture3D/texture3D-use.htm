@@ -77,10 +77,13 @@
         viewer.scene.fxaa = true
         viewer.scene.postProcessStages.fxaa.enabled = true
         //相机位置
-        viewer.camera.lookAt(
-          new Cesium.Cartesian3.fromDegrees(112.21, 31.1, 80),
-          new Cesium.Cartesian3(1, 1, 1)
-        )
+        // 需要在loaded事件后再设置视角
+        sceneView.on('loaded', () => {
+          viewer.camera.lookAt(
+            new Cesium.Cartesian3.fromDegrees(112.21, 31.1, 80),
+            new Cesium.Cartesian3(1, 1, 1)
+          )
+        })
       }
 
       //自定义片元着色器
