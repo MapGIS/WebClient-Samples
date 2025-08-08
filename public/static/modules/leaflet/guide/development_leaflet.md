@@ -143,6 +143,12 @@ npm install
 
 以 VUE 项目为例，React 和 Angular 类似。
 
+**在项目的main.js文件中引入leaflet引擎的样式文件**
+
+```javascript
+import '@mapgis/leaflet/dist/leaflet.css'
+```
+
 **在项目的 css 文件中设置地图视图容器的样式，否则地图视图无法显示**
 
 ```css
