@@ -2033,6 +2033,12 @@
               "diffcult": "1"
             },
             {
+              "name": "天气效果(高度雾)",
+              "file": "weather-height-fog",
+              "icon": "weather-height-fog.png",
+              "diffcult": "1"
+            },
+            {
               "name": "天气效果(雨)",
               "file": "weather-rain",
               "icon": "weather-rain.png",
@@ -2042,6 +2048,18 @@
               "name": "天气效果(雪)",
               "file": "weather-snow",
               "icon": "weather-snow.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "天气效果(后处理积雪)",
+              "file": "weather-postprocess-snowpack",
+              "icon": "weather-postprocess-snowpack.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "天气效果(场景积雪)",
+              "file": "weather-scene-snowpack",
+              "icon": "weather-scene-snowpack.png",
               "diffcult": "1"
             },
             {
