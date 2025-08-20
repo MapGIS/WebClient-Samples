@@ -735,6 +735,20 @@
                 "graphicslayer",
                 "gaochengmoshi"
               ]
+            },
+            {
+              "name": "几何图层 - HTML点对象",
+              "file": "graphics-layer-htmlSymbol",
+              "icon": "graphics-layer-htmlSymbol.png",
+              "diffcult": "1",
+              "tags": [
+                "graphics-layer-htmlSymbol",
+                "GraphicsLayer",
+                "几何图层 - HTML点对象",
+                "jihetuceng",
+                "graphicslayer",
+                "gaochengmoshi"
+              ]
             }
           ]
         },
@@ -1049,11 +1063,7 @@
               "file": "custom-czml-layer",
               "icon": "custom-czml-layer.png",
               "diffcult": "1",
-              "tags": [
-                "custom-czml-layer",
-                "custom",
-                "custom-czml"
-              ]
+              "tags": ["custom-czml-layer", "custom", "custom-czml"]
             }
           ]
         },
