@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
     <title>雨天气</title>
     <!--加载不同版本Cesium库-->
     <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
@@ -10,71 +13,47 @@
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
     <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
-    <!--引入Cesium.js库相关css样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"/>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/cesium/MapGIS/css/mapgis.css"/>
-    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"/>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/visual.css"/>
-    <script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <script type="module">
       'use strict'
-      //取得jquery对象
-      let $ = layui.$
-      //滑动条管理器对象
-      let slider = layui.slider
-      //定义三维视图的主要类
-      let map, sceneView, viewer
-      // 后处理特效库
-      // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/PostProcessStageLibrary.html
-      const PostProcessStageLibrary = zondy.cesium.PostProcessStageLibrary
-      //特效对象
-      let rainStage = null
-      //添加雨的参数
-      let optionsRain = {
-        alpha: 0.3, //透明度[0,1]
-        angle: 0, //倾斜角度[-30,30],sin(angle)
-        speed: 15, //雨丝速度[0,∞],推荐使用[0-20]
-        rainLength: 0.0, //附加长度，雨丝本身具有一定长度
-        factor: 0.1, //混合度[0,1],
-        viewer: viewer
-      }
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
 
-      //地图初始化函数
-      function init() {
-        //初始化球体
-        initViewer()
-        //创建切换Cesium版本的按钮
-        createChangeTab()
-        //添加天地图
-        addTDT()
-        //添加中地大楼模型
-        addZondyBuilding()
-        //添加雨
-        addRain()
-        //初始化示例UI
-        initUI()
-      }
+      // 定义创建图层与UI交互相关的变量
+      let map, sceneView, viewer, pane, rain
 
-      //初始化球体
+      // 该方法用于初始化三维地图查看器，包括创建图层管理容器，初始化地图视图对象以及获取Cesium场景视图对象
       function initViewer() {
-        //初始化图层管理容器
         map = new zondy.Map()
-        //初始化地图视图对象
         sceneView = new zondy.cesium.SceneView({
-          //视图id
           viewId: 'mapgis-3d-viewer',
-          //图层管理容器
           map: map
         })
-        //获取视图对象
         viewer = sceneView.getInnerView()
-        optionsRain.viewer = viewer
+        // 开启地形深度测试
+        viewer.scene.globe.depthTestAgainstTerrain = true
       }
 
-      //添加天地图
+      // 该方法用于添加M3D模型缓存图层
+      function addModelCacheLayer() {
+        const modelCacheLayer = new zondy.layer.M3DModelCacheLayer({
+          url: 'http://10.10.130.72:8200/3DData/ModelCache/M3D//1.0/ZondyFaceModels/ZondyFaceModels.mcj',
+          extensionOptions: {
+            // 开启自动跳转
+            autoReset: true
+          }
+        })
+        map.add(modelCacheLayer)
+      }
+
+      // 该方法用于加载天地图
       function addTDT() {
         let TDTLayer = new zondy.layer.WMTSLayer({
           // 加载经纬度的影像地图
@@ -87,210 +66,139 @@
         map.add(TDTLayer)
       }
 
-      //加载中地大楼
-      function addZondyBuilding() {
-        let url =
-          'http://10.10.130.72:8200/3DData/ModelCache/M3D//1.0/ZondyFaceModels/ZondyFaceModels.mcj'
-        let M3DLayer = new zondy.layer.M3DModelCacheLayer({
-          url: url,
-          // 初始化参数
-          extensionOptions: {
-            // 开启自动跳转
-            autoReset: true
-          }
-        })
-        map.add(M3DLayer)
-      }
-
-      //初始化示例UI
-      function initUI() {
-        // 透明度
-        slider.render({
-          elem: '#alpha',
-          value: optionsRain.alpha * 100,
-          min: 0.0,
-          max: 100.0,
-          step: 1,
-          theme: 'rgb(102 147 251)',
-          input: true,
-          setTips: function (value) {
-            return `${value}%`
-          },
-          change: function (value) {
-            $('#alpha-input').val(value)
-            optionsRain.alpha = value * 0.01
-            if (Cesium.defined(rainStage)) {
-              removeRain()
-              addRain()
-            }
-          }
-        })
-        // 倾斜角度
-        slider.render({
-          elem: '#angle',
-          value: optionsRain.angle,
-          min: -30.0,
-          max: 30.0,
-          step: 1,
-          theme: 'rgb(102 147 251)',
-          input: true,
-          change: function (value) {
-            $('#angle-input').val(value)
-            optionsRain.angle = value
-            if (Cesium.defined(rainStage)) {
-              removeRain()
-              addRain()
-            }
-          }
-        })
-        // 雨丝速度
-        slider.render({
-          elem: '#speed',
-          value: optionsRain.speed,
-          min: 1.0,
-          max: 20.0,
-          step: 1,
-          theme: 'rgb(102 147 251)',
-          input: true,
-          change: function (value) {
-            $('#speed-input').val(value)
-            optionsRain.speed = value
-            if (Cesium.defined(rainStage)) {
-              removeRain()
-              addRain()
-            }
-          }
-        })
-        //雨丝附加长度
-        slider.render({
-          elem: '#rainLength',
-          value: optionsRain.rainLength,
-          min: 0.0,
-          max: 10.0,
-          step: 1,
-          theme: 'rgb(102 147 251)',
-          input: true,
-          change: function (value) {
-            $('#rainLength-input').val(value)
-            optionsRain.rainLength = value
-            if (Cesium.defined(rainStage)) {
-              removeRain()
-              addRain()
-            }
-          }
-        })
-        //场景混合度
-        slider.render({
-          elem: '#factor',
-          value: optionsRain.factor * 100,
-          min: 0.0,
-          max: 100.0,
-          step: 1,
-          theme: 'rgb(102 147 251)',
-          input: true,
-          setTips: function (value) {
-            return `${value}%`
-          },
-          change: function (value) {
-            $('#factor-input').val(value)
-            optionsRain.factor = value * 0.01
-            if (Cesium.defined(rainStage)) {
-              removeRain()
-              addRain()
-            }
-          }
-        })
-      }
-
-      //雨
+      // 该方法用于添加场景雨后处理特效
       function addRain() {
-        if (!rainStage) {
-          rainStage = PostProcessStageLibrary.createRainStage(optionsRain)
-          viewer.scene.postProcessStages.add(rainStage)
-          // 显示 参数
-          document.getElementById('sample-main-panel').style.display = 'block'
-          document.getElementById('layui-panel').style.width = '320px'
+        rain = viewer.scene.postProcessStages.add(
+          zondy.cesium.PostProcessStageLibrary.createRainStage({ viewer })
+        )
+      }
+
+      // 该方法用于初始化UI操作面板
+      function initUI() {
+        pane = new Pane({
+          title: '操作面板'
+        })
+
+        // 定义默认参数
+        const paneParameters = {
+          enabled: true,
+          alpha: 0.3,
+          angle: 0,
+          speed: 15,
+          rainLength: 0,
+          factor: 0.1,
+          intensity: 1.0,
         }
+
+        pane
+          .addBinding(paneParameters, 'enabled', {
+            label: '开启降雨'
+          })
+          .on('change', (e) => {
+            rain.enabled = e.value
+          })
+
+        pane
+          .addBinding(paneParameters, 'alpha', {
+            label: '透明度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            rain.uniforms.alpha = e.value
+          })
+
+        pane
+          .addBinding(paneParameters, 'angle', {
+            label: '倾斜角度',
+            min: -45,
+            max: 45
+          })
+          .on('change', (e) => {
+            rain.uniforms.angle = e.value
+          })
+
+        pane
+          .addBinding(paneParameters, 'speed', {
+            label: '速度',
+            min: 1,
+            max: 20
+          })
+          .on('change', (e) => {
+            rain.uniforms.speed = e.value
+          })
+
+        pane
+          .addBinding(paneParameters, 'rainLength', {
+            label: '雨滴拖尾长度',
+            min: 0,
+            max: 10
+          })
+          .on('change', (e) => {
+            rain.uniforms.rainLength = e.value
+          })
+
+        pane
+          .addBinding(paneParameters, 'factor', {
+            label: '场景混合度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            rain.uniforms.factor = e.value
+          })
+          
+        pane
+          .addBinding(paneParameters, 'intensity', {
+            label: '强度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            rain.uniforms.intensity = e.value
+          })
+
+        pane
+          .addButton({
+            title: '重置'
+          })
+          .on('click', () => {
+            paneParameters.enabled = true
+            paneParameters.alpha = 0.3
+            paneParameters.angle = 0
+            paneParameters.speed = 15
+            paneParameters.rainLength = 0
+            paneParameters.factor = 0.1
+            paneParameters.intensity = 1.0
+            rain.enabled = true
+            rain.uniforms.alpha = 0.3
+            rain.uniforms.angle = 0
+            rain.uniforms.speed = 15
+            rain.uniforms.rainLength = 0
+            rain.uniforms.factor = 0.1
+            rain.uniforms.intensity = 1.0
+            pane.refresh()
+          })
       }
 
-      //移除雨
-      function removeRain() {
-        viewer.scene.postProcessStages.remove(rainStage)
-        rainStage = null
-        // 隐藏掉参数面板
-        document.getElementById('sample-main-panel').style.display = 'none'
-        document.getElementById('layui-panel').style.width = '205px'
+      // 该方法用于初始化整个应用，包括初始化查看器、添加模型缓存图层和初始化用户界面
+      function init() {
+        initViewer()
+        createChangeTab()
+        addModelCacheLayer()
+        addRain()
+        addTDT()
+        initUI()
       }
+
+      init()
     </script>
-  </head>
 
-  <body onload="init()">
-    <div id="mapgis-3d-viewer"></div>
-    <div class="layui-panel layui-panel-right" id="layui-panel">
-      <form class="layui-form" action="">
-        <div class="sample-main-panel" id="sample-main-panel">
-          <div class="layui-form-item">
-            <div class="slideBarDiv">
-              透明度
-              <div id="alpha" class="demo-slider"></div>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <div class="slideBarDiv">
-              倾斜角度
-              <div id="angle" class="demo-slider"></div>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <div class="slideBarDiv">
-              雨丝速度
-              <div id="speed" class="demo-slider"></div>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <div class="slideBarDiv">
-              雨丝附加长度
-              <div id="rainLength" class="demo-slider"></div>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <div class="slideBarDiv">
-              场景混合度
-              <div id="factor" class="demo-slider"></div>
-            </div>
-          </div>
-        </div>
-        <div class="sample-button-panel">
-          <button
-            onclick="addRain()"
-            type="button"
-            class="layui-btn layui-btn-normal"
-          >
-            添加雨
-          </button>
-          <button
-            onclick="removeRain()"
-            type="button"
-            class="layui-btn layui-btn-normal"
-          >
-            移除雨
-          </button>
-        </div>
-      </form>
-    </div>
     <style>
-      .sample-main-panel {
-        height: auto;
-      }
-
-      .layui-slider {
-        top: -20px;
-        width: 115px;
-        left: 94px;
-      }
-
-      .layui-slider-input {
-        top: -34px;
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
       }
     </style>
   </body>
