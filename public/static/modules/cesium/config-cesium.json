@@ -2039,7 +2039,7 @@
               "diffcult": "1"
             },
             {
-              "name": "天气效果(雨)",
+              "name": "天气效果(雨+地面积水)",
               "file": "weather-rain",
               "icon": "weather-rain.png",
               "diffcult": "1"
