@@ -847,12 +847,7 @@
               "file": "mapgis-covering",
               "icon": "mapgis-covering.png",
               "diffcult": "1",
-              "tags": [
-                "覆盖物服务",
-                "covering",
-                "fugaiwu",
-                "SceneLayer"
-              ]
+              "tags": ["覆盖物服务", "covering", "fugaiwu", "SceneLayer"]
             },
             {
               "name": "IS场景服务",
@@ -1234,6 +1229,20 @@
               "diffcult": "1",
               "icon": "view-event.png",
               "tags": ["视图事件", "view-event", "shitushijian"]
+            }
+          ]
+        },
+        {
+          "name": "视图工具",
+          "folder": "view-tool",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "卷帘",
+              "file": "swipe-tool",
+              "diffcult": "1",
+              "icon": "swipe-tool.png",
+              "tags": ["卷帘", "swipe-tool", "卷帘工具"]
             }
           ]
         }
