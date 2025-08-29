@@ -917,6 +917,17 @@
                 "3DTiles1.1",
                 "3dtiles1.1"
               ]
+            },
+            {
+              "name": "BIM(M3D 2.1/2.2 DB属性查询)",
+              "file": "m3d-db-data-attribute",
+              "icon": "m3d-db-data-attribute.png",
+              "diffcult": "1",
+              "tags": [
+                "BIM(M3D 2.1/2.2 DB属性查询)",
+                "M3D 2.1",
+                "M3D 2.2"
+              ]
             }
           ]
         },
