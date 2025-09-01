@@ -1,14 +1,18 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html lang="en">
   <head>
-    <meta charset="utf-8" />
+    <meta charset="UTF-8" />
     <meta
       name="viewport"
       content="initial-scale=1,maximum-scale=1,user-scalable=no"
     />
-    <title>雨天气</title>
-    <!--加载不同版本Cesium库-->
-    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
+    <title>雨天气和地面积水</title>
+    <!--加载Cesium库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
     <!--plugin脚本库-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
@@ -26,179 +30,275 @@
       'use strict'
       import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
 
-      // 定义创建图层与UI交互相关的变量
-      let map, sceneView, viewer, pane, rain
+      // 定义视图等变量
+      let viewer, pane, puddle, rainStage, puddleControls, rainControls
 
-      // 该方法用于初始化三维地图查看器，包括创建图层管理容器，初始化地图视图对象以及获取Cesium场景视图对象
+      const defaultPuddleControls = {
+        // 积水效果
+        showPuddle: true,
+        puddleAlpha: 0.5,
+        puddleSize: 0.5,
+        showRipple: true,
+        rippleNumber: 0.5,
+        rippleSize: 0.5,
+        showReflection: true,
+        reflectionAlpha: 0.5
+      }
+      //添加雨的参数
+      let defaultRainControls = {
+        alpha: 0.3, //透明度[0,1]
+        angle: 0, //倾斜角度[-30,30],sin(angle)
+        speed: 15, //雨丝速度[0,∞],推荐使用[0-20]
+        rainLength: 0.0, //附加长度，雨丝本身具有一定长度
+        factor: 0.1, //混合度[0,1],
+        viewer: viewer
+      }
+      async function init() {
+        initViewer()
+        await addModel()
+        addTDT()
+        initRain()
+        initPuddle()
+        initUI()
+      }
+      init()
+
+      // 初始场景
       function initViewer() {
-        map = new zondy.Map()
-        sceneView = new zondy.cesium.SceneView({
-          viewId: 'mapgis-3d-viewer',
-          map: map
+        viewer = new Cesium.Viewer('mapgis-3d-viewer', {
+          timeline: true
         })
-        viewer = sceneView.getInnerView()
-        // 开启地形深度测试
         viewer.scene.globe.depthTestAgainstTerrain = true
       }
-
-      // 该方法用于添加M3D模型缓存图层
-      function addModelCacheLayer() {
-        const modelCacheLayer = new zondy.layer.M3DModelCacheLayer({
-          url: 'http://10.10.130.72:8200/3DData/ModelCache/M3D//1.0/ZondyFaceModels/ZondyFaceModels.mcj',
-          extensionOptions: {
-            // 开启自动跳转
-            autoReset: true
-          }
-        })
-        map.add(modelCacheLayer)
+      // 添加模型
+      async function addModel() {
+        const tileset = await Cesium.MapGISM3DSet.fromUrl(
+          // 服务基地址
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/OSGB-大雁塔_m3d_meshopt_ktx2/OSGB-大雁塔_m3d_meshopt_ktx2.mcj'
+        )
+        viewer.scene.primitives.add(tileset)
+        viewer.zoomTo(tileset)
       }
-
-      // 该方法用于加载天地图
+      // 添加天地图
       function addTDT() {
-        let TDTLayer = new zondy.layer.WMTSLayer({
-          // 加载经纬度的影像地图
-          url: 'http://t6.tianditu.gov.cn/img_c/wmts',
-          // 天地图必须加token，且token名为tk
-          tokenKey: 'tk',
-          // token请在天地图官网申请
-          tokenValue: getTDTToken()
-        })
-        map.add(TDTLayer)
-      }
-
-      // 该方法用于添加场景雨后处理特效
-      function addRain() {
-        rain = viewer.scene.postProcessStages.add(
-          zondy.cesium.PostProcessStageLibrary.createRainStage({ viewer })
+        const tdtToken = '63c5c4f101d68229494bb45d3bf60277'
+        viewer.imageryLayers.addImageryProvider(
+          new Cesium.WebMapTileServiceImageryProvider({
+            url: `http://t0.tianditu.com/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=${tdtToken}`,
+            layer: 'tdtBasicLayer',
+            style: 'default',
+            format: 'image/jpeg',
+            tileMatrixSetID: 'GoogleMapsCompatible'
+          })
         )
       }
+      function initRain() {
+        //特效对象
+        rainStage = null
+        rainStage = zondy.cesium.PostProcessStageLibrary.createRainStage({
+          viewer
+        })
+        viewer.scene.postProcessStages.add(rainStage)
+      }
+      //移除雨
+      function removeRain() {
+        viewer.scene.postProcessStages.remove(rainStage)
+        rainStage = null
+      }
+      function initPuddle() {
+        let rectangle = Cesium.Rectangle.fromDegrees(
+          108.95755019953876,
+          34.21755995121934,
+          108.96125447118449,
+          34.22169909914171
+        )
+        puddle = new zondy.cesium.Puddle({
+          viewer,
+          rectangle
+          // show: true,              // 显示积水效果
+          // alpha: 0.9,            // 设置积水透明度为0.7
+          // puddleSize: 0.8,         // 设置水坑大小为0.8
+          // showRipple: true,        // 开启涟漪效果
+          // rippleNumber: 0.9,       // 设置涟漪数量为0.6
+          // rippleSize: 0.9          // 设置涟漪大小为0.4 });
+        })
+      }
 
-      // 该方法用于初始化UI操作面板
+      // 初始化UI组件
       function initUI() {
+        if (pane) {
+          pane.dispose()
+        }
         pane = new Pane({
-          title: '操作面板'
+          title: '积水特效操作面板'
         })
 
-        // 定义默认参数
-        const paneParameters = {
-          enabled: true,
-          alpha: 0.3,
-          angle: 0,
-          speed: 15,
-          rainLength: 0,
-          factor: 0.1,
-          intensity: 1.0,
-        }
+        const rainFolder = pane.addFolder({
+          title: '降雨控制'
+        })
 
-        pane
-          .addBinding(paneParameters, 'enabled', {
-            label: '开启降雨'
-          })
-          .on('change', (e) => {
-            rain.enabled = e.value
-          })
+        const puddleFolder = pane.addFolder({
+          title: '积水控制'
+        })
 
-        pane
-          .addBinding(paneParameters, 'alpha', {
-            label: '透明度',
+        puddleControls = Object.assign({}, defaultPuddleControls)
+        rainControls = Object.assign({}, defaultRainControls)
+
+        rainFolder
+          .addBinding(rainControls, 'alpha', {
+            label: '降雨透明度',
             min: 0,
             max: 1
           })
           .on('change', (e) => {
-            rain.uniforms.alpha = e.value
+            if (rainStage) {
+              rainStage.uniforms.alpha = e.value
+            }
           })
 
-        pane
-          .addBinding(paneParameters, 'angle', {
+        rainFolder
+          .addBinding(rainControls, 'angle', {
             label: '倾斜角度',
-            min: -45,
-            max: 45
+            min: -30,
+            max: 30
           })
           .on('change', (e) => {
-            rain.uniforms.angle = e.value
+            if (rainStage) {
+              rainStage.uniforms.angle = e.value
+            }
           })
 
-        pane
-          .addBinding(paneParameters, 'speed', {
-            label: '速度',
-            min: 1,
-            max: 20
-          })
-          .on('change', (e) => {
-            rain.uniforms.speed = e.value
-          })
-
-        pane
-          .addBinding(paneParameters, 'rainLength', {
-            label: '雨滴拖尾长度',
+        rainFolder
+          .addBinding(rainControls, 'speed', {
+            label: '雨丝速度',
             min: 0,
-            max: 10
+            max: 50
           })
           .on('change', (e) => {
-            rain.uniforms.rainLength = e.value
+            if (rainStage) {
+              rainStage.uniforms.speed = e.value
+            }
           })
 
-        pane
-          .addBinding(paneParameters, 'factor', {
-            label: '场景混合度',
+        rainFolder
+          .addBinding(rainControls, 'rainLength', {
+            label: '附加长度',
             min: 0,
             max: 1
           })
           .on('change', (e) => {
-            rain.uniforms.factor = e.value
+            if (rainStage) {
+              rainStage.uniforms.rainLength = e.value
+            }
           })
-          
-        pane
-          .addBinding(paneParameters, 'intensity', {
-            label: '强度',
+
+        rainFolder
+          .addBinding(rainControls, 'factor', {
+            label: '混合度',
             min: 0,
             max: 1
           })
           .on('change', (e) => {
-            rain.uniforms.intensity = e.value
+            if (rainStage) {
+              rainStage.uniforms.factor = e.value
+            }
           })
 
-        pane
+        // 积水控制
+        puddleFolder
+          .addBinding(puddleControls, 'showPuddle', {
+            label: '显示积水'
+          })
+          .on('change', (e) => {
+            puddle.show = e.value
+          })
+
+        puddleFolder
+          .addBinding(puddleControls, 'puddleAlpha', {
+            label: '积水透明度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            puddle.alpha = e.value
+          })
+
+        puddleFolder
+          .addBinding(puddleControls, 'puddleSize', {
+            label: '积水大小',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            puddle.puddleSize = e.value
+          })
+
+        puddleFolder
+          .addBinding(puddleControls, 'showRipple', {
+            label: '显示波纹'
+          })
+          .on('change', (e) => {
+            puddle.showRipple = e.value
+          })
+
+        puddleFolder
+          .addBinding(puddleControls, 'rippleNumber', {
+            label: '波纹数量',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            puddle.rippleNumber = e.value
+          })
+
+        puddleFolder
+          .addBinding(puddleControls, 'rippleSize', {
+            label: '波纹大小',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            puddle.rippleSize = e.value
+          })
+
+        puddleFolder
+          .addBinding(puddleControls, 'showReflection', {
+            label: '显示反射'
+          })
+          .on('change', (e) => {
+            puddle.reflection.show = e.value
+          })
+
+        puddleFolder
+          .addBinding(puddleControls, 'reflectionAlpha', {
+            label: '反射透明度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            puddle.reflection.alpha = e.value
+          })
+        puddleFolder
           .addButton({
             title: '重置'
           })
           .on('click', () => {
-            paneParameters.enabled = true
-            paneParameters.alpha = 0.3
-            paneParameters.angle = 0
-            paneParameters.speed = 15
-            paneParameters.rainLength = 0
-            paneParameters.factor = 0.1
-            paneParameters.intensity = 1.0
-            rain.enabled = true
-            rain.uniforms.alpha = 0.3
-            rain.uniforms.angle = 0
-            rain.uniforms.speed = 15
-            rain.uniforms.rainLength = 0
-            rain.uniforms.factor = 0.1
-            rain.uniforms.intensity = 1.0
-            pane.refresh()
+            puddle.destroy()
+            initPuddle()
+            removeRain()
+            initRain()
+            initUI()
           })
       }
-
-      // 该方法用于初始化整个应用，包括初始化查看器、添加模型缓存图层和初始化用户界面
-      function init() {
-        initViewer()
-        createChangeTab()
-        addModelCacheLayer()
-        addRain()
-        addTDT()
-        initUI()
-      }
-
-      init()
     </script>
 
     <style>
-      #mapgis-3d-viewer {
+      /* tweakpane样式 */
+      .tp-dfwv {
         position: absolute;
-        left: 0;
-        top: 0;
+        top: 15px;
+        /* left: 10px; */
+        width: 240px;
       }
     </style>
   </body>
