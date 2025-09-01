@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>卷帘</title>
+    <!-- 引入地图引擎库 -->
+    <script
+      include="engine:leaflet"
+      src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"
+    ></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+    />
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/visual.css"
+    />
+    <script type="module">
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+      let $ = layui.$
+      // 定义变量
+      let map,
+        view,
+        pane,
+        webTileLayer,
+        igsVectorTileLayer,
+        igsMapImageLayer,
+        swipeTool
+
+      // 初始化卷帘工具
+      function initSwipeTool() {
+        swipeTool = new zondy.leaflet.tool.SwipeTool({
+          view: view,
+          leadingLayers: [igsMapImageLayer, webTileLayer],
+          trailingLayers: [igsVectorTileLayer]
+        })
+      }
+
+      // 添加天地图影像
+      function addTDT() {
+        // // 通过fromUrl的方式加载天地图
+        let TDTLayer = new zondy.layer.WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_w/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        map.add(TDTLayer)
+        TDTLayer.on('layerview-created', function (result) {})
+      }
+
+      function addLayers() {
+        webTileLayer = new zondy.layer.WebTileLayer({
+          type: 'web-tile',
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=cva_w&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken(),
+          // 图层透明度
+          opacity: 1
+        })
+
+        igsVectorTileLayer = new zondy.layer.IGSVectorTileLayer({
+          type: 'igs-vector-tile',
+          // 矢量瓦片服务地址
+          url: 'http://10.10.130.72:8089/igs/rest/services/VectorTile/wuhan_3857_256_custom_mvt/VectorTileServer'
+        })
+
+        igsMapImageLayer = new zondy.layer.IGSMapImageLayer({
+          type: 'igs-map-image',
+          renderMode: 'image',
+          // 地图服务地址
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/武汉市4547/MapServer'
+        })
+
+        igsVectorTileLayer.on('layerview-created', (e) => {
+          view.goTo({
+            layer: e.layer
+          })
+        })
+
+        map.addMany([webTileLayer, igsVectorTileLayer, igsMapImageLayer])
+      }
+
+      //初始化示例UI
+      function initUI() {
+        if (!pane) {
+          pane = new Pane({})
+          const params = {
+            mode: 'horizontal',
+            enable: true
+          }
+
+          const swipeToolSetting = pane.addFolder({
+            title: '卷帘设置'
+          })
+
+          swipeToolSetting
+            .addBlade({
+              view: 'list',
+              label: '卷帘模式',
+              options: [
+                { text: '垂直方向', value: 'vertical' },
+                { text: '水平方向', value: 'horizontal' }
+              ],
+              value: params.mode
+            })
+            .on('change', (ev) => {
+              swipeTool.mode = ev.value
+              if (ev.value === 'vertical') {
+                $('#slider').css({
+                  top: `${100.0 * swipeTool.region}%`,
+                  left: '0px',
+                  marginTop: '-2px',
+                  height: '4px',
+                  width: '100%'
+                })
+                $('#slider')
+                  .removeClass('horizontal')
+                  .addClass('vertical')
+                  .show()
+              } else {
+                $('#slider').css({
+                  left: `${100.0 * swipeTool.region}%`,
+                  top: '0px',
+                  width: '4px',
+                  height: '100%',
+                  marginLeft: '-2px'
+                })
+                $('#slider')
+                  .removeClass('vertical')
+                  .addClass('horizontal')
+                  .show()
+              }
+            })
+          swipeToolSetting
+            .addBinding(params, 'enable', {
+              label: '开/关卷帘'
+            })
+            .on('change', (ev) => {
+              swipeTool.enable(ev.value)
+            })
+          swipeToolSetting
+            .addButton({
+              title: '翻转卷帘'
+            })
+            .on('click', () => {
+              const leadingLayers = swipeTool.leadingLayers.items.map(
+                (layer) => layer
+              )
+              const trailingLayers = swipeTool.trailingLayers.items.map(
+                (layer) => layer
+              )
+              swipeTool.leadingLayers = trailingLayers
+              swipeTool.trailingLayers = leadingLayers
+            })
+
+          const panelDom = document.querySelector('.tp-dfwv')
+          if (panelDom) {
+            panelDom.style.zIndex = 999
+          }
+        }
+      }
+
+      //初始化视图
+      function initViewer() {
+        //初始化图层管理容器
+        map = new zondy.Map()
+        //初始化地图视图对象
+        view = createView('mapgis-viewer', map)
+      }
+
+      function initMoveBar() {
+        let slider = document.getElementById('slider')
+        let moveActive = false
+
+        // 鼠标按下事件
+        slider.addEventListener('mousedown', function (e) {
+          moveActive = true
+          // 防止文本选择
+          e.preventDefault()
+        })
+
+        // 将mousemove事件绑定到document上，确保鼠标在页面任何位置移动都能触发
+        document.addEventListener('mousemove', function (event) {
+          if (!moveActive) {
+            return
+          }
+
+          // 防止默认行为
+          event.preventDefault()
+
+          const parentRect = document
+            .getElementById('mapgis-viewer')
+            .getBoundingClientRect()
+          const relativeOffsetX = event.clientX - parentRect.left
+          const relativeOffsetY = event.clientY - parentRect.top
+
+          // 确保坐标在有效范围内
+          const boundedX = Math.max(
+            0,
+            Math.min(parentRect.width, relativeOffsetX)
+          )
+          const boundedY = Math.max(
+            0,
+            Math.min(parentRect.height, relativeOffsetY)
+          )
+
+          // 计算比例
+          const splitPositionX = boundedX / parentRect.width
+          const splitPositionY = boundedY / parentRect.height
+
+          if (swipeTool.mode === 'horizontal') {
+            // 设置滑动条位置
+            slider.style.left = `${100.0 * splitPositionX}%`
+            // 设置卷帘位置
+            swipeTool.region = splitPositionX
+          } else {
+            // 设置滑动条位置
+            slider.style.top = `${100.0 * splitPositionY}%`
+            // 设置卷帘位置
+            swipeTool.region = splitPositionY
+          }
+        })
+
+        // 将mouseup事件也绑定到document上
+        document.addEventListener('mouseup', function (e) {
+          moveActive = false
+        })
+
+        // 可选：添加mouseleave事件处理
+        slider.addEventListener('mouseleave', function (e) {
+          // 可以选择在这里停止拖动，或者保持激活状态
+          // moveActive = false;
+        })
+      }
+
+      function updateRegion(region) {}
+
+      function init() {
+        //地图初始化
+        initViewer()
+        //加载天地图
+        addTDT()
+        //加载其他图层
+        addLayers()
+        //初始化卷帘工具
+        initSwipeTool()
+        //初始化滑块事件
+        initMoveBar()
+        //初始化示例UI
+        initUI()
+      }
+
+      init()
+    </script>
+  </head>
+
+  <body>
+    <div id="mapgis-viewer"></div>
+    <div id="slider" class="horizontal shutter-tool"></div>
+  </body>
+  <style>
+    #slider {
+      position: absolute;
+      left: 50%;
+      top: 0;
+      background-color: #000;
+      width: 4px;
+      margin-left: -2px;
+      height: 100%;
+      z-index: 9999;
+    }
+
+    #slider.horizontal:hover {
+      cursor: ew-resize;
+    }
+
+    #slider.vertical:hover {
+      cursor: ns-resize;
+    }
+  </style>
+</html>
