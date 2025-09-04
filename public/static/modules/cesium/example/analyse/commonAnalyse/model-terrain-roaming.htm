@@ -24,7 +24,7 @@
       //定义三维视图的主要类
       // let map, sceneView, viewer, options, animation, drawElement = null, animationTools, rooutes
       let map, sceneView, viewer, options, animation, drawElement = null, animationTools = [], rooutes
-      let isStop = false, isLoop = false//, pause = false
+      let isStop = false, isLoop = false, routeIndex = 0
       //取得jquery对象
       let $ = layui.$
 
@@ -40,6 +40,8 @@
         addIGSSceneLayer()
         //视角跳转
         flyTo()
+        //初始化UI
+        initUI()
         // 初始两个化漫游工具
         rooutes = getRoutes()
         rooutes.forEach(function (route) {
@@ -101,32 +103,6 @@
         })
       }
 
-      function pause(routeIndex) {
-        // 切换动画漫游的暂停状态
-        const animationTool = animationTools[routeIndex]
-        animationTool.pause = !animationTool.pause
-        debugger
-        if ($('#pause'+routeIndex).html() === '暂停') {
-          $('#pause'+routeIndex).html('继续')
-          // console.log('11----',$('#pause'+routeIndex).style.backgroundColor)
-          // $('#pause'+routeIndex).style.backgroundColor = '#5FB878'
-          // console.log('11----',$('#pause'+routeIndex).style.backgroundColor)
-        } else {
-          $('#pause'+routeIndex).html('暂停')
-        }
-      }
-
-      function startStop(routeIndex) {
-        // 切换动画漫游的暂停状态
-        const animationTool = animationTools[routeIndex]
-        animationTool.pause = !animationTool.pause
-        if ($('#startStop'+routeIndex).html() === '开始') {
-          $('#startStop'+routeIndex).html('停止')
-        } else {
-          $('#startStop'+routeIndex).html('开始')
-        }
-      }
-
       function addDrawElement() {
         if (!drawElement) {
           drawElement = new zondy.cesium.DrawElement(viewer)
@@ -138,10 +114,15 @@
             createAnimationTool(result.positions)
             // 停止绘制，解除鼠标行为
             drawElement.stopDrawing()
+            // 完成绘制后，绘制按钮恢复为可用状态
+            $('#addRouteButton').removeClass('layui-btn-disabled').attr("disabled",false);
+            // 动态添加下拉框选项
+            const newRouteIndex = animationTools.length
+            $('#routeList').append(`<option value=${newRouteIndex-1}>绘制路线${newRouteIndex - 2}</option>`)
+            layui.form.render('select');
           }
         })
       }
-
       
       //创建漫游工具
       function createAnimationTool(pathPositions) {
@@ -188,7 +169,7 @@
           }),
           //模型对象参数，详见ModelGraphics对象的文档
           model: new zondy.cesium.RouteAnimationModel({
-            url:'http://10.10.130.72:8200/3DData/Model/glb/CesiumMilkTruck.glb',
+            uri:'http://10.10.130.72:8200/3DData/Model/glb/CesiumMilkTruck.glb',
             //放大比例
             scale: 20,
             //固定大小设为0
@@ -221,18 +202,76 @@
             console.log('开始')
           }
         });
-        animationTools.push(tool)
+        animationTools.push({
+          tool,
+          startStop: 'start',
+          pausePlay: 'play',
+          show: true,
+          colorChange: false
+        })
       }
 
-      function changeAnimationModelProperties(routeIndex){
-        const modelEntity = animationTools[routeIndex].animationEntity.model
-        debugger
-        modelEntity.model.color= new Cesium.Color(1.0, 0.0, 1.0, 1.0)
+      // 添加新的漫游路径
+      function addRoute(){
+        // 完成绘制前，绘制按钮恢复为不可用状态
+        $('#addRouteButton').addClass('layui-btn-disabled').attr("disabled",true);
+        addDrawElement()
+      }
+
+      // 切换动画漫游的暂停状态
+      function pausePlayAction() {
+        const animationTool = animationTools[routeIndex].tool
+        if (animationTools[routeIndex].pausePlay === 'pause') {
+          animationTool.play()
+          animationTools[routeIndex].pausePlay = 'play'
+          $('#pausePlay').html('暂停')
+        } else {
+          animationTool.pause()
+          animationTools[routeIndex].pausePlay = 'pause'
+          $('#pausePlay').html('继续')
+        }
+      }
+
+      // 切换动画漫游的暂停状态
+      function startStopAction(){
+        const animationTool = animationTools[routeIndex].tool
+        if (animationTools[routeIndex].startStop === 'start') {
+          animationTool.stop()
+          animationTools[routeIndex].startStop = 'stop'
+          $('#startStop').html('开始')
+        } else {
+          animationTool.start()
+          animationTools[routeIndex].startStop = 'start'
+          $('#startStop').html('停止')
+        }
+      }
+
+      // 切换修改模型颜色状态
+      function changeAnimationModelProperties(){
+        const modelEntity = animationTools[routeIndex].tool.animationEntity.model
+        if (animationTools[routeIndex].colorChange) {
+          modelEntity.model.color= undefined
+          animationTools[routeIndex].colorChange = false
+          $('#changeColor').html('修改模型颜色')
+        } else {
+          modelEntity.model.color= new Cesium.Color(1.0, 0.0, 1.0, 1.0)
+          animationTools[routeIndex].colorChange = true
+          $('#changeColor').html('恢复模型颜色')
+        }
       }
       
-      function hideAnimationModel(routeIndex){
-        const model = animationTools[routeIndex].animationEntity.model
-        model.show = false
+      // 切换显示隐藏模型状态
+      function showHideAnimationModel(){
+        const model = animationTools[routeIndex].tool.animationEntity.model
+        if (animationTools[routeIndex].show) {
+          model.show = false
+          animationTools[routeIndex].show = model.show
+          $('#showHideModel').html('显示模型')
+        } else {
+          model.show = true
+          animationTools[routeIndex].show = model.show
+          $('#showHideModel').html('隐藏模型')
+        }
       }
 
       function getRoutes(){
@@ -308,56 +347,84 @@
         ] 
         return pathPositions
       }
+
+      //初始化示例UI
+      function initUI() {
+        layui.use(function () {
+          //监听内容
+          layui.form.on('select(modelType)', function (data) {
+            routeIndex = data.value
+            const animationTool = animationTools[routeIndex]
+            // 修改按钮值
+            if (animationTool.startStop === 'start') {
+              $('#startStop').html('停止')
+            } else {
+              $('#startStop').html('开始')
+            }
+            if (animationTool.pausePlay === 'pause') {
+              $('#pausePlay').html('继续')
+            } else {
+              $('#pausePlay').html('暂停')
+            }
+            if (animationTool.show) {
+              $('#showHideModel').html('隐藏模型')
+            } else {
+              $('#showHideModel').html('显示模型')
+            }
+            if (animationTool.colorChange) {
+              $('#changeColor').html('恢复模型颜色')
+            } else {
+              $('#changeColor').html('修改模型颜色')
+            }
+          })
+        })
+      }
     </script>
   </head>
 
   <body onload="init()">
     <div id="mapgis-3d-viewer"></div>
-    <div class="layui-panel layui-panel-right" style="width: 300px">
-      
-      <div class="sample-button-panel" style="width: 250px">固定路线1</div>
-      <div class="sample-button-panel" style="width: 250px;margin-top:5px">
-        <button id="startStop0" type="button" class="layui-btn" onclick="startStop(0)">
-          开始
-        </button>
-        <button id="pause0" type="button" class="layui-btn" onclick="pause(0)">
-          暂停
-        </button>
-      </div>
-      <div class="sample-button-panel" style="width: 250px;margin-top:5px">
-        <button id="pause0" type="button" class="layui-btn" onclick="changeAnimationModelProperties(0)">
-          修改模型颜色
-        </button>
-        <button id="pause0" type="button" class="layui-btn" onclick="hideAnimationModel(0)">
-          移除模型
-        </button>
-      </div>
-      <div class="sample-button-panel" style="width: 250px;margin-top:5px">固定路线2</div>
-      <div class="sample-button-panel" style="width: 250px;margin-top:5px">
-        <button id="startStop0" type="button" class="layui-btn" onclick="startStop(1)">
-          开始
-        </button>
-        <button id="pause0" type="button" class="layui-btn" onclick="pause(1)">
-          暂停
-        </button>
-      </div>
-      <div class="sample-button-panel" style="width: 250px;margin-top:5px">
-        <button id="pause0" type="button" class="layui-btn" onclick="changeAnimationModelProperties(1)">
-          修改模型颜色
-        </button>
-        <button id="pause0" type="button" class="layui-btn" onclick="hideAnimationModel(1)">
-          移除模型
-        </button>
-      </div>
-      <div class="sample-button-panel" style="width: 250px;margin-top:5px">新增路线</div>
-      <div class="sample-button-panel" style="width: 250px;margin-top:5px">
-        <button
-          type="button"
-          class="layui-btn layui-btn-sm layui-btn-normal"
-          onclick="addDrawElement()"
-        >
-          绘制路线
-        </button>
+    <div class="layui-panel layui-panel-right" style="width: 350px">
+      <form class="layui-form" action="">
+        <div class="layui-form-item">
+          <label class="layui-form-label" style="width: 100px">漫游路径</label>
+          <div class="layui-input-block layui-input-block-select">
+            <select lay-filter="modelType" id="routeList">
+              <option value=0 selected>固定路线1</option>
+              <option value=1>固定路线2</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:5px">
+          <label class="layui-form-label" style="width: 100px">添加漫游路径</label>
+          <div class="layui-input-block layui-input-block-select">
+            <button
+              type="button"
+              class="layui-btn layui-btn-sm layui-btn-normal"
+              id="addRouteButton"
+              onclick="addRoute()"
+            >
+              绘制路线
+            </button>
+          </div>
+        </div>
+        <div class="layui-form-item" style="margin-top:25px">
+          <button id="pausePlay" type="button" class="layui-btn" onclick="pausePlayAction()">
+            暂停
+          </button>
+          <button id="startStop" type="button" class="layui-btn" onclick="startStopAction()">
+            停止
+          </button>
+        </div>
+        <div class="layui-form-item" style="margin-top:5px">
+          <button id="changeColor" type="button" class="layui-btn" onclick="changeAnimationModelProperties()">
+            修改模型颜色
+          </button>
+          <button id="showHideModel" type="button" class="layui-btn" onclick="showHideAnimationModel()">
+            隐藏模型
+          </button>
+        </div>
+      </form>
       </div>  
     </div>
   </body>
