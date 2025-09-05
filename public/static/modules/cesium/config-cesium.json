@@ -923,11 +923,7 @@
               "file": "m3d-db-data-attribute",
               "icon": "m3d-db-data-attribute.png",
               "diffcult": "1",
-              "tags": [
-                "BIM(M3D 2.1/2.2 DB属性查询)",
-                "M3D 2.1",
-                "M3D 2.2"
-              ]
+              "tags": ["BIM(M3D 2.1/2.2 DB属性查询)", "M3D 2.1", "M3D 2.2"]
             }
           ]
         },
@@ -2077,6 +2073,12 @@
               "name": "积雨",
               "file": "rain-area",
               "icon": "rain-area.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "体积云",
+              "file": "weather-volume-cloud",
+              "icon": "weather-volume-cloud.png",
               "diffcult": "1"
             }
           ]
