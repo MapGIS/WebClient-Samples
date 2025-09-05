@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <title>图形图层 - html点对象</title>
+    <title>图形图层 - 图元避让显示</title>
     <!-- 引入地图引擎库 -->
     <script
       include="engine:cesium"
@@ -71,6 +71,8 @@
         layer,
         tiandituLayer,
         tiandituLayer1,
+        updateInterval,
+        isAutoUpdate = false,
         features = []
       const { WebTileLayer, GraphicsLayer } = zondy.layer
       const { Map, Feature, Color } = zondy
@@ -176,8 +178,6 @@
         // UI
         const pane = new Pane({})
         const params = {
-          visible: true,
-          opacity: 1,
           html: `<div style='    display: flex;justify-content: center;align-content: center;align-items: center;'><div class='html-marker'></div><span style="position:absolute;        font-family: simhei;color: bisque;">压力:${Math.random().toFixed(
             3
           )}<span></div>`,
@@ -188,51 +188,101 @@
             x: 0,
             y: 0
           },
+          updateInterval: 5,
           horizonCulling: false,
           occlusionCulling: false
         }
 
-        const layerControls = pane.addFolder({
-          title: '图层设置'
-        })
-
-        layerControls.addBinding(params, 'visible').on('change', (ev) => {
-          layer.visible = ev.value
-        })
-        layerControls
-          .addBinding(params, 'opacity', { min: 0, max: 1, step: 0.1 })
-          .on('change', (ev) => {
-            layer.opacity = ev.value
-          })
-
-        const graphicControls = pane.addFolder({
+        const container = pane.addFolder({
           title: '图元设置'
         })
-        graphicControls.addBinding(params, 'pointEvents').on('change', (ev) => {
-          features.forEach((feature) => {
-            feature.symbol.pointEvents = ev.value
-          })
+
+        const markerTab = container.addTab({
+          pages: [{ title: 'HTMLMarker图元' }, { title: 'BillBoard图元' }]
         })
-        graphicControls
-          .addBinding(params, 'horizonCulling', { label: '地平线测试' })
-          .on('change', (ev) => {
-            features.forEach((feature) => {
-              feature.symbol.horizonCulling = ev.value
-            })
-          })
+        const htmlControls = markerTab.pages[0]
+        const billboardControls = markerTab.pages[1]
 
-        graphicControls
-          .addBinding(params, 'occlusionCulling', { label: '遮挡测试' })
-          .on('change', (ev) => {
+        markerTab.on('select', (e) => {
+          if (e.index === 0) {
+            if (isAutoUpdate) {
+              updateMarkerInterval(params.updateInterval)
+            } else {
+              clearInterval(updateInterval)
+            }
             features.forEach((feature) => {
-              feature.symbol.occlusionCulling = ev.value
+              feature.symbol = {
+                type: 'html-marker',
+                html: `<div style='    display: flex;justify-content: center;align-content: center;align-items: center;'><div class='html-marker'></div><span style="position:absolute;        font-family: simhei;color: bisque;">压力:${Math.random().toFixed(
+                  3
+                )}<span></div>`
+              }
             })
-          })
+          } else {
+            clearInterval(updateInterval)
+            features.forEach((feature) => {
+              feature.symbol = new zondy.symbol.PictureMarkerSymbol({
+                // 图片源数据，支持Image、HTMLCanvasElement、SVGElement、Svg字符串、基础图像地址、相对路径等
+                url: 'static/assets/logo/mapgis_logo_blue.png',
+                width: 40,
+                height: 40
+              })
+            })
+          }
+        })
 
-        graphicControls
+        htmlControls
           .addBlade({
             view: 'list',
-            label: '水平布局',
+            label: 'dom事件穿透',
+            options: [
+              { text: '关闭', value: 'auto' },
+              { text: '开启', value: 'none' }
+            ],
+            value: params.pointEvents
+          })
+          .on('change', (ev) => {
+            features.forEach((feature) => {
+              feature.symbol.pointEvents = ev.value
+            })
+          })
+
+        htmlControls
+          .addBlade({
+            view: 'list',
+            label: '地平线测试',
+            options: [
+              { text: '关闭', value: false },
+              { text: '开启', value: true }
+            ],
+            value: params.horizonCulling
+          })
+          .on('change', (e) => {
+            features.forEach((feature) => {
+              feature.symbol.horizonCulling = e.value
+            })
+          })
+
+        htmlControls
+          .addBlade({
+            view: 'list',
+            label: '遮挡测试',
+            options: [
+              { text: '关闭', value: false },
+              { text: '开启', value: true }
+            ],
+            value: params.occlusionCulling
+          })
+          .on('change', (e) => {
+            features.forEach((feature) => {
+              feature.symbol.occlusionCulling = e.value
+            })
+          })
+
+        htmlControls
+          .addBlade({
+            view: 'list',
+            label: '水平原点位置',
             options: [
               { text: 'center', value: 'center' },
               { text: 'left', value: 'left' },
@@ -245,10 +295,11 @@
               feature.symbol.horizontalAlignment = e.value
             })
           })
-        graphicControls
+
+        htmlControls
           .addBlade({
             view: 'list',
-            label: '垂直布局',
+            label: '垂直原点位置',
             options: [
               { text: 'middle', value: 'middle' },
               { text: 'top', value: 'top' },
@@ -263,18 +314,57 @@
             })
           })
 
-        graphicControls.addBinding(params, 'pixelOffset').on('change', (ev) => {
+        htmlControls.addBinding(params, 'pixelOffset').on('change', (ev) => {
           features.forEach((feature) => {
             feature.symbol.xoffset = ev.value.x
-            console.log('ev.value: ', ev.value)
             feature.symbol.yoffset = ev.value.y
           })
         })
 
-        graphicControls.addBinding(params, 'html').on('change', (ev) => {
+        const tab = htmlControls.addTab({
+          pages: [{ title: '手动更新' }, { title: '动态设置' }]
+        })
+
+        tab.pages[0].addBinding(params, 'html').on('change', (ev) => {
           features.forEach((feature) => {
             feature.symbol.html = ev.value
           })
+        })
+
+        tab.pages[1]
+          .addBinding(params, 'updateInterval', {
+            min: 1,
+            max: 20
+          })
+          .on('change', (ev) => {
+            updateMarkerInterval(ev.value)
+          })
+
+        tab.on('select', (e) => {
+          if (e.index === 0) {
+            isAutoUpdate = false
+            clearInterval(updateInterval)
+          } else {
+            isAutoUpdate = true
+            updateMarkerInterval(params.updateInterval)
+          }
+        })
+      }
+
+      function updateMarkerInterval(time) {
+        if (updateInterval) {
+          clearInterval(updateInterval)
+        }
+        updateInterval = setInterval(() => {
+          updateRandomMarker()
+        }, time * 1000)
+      }
+
+      function updateRandomMarker() {
+        features.forEach((feature) => {
+          feature.symbol.html = `<div style='    display: flex;justify-content: center;align-content: center;align-items: center;'><div class='html-marker'></div><span style="position:absolute;        font-family: simhei;color: bisque;">压力:${Math.random().toFixed(
+            3
+          )}<span></div>`
         })
       }
       // 初始化地图
