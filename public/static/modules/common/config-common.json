@@ -737,14 +737,14 @@
               ]
             },
             {
-              "name": "几何图层 - HTML点对象",
-              "file": "graphics-layer-htmlSymbol",
-              "icon": "graphics-layer-htmlSymbol.png",
+              "name": "几何图层 - 图元避让显示",
+              "file": "graphics-layer-collision",
+              "icon": "graphics-layer-collision.png",
               "diffcult": "1",
               "tags": [
-                "graphics-layer-htmlSymbol",
+                "graphics-layer-collision",
                 "GraphicsLayer",
-                "几何图层 - HTML点对象",
+                "几何图层 - 图元避让显示",
                 "jihetuceng",
                 "graphicslayer",
                 "gaochengmoshi"
