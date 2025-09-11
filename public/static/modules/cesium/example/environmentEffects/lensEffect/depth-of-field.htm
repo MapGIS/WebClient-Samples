@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>景深移轴</title>
+    <!--加载不同版本Cesium库-->
+    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <div id="app-tips">
+      提示：自动对焦开启后焦点会跟随鼠标移动；拾取焦点可用于点击拾取一个焦点
+    </div>
+
+    <script type="module">
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
+      // 定义创建图层与UI交互相关的变量
+      let map, sceneView, viewer, pane, depthOfField, autofocusHandler
+
+      // 该方法用于初始化三维地图查看器，包括创建图层管理容器，初始化地图视图对象以及获取Cesium场景视图对象
+      function initViewer() {
+        map = new zondy.Map()
+        sceneView = new zondy.cesium.SceneView({
+          viewId: 'mapgis-3d-viewer',
+          map: map
+        })
+        viewer = sceneView.getInnerView()
+        // 开启地形深度测试
+        viewer.scene.globe.depthTestAgainstTerrain = true
+        autofocusHandler = new Cesium.ScreenSpaceEventHandler(
+          viewer.scene.canvas
+        )
+
+        viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(
+            108.96000992431873,
+            34.21794087800505,
+            35.041688734783214
+          ),
+          orientation: {
+            heading: Cesium.Math.toRadians(339.3240266810086),
+            pitch: Cesium.Math.toRadians(-4.277769835001996),
+            roll: 0.0
+          },
+          duration: 0
+        })
+      }
+
+      // 该方法用于添加M3D模型缓存图层
+      function addModelCacheLayer() {
+        const modelCacheLayer = new zondy.layer.M3DModelCacheLayer({
+          url: 'http://10.10.130.72:8200/3DData/ModelCache/M3D/1.0/DaYanTa-M3D/dayanta.mcj'
+        })
+        map.add(modelCacheLayer)
+      }
+
+      // 该方法用于加载天地图
+      function addTDT() {
+        let TDTLayer = new zondy.layer.WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_c/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        map.add(TDTLayer)
+      }
+
+      // 该方法用于添加场景雾后处理特效
+      function addDepthOfField() {
+        depthOfField = viewer.scene.postProcessStages.add(
+          zondy.cesium.PostProcessStageLibrary.createDepthOfFieldStage({
+            viewer,
+            frontFocalDistance: 0,
+            stepSize: 2.5,
+            focalPoint: Cesium.Cartesian3.fromDegrees(
+              108.9593665389079,
+              34.218899133792,
+              4.589368389932782
+            )
+          })
+        )
+      }
+
+      // 该方法用于初始化UI操作面板
+      function initUI() {
+        pane = new Pane({
+          title: '操作面板'
+        })
+
+        // 定义默认参数
+        const paneParameters = {
+          enabled: true,
+          frontFocalDistance: 0,
+          backFocalDistance: 300.0,
+          delta: 1,
+          sigma: 2,
+          stepSize: 2.5,
+          autofocus: false
+        }
+
+        const paramsFolder = pane.addFolder({
+          title: '参数控制'
+        })
+
+        const gaussianBlurFolder = pane.addFolder({
+          title: '高斯模糊'
+        })
+
+        const focusFolder = pane.addFolder({
+          title: '对焦控制'
+        })
+
+        paramsFolder
+          .addBinding(paneParameters, 'enabled', {
+            label: '开启景深'
+          })
+          .on('change', (e) => {
+            depthOfField.enabled = e.value
+          })
+
+        paramsFolder
+          .addBinding(paneParameters, 'frontFocalDistance', {
+            label: '前景深',
+            min: 0,
+            max: 500
+          })
+          .on('change', (e) => {
+            depthOfField.uniforms.frontFocalDistance = e.value
+          })
+
+        paramsFolder
+          .addBinding(paneParameters, 'backFocalDistance', {
+            label: '后景深',
+            min: 0,
+            max: 500
+          })
+          .on('change', (e) => {
+            depthOfField.uniforms.backFocalDistance = e.value
+          })
+
+        gaussianBlurFolder
+          .addBinding(paneParameters, 'delta', {
+            label: 'delta',
+            min: 0,
+            max: 2
+          })
+          .on('change', (e) => {
+            depthOfField.uniforms.delta = e.value
+          })
+
+        gaussianBlurFolder
+          .addBinding(paneParameters, 'sigma', {
+            label: 'sigma',
+            min: 0,
+            max: 5
+          })
+          .on('change', (e) => {
+            depthOfField.uniforms.sigma = e.value
+          })
+
+        gaussianBlurFolder
+          .addBinding(paneParameters, 'stepSize', {
+            label: 'stepSize',
+            min: 0,
+            max: 7
+          })
+          .on('change', (e) => {
+            depthOfField.uniforms.stepSize = e.value
+          })
+
+        focusFolder
+          .addBinding(paneParameters, 'autofocus', {
+            label: '自动对焦'
+          })
+          .on('change', (e) => {
+            // depthOfField.enabled = e.value
+            if (e.value) {
+              document.body.style.cursor = 'crosshair'
+              autofocusHandler.setInputAction((event) => {
+                let position = viewer.scene.pickPosition(event.endPosition)
+                if (position) {
+                  let cartographic = Cesium.Cartographic.fromCartesian(position)
+                  let longitude = Cesium.Math.toDegrees(cartographic.longitude)
+                  let latitude = Cesium.Math.toDegrees(cartographic.latitude)
+                  let height = cartographic.height
+                  depthOfField.uniforms.focalPoint =
+                    Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
+                }
+              }, Cesium.ScreenSpaceEventType.MOUSE_MOVE)
+            } else {
+              document.body.style.cursor = 'default'
+              autofocusHandler.removeInputAction(
+                Cesium.ScreenSpaceEventType.MOUSE_MOVE
+              )
+            }
+          })
+
+        focusFolder
+          .addButton({
+            title: '拾取焦点'
+          })
+          .on('click', () => {
+            document.body.style.cursor = 'crosshair'
+            let handler = new Cesium.ScreenSpaceEventHandler(
+              viewer.scene.canvas
+            )
+            handler.setInputAction((event) => {
+              let position = viewer.scene.pickPosition(event.position)
+              // console.log(position)
+              if (position) {
+                let cartographic = Cesium.Cartographic.fromCartesian(position)
+                let longitude = Cesium.Math.toDegrees(cartographic.longitude)
+                let latitude = Cesium.Math.toDegrees(cartographic.latitude)
+                let height = cartographic.height
+                console.log(longitude, latitude, height)
+                depthOfField.uniforms.focalPoint =
+                  Cesium.Cartesian3.fromDegrees(longitude, latitude, height)
+                document.body.style.cursor = 'default'
+                handler.destroy()
+              }
+            }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+          })
+
+        pane
+          .addButton({
+            title: '重置'
+          })
+          .on('click', () => {
+            paneParameters.enabled = true
+            paneParameters.frontFocalDistance = 100.0
+            paneParameters.backFocalDistance = 300.0
+            paneParameters.delta = 1
+            paneParameters.sigma = 2
+            paneParameters.stepSize = 1
+            depthOfField.uniforms.frontFocalDistance = 100.0
+            depthOfField.uniforms.backFocalDistance = 300.0
+            depthOfField.uniforms.delta = 1
+            depthOfField.uniforms.sigma = 2
+            depthOfField.uniforms.stepSize = 1
+            pane.refresh()
+          })
+      }
+
+      // 该方法用于初始化整个应用，包括初始化查看器、添加模型缓存图层和初始化用户界面
+      function init() {
+        initViewer()
+        createChangeTab()
+        addModelCacheLayer()
+        addDepthOfField()
+        addTDT()
+        initUI()
+      }
+
+      init()
+    </script>
+
+    <style>
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      /* 提示内容样式 */
+      #app-tips {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        /* left: 50%; */
+        /* transform: translateX(-50%); */
+        background: #28292e;
+        color: #f5f5f5;
+        padding: 5px;
+        user-select: none;
+        font-size: 12px;
+        border-radius: 2px;
+      }
+    </style>
+  </body>
+</html>

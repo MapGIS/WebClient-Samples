@@ -2084,6 +2084,31 @@
           ]
         },
         {
+          "name": "镜头特效",
+          "folder": "lensEffect",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "光斑特效",
+              "file": "lens-flare",
+              "icon": "lens-flare.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "景深移轴",
+              "file": "depth-of-field",
+              "icon": "depth-of-field.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "体积光",
+              "file": "god-ray",
+              "icon": "god-ray.png",
+              "diffcult": "1"
+            }
+          ]
+        },
+        {
           "name": "水面特效",
           "folder": "waterEffect",
           "leaffolder": true,
