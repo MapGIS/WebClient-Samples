@@ -31,7 +31,14 @@
       import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
 
       // 定义视图等变量
-      let viewer, pane, puddle, rainStage, puddleControls, rainControls
+      let map,
+        sceneView,
+        viewer,
+        pane,
+        puddle,
+        rainStage,
+        puddleControls,
+        rainControls
 
       const defaultPuddleControls = {
         // 积水效果
@@ -65,9 +72,15 @@
 
       // 初始场景
       function initViewer() {
-        viewer = new Cesium.Viewer('mapgis-3d-viewer', {
-          timeline: true
+        map = new zondy.Map()
+        sceneView = new zondy.cesium.SceneView({
+          viewId: 'mapgis-3d-viewer',
+          map: map,
+          extensionOptions: {
+            timeline: true
+          }
         })
+        viewer = sceneView.getInnerView()
         viewer.scene.globe.depthTestAgainstTerrain = true
       }
       // 添加模型
@@ -77,20 +90,22 @@
           'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/OSGB-大雁塔_m3d_meshopt_ktx2/OSGB-大雁塔_m3d_meshopt_ktx2.mcj'
         )
         viewer.scene.primitives.add(tileset)
-        viewer.zoomTo(tileset)
+        sceneView.on('loaded', () => {
+          viewer.zoomTo(tileset)
+        })
+        //viewer.zoomTo(tileset)
       }
       // 添加天地图
       function addTDT() {
-        const tdtToken = '63c5c4f101d68229494bb45d3bf60277'
-        viewer.imageryLayers.addImageryProvider(
-          new Cesium.WebMapTileServiceImageryProvider({
-            url: `http://t0.tianditu.com/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=${tdtToken}`,
-            layer: 'tdtBasicLayer',
-            style: 'default',
-            format: 'image/jpeg',
-            tileMatrixSetID: 'GoogleMapsCompatible'
-          })
-        )
+        let TDTLayer = new zondy.layer.WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_c/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        map.add(TDTLayer)
       }
       function initRain() {
         //特效对象
