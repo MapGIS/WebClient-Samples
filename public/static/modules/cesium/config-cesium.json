@@ -2034,37 +2034,43 @@
           "leaffolder": true,
           "childs": [
             {
-              "name": "天气效果(雾)",
+              "name": "雾",
               "file": "weather-fog",
               "icon": "weather-fog.png",
               "diffcult": "1"
             },
             {
-              "name": "天气效果(高度雾)",
+              "name": "高度雾",
               "file": "weather-height-fog",
               "icon": "weather-height-fog.png",
               "diffcult": "1"
             },
             {
-              "name": "天气效果(雨+地面积水)",
+              "name": "大气雾",
+              "file": "weather-atmosphere-fog",
+              "icon": "weather-atmosphere-fog.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "雨+地面积水",
               "file": "weather-rain",
               "icon": "weather-rain.png",
               "diffcult": "1"
             },
             {
-              "name": "天气效果(雪)",
+              "name": "雪",
               "file": "weather-snow",
               "icon": "weather-snow.png",
               "diffcult": "1"
             },
             {
-              "name": "天气效果(后处理积雪)",
+              "name": "后处理积雪",
               "file": "weather-postprocess-snowpack",
               "icon": "weather-postprocess-snowpack.png",
               "diffcult": "1"
             },
             {
-              "name": "天气效果(场景积雪)",
+              "name": "场景积雪",
               "file": "weather-scene-snowpack",
               "icon": "weather-scene-snowpack.png",
               "diffcult": "1"
@@ -2079,6 +2085,12 @@
               "name": "体积云",
               "file": "weather-volume-cloud",
               "icon": "weather-volume-cloud.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "自定义大气层",
+              "file": "weather-custom-atmosphere",
+              "icon": "weather-custom-atmosphere.png",
               "diffcult": "1"
             }
           ]
