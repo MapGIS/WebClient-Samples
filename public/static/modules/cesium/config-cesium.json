@@ -2086,6 +2086,12 @@
               "file": "weather-volume-cloud",
               "icon": "weather-volume-cloud.png",
               "diffcult": "1"
+            },
+            {
+              "name": "自定义大气层",
+              "file": "weather-custom-atmosphere",
+              "icon": "weather-custom-atmosphere.png",
+              "diffcult": "1"
             }
           ]
         },
