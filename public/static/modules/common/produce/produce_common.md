@@ -70,7 +70,9 @@ npm install @mapgis/webclient-common
 | @mapgis/webclient-plot        | 包括行业标绘相关接口                                         |
 | @mapgis/webclient-video-plugin | 包括视频视图、视频草图编辑等视频调绘相关接口                 |
 
-  > 开发库分别提供ES5压缩版（webclient-common.min.js）与ES6压缩版（webclient-common-es6.min.js）两个版本。
+> 开发库分别提供ES5压缩版（webclient-common.min.js）与ES6压缩版（webclient-common-es6.min.js）两个版本。
+> 从 10.7.6.12 版本开始，新增 webclient-common 静态资源文件夹 webclient-common-resource。
+
 
 ### 开发 API
 
