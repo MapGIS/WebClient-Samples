@@ -104,7 +104,7 @@ npm install
 &ensp;&ensp;&ensp;&ensp;通过 npm 方式引入库文件时，必须设置 MAPGIS_BASE_URL（无默认值），否则 webclient-cesium-plugin 库无法使用其静态资源文件。以 VUE 项目为例，推荐在 src/main.js 中设置 window.MAPGIS_BASE_URL =  “xxx”（资源路径）。例如，若将 webclient-cesium-plugin-resource 文件夹放置在 public 目录下，则应在 src/main.js 中设置 window.MAPGIS_BASE_URL = “http://xxx/”。
 
 &ensp;&ensp;&ensp;&ensp;备注：
-&ensp;&ensp;&ensp;&ensp;webclient-cesium-plugin 的依赖库 webclient-common 库的静态资源导入方法和配置方法，请参考<a href="http://10.10.130.72:8086/#/guideMulti/common/development_common" target="_blank">《**webclient-common 库的开发指南**》 </a>。
+&ensp;&ensp;&ensp;&ensp;webclient-cesium-plugin 的依赖库 webclient-common 库的静态资源导入方法和配置方法，请参考<a href="http://10.10.130.72:8086/#/guideMulti/common/development_common" target="_blank">**webclient-common 库的开发指南** </a>。
 &ensp;&ensp;&ensp;&ensp;webclient-common 和 webclient-cesium-plugin 库对 MAPGIS_BASE_URL 的配置方式相同，两个库共享同一个资源路径变量 MAPGIS_BASE_URL。
 
 &ensp;&ensp;&ensp;&ensp;**示例**：

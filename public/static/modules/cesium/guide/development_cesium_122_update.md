@@ -16,8 +16,8 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
   
 2. **10.7.4.10 版本引入库的方式发生了哪些变化?**
   
-  - webclient-cesium 库
-    - 新增通过npm方式引入开发库：
+  - webclient-cesium 库：
+    - 新增通过npm方式引入开发库。
       - 使用位于项目node_modules中的@mapgis/cesium库。(npm install下载或外部拷贝到node_modules)
       - 通过es6的import方式导入库对象。
         ```javascript
@@ -27,7 +27,7 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
       **webclient-cesium资源配置方式：** 请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium" target="_blank">开发指南-正式版库</a> 中的章节 “2、引入开发库 - 2.2、npm 方式引入” （第二步，资源导入；第三步，配置全局变量）。
 
       
-  - webclient-cesium-plugin 库
+  - webclient-cesium-plugin 库：
     - 新增webclient-cesium-plugin拷贝静态资源，并配置资源路径。
       **webclient-cesium-plugin资源配置方式：** 请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium" target="_blank">开发指南-正式版库</a> 中的章节“2、引入开发库 - 2.2、npm 方式引入” （第二步，资源导入；第三步，配置全局变量）。
 
