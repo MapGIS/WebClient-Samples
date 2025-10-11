@@ -6,7 +6,7 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
 
 # 二、变更 Q&A
 
-- **10.7.2.10 升级到 10.7.4.10 做了哪些变更？**
+1. **10.7.2.10 升级到 10.7.4.10 做了哪些变更？**
   
   - Cesium内核库的变更：webclient-cesium 库，依赖的开源Cesium库由 1.84升级到1.122。
   - 功能所属库的变更：请参考本文档《三、功能所属库变更对照表》
@@ -14,36 +14,26 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
   <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">《**webclient-cesium-plugin 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表”）</font>
   <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">《**webclient-cesium 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表”）</font>
   
-- **10.7.4.10 版本引入库的方式发生了哪些变化?**
+2. **10.7.4.10 版本引入库的方式发生了哪些变化?**
   
-  - webclient-cesium 库：
-  
-    - 通过npm方式引入开发库，新增：
+  - webclient-cesium 库
+    - 新增通过npm方式引入开发库：
       - 使用位于项目node_modules中的@mapgis/cesium库。(npm install下载或外部拷贝到node_modules)
       - 通过es6的import方式导入库对象。
         ```javascript
         import * as Cesium from "@mapgis/cesium"
         ```
-    - 通过npm获取开发包，新增拷贝cesium静态资源，并配置资源路径。
-      **webclient-cesium资源配置方式：** 
-      - 资源导入：通过npm方式引入@mapgis/cesium开发包时，必需将`@mapgis/cesium/Build/Cesium`文件夹中的静态资源 `Assets`、`ThirdParty`、`Widgets`、`Workers`、`MapGIS`文件夹，拷贝到项目静态资源目录。
-      - 配置方法：
-      &ensp;&ensp;&ensp;&ensp;将导入的cesium资源的目录路径赋给window上的全局变量CESIUM_BASE_URL。以VUE项目为例，推荐将`node_modules/@mapgis`文件夹下的静态资源 `Assets`、`ThirdParty`、`Widgets`、`Workers`、`MapGIS`文件夹，拷贝到项目静态资源目录`public/cesiumStatic`，然后在src/main.js中设置window.CESIUM_BASE_URL = "http://xxx/cesiumStatic"。
-      
-  - webclient-cesium-plugin 库：
-    - 新增webclient-cesium-plugin拷贝静态资源，并配置资源路径。
-      **webclient-cesium-plugin资源配置方式：** （webclient-cesium-plugin的资源统一放置在  webclient-cesium-plugin-resource文件夹下）
+      - 拷贝cesium静态资源，并配置资源路径。
+      **webclient-cesium资源配置方式：** 请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium" target="_blank">开发指南-正式版库</a> 中的章节 “2、引入开发库 - 2.2、npm 方式引入” （第二步，资源导入；第三步，配置全局变量）。
 
-      - 资源导入：从@mapgis/webclient-cesium-plugin包中取资源`webclient-cesium-plugin-resource`文件夹，将文件夹拷贝到项目静态资源目录中。
-      - 配置MAPGIS_BASE_URL时机：在引入webclient-cesium-plugin之前设置 MAPGIS_BASE_URL的值。
-      - 配置方法：
-      &ensp;&ensp;&ensp;&ensp;将webclient-cesium-plugin-resource所在的目录路径赋给window上的全局变量MAPGIS_BASE_URL。
-      &ensp;&ensp;&ensp;&ensp;如果是通过文件方式引入到项目，则可选择是否设置MAPGIS_BASE_URL。如不做设置，默认webclient-cesium-plugin.min.js文件所在的目录路径为MAPGIS_BASE_URL 的值。
-      &ensp;&ensp;&ensp;&ensp;如果是通过npm方式引入到项目，则必需设置MAPGIS_BASE_URL（无默认值），否则webclient-cesium-plugin库无法使用相关静态资源。以VUE项目为例，推荐在src/main.js中设置window.MAPGIS_BASE_URL =  “xxx”（资源路径）。例如将webclient-cesium-plugin-resource放置在public文件夹下，则src/main.js中设置window.MAPGIS_BASE_URL = “http://xxx/”。
+      
+  - webclient-cesium-plugin 库
+    - 新增webclient-cesium-plugin拷贝静态资源，并配置资源路径。
+      **webclient-cesium-plugin资源配置方式：** 请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium" target="_blank">开发指南-正式版库</a> 中的章节“2、引入开发库 - 2.2、npm 方式引入” （第二步，资源导入；第三步，配置全局变量）。
 
   获取开发包、引入开发库的方法，请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium">开发指南</a><font color=gray size=2>（参考章节“1、获取 MapGIS 3DClient for WebGL 开发包” 和“2、引入开发库”）</font>
   
--  **如何查看当前使用的 API 版本号？**
+3.  **如何查看当前使用的 API 版本号？**
   
   - 10.7.4.10 版本
     
@@ -55,7 +45,6 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
       - npm包中查看方式：在 webclient-cesium 的 package.json 中查看版本号
     - 查看  webclient-cesium依赖的开源Cesium版本号
       - 浏览器调试界面查看方式：在浏览器调试界面的 Console 中输入：Cesium.VERSION
-    
     
     
   - 10.7.2.10 版本
@@ -83,7 +72,7 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
     - 查看 Cesium 的版本号
       - 在浏览器调试界面的 Console 中输入：Cesium.VERSION
   
-- **升级到10.7.4.10的推荐做法？**
+4. **升级到10.7.4.10的推荐做法？**
   
   - 第一步：引入webclient-cesium-plugin以及webclient-cesium（或开源cesium库、第三方cesium库）
 

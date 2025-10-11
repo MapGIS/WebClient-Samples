@@ -120,9 +120,9 @@
 | @mapgis/cesium                  | 地图引擎库，提供 Cesium 引擎基础功能                         |
 | @mapgis/webclient-common        | 公用 JS 库。<br />1、提供基础对象接口的定义；<br />2、提供 IGS 等服务接口的封装；<br />3、提供地图（场景）管理接口的定义；<br />4、提供草图编辑、空间分析、行业标绘、视频调绘，以及其它与引擎无关的功能。 |
 
-<br>
-
 > 核心库分别提供ES5压缩版（webclient-cesium-plugin.min.js）与ES6压缩版（webclient-cesium-plugin-es6.min.js）两个版本。
+> 从 10.7.4.10 版本开始，新增 webclient-cesium-plugin 静态资源文件夹webclient-cesium-plugin-resource。
+
 
 ### API 参考
 
