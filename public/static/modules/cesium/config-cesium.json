@@ -2132,6 +2132,19 @@
               "diffcult": "1"
             }
           ]
+        },
+        {
+          "name": "动物集群特效",
+          "folder": "animalsEffect",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "鸟群特效",
+              "file": "bird-boids",
+              "icon": "bird-boids.png",
+              "diffcult": "1"
+            }
+          ]
         }
       ]
     },

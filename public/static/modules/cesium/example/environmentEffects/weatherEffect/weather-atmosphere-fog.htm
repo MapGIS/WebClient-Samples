@@ -78,7 +78,8 @@
               'http://10.10.130.72:8086/static/libs/cdn/cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
           }
         })
-
+        // 开启地形深度测试
+        viewer.scene.globe.depthTestAgainstTerrain = true
         // 配置提升效果
         viewer.scene.highDynamicRange = true
         viewer.scene.fog.enabled = false
