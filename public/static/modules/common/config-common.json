@@ -2141,6 +2141,17 @@
               ]
             },
             {
+              "name": "分段专题图-栅格体元",
+              "file": "breaks-voxel",
+              "diffcult": "1",
+              "icon": "breaks-voxel.png",
+              "tags": [
+                "分段专题图-栅格体元",
+                "breaks-voxel",
+                "fenduanshangetiyuan"
+              ]
+            },
+            {
               "name": "分段专题图-归一化",
               "file": "breaks-normalize",
               "diffcult": "1",
