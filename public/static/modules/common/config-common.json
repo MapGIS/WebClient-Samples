@@ -129,6 +129,74 @@
       "folder": "layers",
       "childs": [
         {
+          "name": "图层管理",
+          "folder": "layer-management",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "工程化管理工具",
+              "file": "engineering-management-tools",
+              "icon": "engineering-management-tools.png",
+              "diffcult": "1",
+              "tags": [
+                "engineering-management-tools",
+                "management",
+                "工程化管理工具",
+                "gongcehnghuaguanli",
+                "tools"
+              ]
+            },
+            {
+              "name": "底图切换",
+              "file": "change-basemap",
+              "icon": "change-basemap.png",
+              "diffcult": "1",
+              "tags": [
+                "change-basemap",
+                "layer",
+                "地图切换",
+                "dituqiehuan",
+                "Basemap",
+                "baseLayers"
+              ]
+            },
+            {
+              "name": "图层列表",
+              "file": "layer-list",
+              "icon": "layer-list.png",
+              "diffcult": "1",
+              "tags": ["layer-list", "layers", "图层列表", "tucengliebiao"]
+            },
+            {
+              "name": "图层裁剪(客户端)",
+              "file": "client-clip",
+              "icon": "client-clip.png",
+              "diffcult": "1",
+              "tags": ["layers", "空间裁剪", "客户端"]
+            },
+            {
+              "name": "瓦片显示设置",
+              "file": "tile-layer-stretch",
+              "icon": "tile-layer-stretch.png",
+              "diffcult": "1",
+              "tags": ["layers", "瓦片拉伸", "瓦片显示设置"]
+            },
+            {
+              "name": "子图层筛选",
+              "file": "show-sub-layer",
+              "icon": "show-sub-layer.png",
+              "diffcult": "1",
+              "tags": [
+                "sublayer",
+                "IGSMapImageLayer",
+                "IGSVectorTileLayer",
+                "子图层",
+                "zituceng"
+              ]
+            }
+          ]
+        },
+        {
           "name": "瓦片图层",
           "folder": "tileLayer",
           "leaffolder": true,
@@ -1059,67 +1127,6 @@
               "icon": "custom-czml-layer.png",
               "diffcult": "1",
               "tags": ["custom-czml-layer", "custom", "custom-czml"]
-            }
-          ]
-        },
-        {
-          "name": "图层管理",
-          "folder": "layer-management",
-          "leaffolder": true,
-          "childs": [
-            {
-              "name": "工程化管理工具",
-              "file": "engineering-management-tools",
-              "icon": "engineering-management-tools.png",
-              "diffcult": "1",
-              "tags": [
-                "engineering-management-tools",
-                "management",
-                "工程化管理工具",
-                "gongcehnghuaguanli",
-                "tools"
-              ]
-            },
-            {
-              "name": "底图切换",
-              "file": "change-basemap",
-              "icon": "change-basemap.png",
-              "diffcult": "1",
-              "tags": [
-                "change-basemap",
-                "layer",
-                "地图切换",
-                "dituqiehuan",
-                "Basemap",
-                "baseLayers"
-              ]
-            },
-            {
-              "name": "图层列表",
-              "file": "layer-list",
-              "icon": "layer-list.png",
-              "diffcult": "1",
-              "tags": ["layer-list", "layers", "图层列表", "tucengliebiao"]
-            },
-            {
-              "name": "图层裁剪(客户端)",
-              "file": "client-clip",
-              "icon": "client-clip.png",
-              "diffcult": "1",
-              "tags": ["layers", "空间裁剪", "客户端"]
-            },
-            {
-              "name": "显示子图层",
-              "file": "show-sub-layer",
-              "icon": "show-sub-layer.png",
-              "diffcult": "1",
-              "tags": [
-                "sublayer",
-                "IGSMapImageLayer",
-                "IGSVectorTileLayer",
-                "子图层",
-                "zituceng"
-              ]
             }
           ]
         }
