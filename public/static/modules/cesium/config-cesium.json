@@ -1729,6 +1729,13 @@
               "diffcult": "1"
             },
             {
+              "name": "分段(栅格体元)",
+              "file": "breaks-voxel",
+              "icon": "breaks-voxel.png",
+              "diffcult": "1",
+              "tags": ["分段(栅格体元)", "breaks-voxel", "fenduanshangetiyuan"]
+            },
+            {
               "name": "单值(M3D-2.0)",
               "file": "unique-m3d2-model",
               "icon": "unique-m3d2-model.png",
