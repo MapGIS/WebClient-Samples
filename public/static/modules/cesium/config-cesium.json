@@ -924,6 +924,13 @@
               "icon": "m3d-db-data-attribute.png",
               "diffcult": "1",
               "tags": ["BIM(M3D 2.1/2.2 DB属性查询)", "M3D 2.1", "M3D 2.2"]
+            },
+            {
+              "name": "3D Gaussian Splatting(M3D 2.2)",
+              "file": "m3d-gaussian-splatting",
+              "icon": "m3d-gaussian-splatting.png",
+              "diffcult": "1",
+              "tags": ["3D Gaussian Splatting", "M3D 2.2"]
             }
           ]
         },
