@@ -21,6 +21,22 @@
       // 定义二维视图的主要类
 
       let map, view, layer, layerOpacity = 1
+      let serverType = 'igs', serverVersion = '2.0.0', 
+          serverList = [
+            {
+              url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+              serverType: 'igs',
+              sublayerId: 'Map_湖北省4326:t70',
+            },
+            {
+              url: 'http://10.10.130.72:8030/geoserver/shp/wfs',
+              serverType: 'geoserver',
+              sublayerId: 'shp:road_jwd',
+              spatialReference: new zondy.SpatialReference({
+                wkid: 4326
+              })
+            },
+          ]
       const {
         IGSTileLayer,
         WFSLayer
@@ -73,24 +89,32 @@
         })
         // 添加图层
         map.add(igsTileLayer)
+      }
+
+      // 添加WFS图层
+      function addLayer() {
+        // 获取图层构造参数
+        const layerOptions = getLayerOptions()
+        // 创建wfs图层
+        layer = new WFSLayer(layerOptions)
+        // 添加wfs图层
+        map.add(layer)
         // 图层添加完毕后，跳转到图层范围内
-        igsTileLayer.on('layerview-created', (result) => {
+        layer.on('layerview-created', (result) => {
           view.flyTo({
             extent: result.layer.extent
           })
         })
       }
 
-      // 添加WFS图层
-      function addLayer() {
-        // 创建wfs图层
-        layer = new WFSLayer({
-          // 服务基地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+      // 获取图层构造参数
+      function getLayerOptions() {
+        const serverInfo = serverList.find(item => item.serverType === serverType)
+        const options = {
+          // 服务版本号
+          version: serverVersion,
           // 图层透明度
           opacity: layerOpacity,
-          // 指定显示一个子图层，仅支持单图层的要素查询，不支持多图层和子图层的要素查询
-          sublayerId: 'Map_湖北省4326:t70',
           // 设置渲染样式-统一专题图
           renderer: new SimpleRenderer({
             // 因为该数据的几何类型为区，因此设置区样式
@@ -108,14 +132,33 @@
               })
             })
           })
-        })
-        // 添加wfs图层
-        map.add(layer)
+        }
+        // 服务基地址
+        if (serverInfo && serverInfo.url) {
+          options.url = serverInfo.url
+        }
+        // 指定显示一个子图层，仅支持单图层的要素查询，不支持多图层和子图层的要素查询
+        if (serverInfo && serverInfo.sublayerId) {
+          options.sublayerId = serverInfo.sublayerId
+        }
+        // 服务空间参考系
+        if (serverInfo && serverInfo.spatialReference) {
+          options.spatialReference = serverInfo.spatialReference
+        }
+        return options
       }
 
       // 删除图层
       function deleteLayer() {
         map.remove(layer)
+      }
+      
+      // 重置图层
+      function resetLayer() {
+        // 删除图层
+        deleteLayer()
+        // 添加图层
+        addLayer()
       }
 
       // 显隐图层
@@ -142,6 +185,19 @@
               layer.opacity = layerOpacity
             }
           });
+          const form = layui.form
+          // 服务类型
+          form.on('select(serverType)', function (data) {
+            serverType = data.value
+            // 重置图层
+            resetLayer()
+          })
+          // 服务版本
+          form.on('select(serverVersion)', function (data) {
+            serverVersion = data.value
+            // 重置图层
+            resetLayer()
+          })
         })
       }
     </script>
@@ -153,6 +209,25 @@
     <!--  示例UI  -->
         <div class="layui-panel layui-panel-right ogc-layer-panel">
         <form class="layui-form" action="">
+            <div class="layui-form-item" style="margin-top: 10px">
+              <label class="layui-form-label">图层服务</label>
+              <div class="layui-input-block layui-input-block-select">
+                <select id="serverType" name="serverType" lay-filter="serverType">
+                  <option value="igs" selected>IGS图层服务</option>
+                  <option value="geoserver">GeoServer图层服务</option>
+                </select>
+              </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 10px">
+              <label class="layui-form-label">服务版本</label>
+              <div class="layui-input-block layui-input-block-select">
+                <select id="serverVersion" name="serverVersion" lay-filter="serverVersion">
+                  <option value="1.0.0">1.0.0</option>
+                  <option value="1.1.0">1.1.0</option>
+                  <option value="2.0.0" selected>2.0.0</option>
+                </select>
+              </div>
+            </div>
             <div class="layui-form-item">
                 <label class="layui-form-label" style="width: 100px;">图层透明度</label>
                 <div class="layui-input-block sample-slider" style="width: 160px;">
