@@ -132,6 +132,10 @@
             viewer.scene.fxaa = data.elem.checked
             viewer.scene.postProcessStages.fxaa.enabled = data.elem.checked
           })
+          form.on('switch(HDR)', function (data) {
+            // 是否开启HDR
+            viewer.scene.highDynamicRange = data.elem.checked;
+          })
           form.on('switch(fog)', function (data) {
             // 是否开启雾化效果，需要缩放至近地面查看效果
             viewer.scene.fog.enabled = data.elem.checked
