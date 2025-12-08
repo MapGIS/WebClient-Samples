@@ -31,7 +31,8 @@
         geometryType,
         snapOption,
         snapAndReferGeometries = [],
-        sketchStyle
+        sketchStyle,
+        removeVertexIndex
 
       // ES5引入方式
       const { Polygon, Point } = zondy.geometry
@@ -152,6 +153,14 @@
           if (event.state === SketchEditorState.complete) {
             $('#undo').addClass('layui-btn-disabled').attr('disabled', true)
             $('#redo').addClass('layui-btn-disabled').attr('disabled', true)
+          }
+          if (event.state === SketchEditorState.active) {
+            if (event.toolEventInfo&&event.toolEventInfo.type === SketchEditorToolEventType.vertexSelect) {
+              if (event.toolEventInfo.action === 'click' && event.toolEventInfo.vertices.length > 0) {
+                console.log('单击选中的图形顶点，顶点对象为：', event.toolEventInfo.vertices[0].point)
+                removeVertexIndex = event.toolEventInfo.vertices[0].index
+              }
+            }
           }
         })
         // 注册草图编辑器 撤销事件
@@ -490,6 +499,15 @@
         }
       }
 
+      // 移除单击选中的线或区图形顶点
+      function removeSelectedVertex() {
+        if  (removeVertexIndex !== undefined || removeVertexIndex !== null) {
+          sketchEditor.removeVertex(removeVertexIndex)
+          removeVertexIndex = null
+        }
+      }
+      
+
       // 设置草图初始绘制时样式
       function setSketchStyle() {
         sketchStyle = new SketchStyle({
@@ -743,6 +761,14 @@
           </div>
         </div>
         <div class="layui-form-item" style="width: 400px">
+          <button
+            type="button"
+            id="remove"
+            class="layui-btn layui-btn-sm layui-btn-normal"
+            onclick="removeSelectedVertex()"
+          >
+            移除单击选中的线或区图形顶点
+          </button>
           <button
             type="button"
             id="remove"
