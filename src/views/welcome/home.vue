@@ -115,6 +115,10 @@
                 </div>
             </div>
         </el-row>
+        <div class="webclinet-ai-chat-container">
+          <div class="webclinet-ai-chat-inner" @click="openWebClientAI()">AI智答</div>
+          <div class="webclinet-ai-chat-hover">你好，我是AI智答！</div>
+        </div>
     </div>
 </template>
 
@@ -187,6 +191,9 @@ export default {
           this.newGallerys[index_].push(NewGallerys[j]);
         }
       }
+    },
+    openWebClientAI() {
+      window.open('http://10.10.130.72:8100/', '_blank');
     }
   }
 };
@@ -876,6 +883,51 @@ $margin-left: 80px;
 
 .main-flat-card:hover {
     box-shadow: 0px 4px 8px 0px rgba(8, 145, 217, 0.2);
+}
+
+.webclinet-ai-chat-container {
+  position: fixed;
+  width: 80px;
+  height: 80px;
+  background-color: white;
+  border-radius: 40px;
+  right: 40px;
+  bottom: 40px;
+  cursor: pointer;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.webclinet-ai-chat-inner {
+  width: 70px;
+  height: 70px;
+  line-height: 70px;
+  text-align: center;
+  margin: auto;
+  margin-top: 5px;
+  background-color: rgb(31, 106, 255);
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: bold;
+  color: white;
+  border-radius: 35px;
+}
+
+.webclinet-ai-chat-hover {
+  position: absolute;
+  left: -205px;
+  top: 23px;
+  color: white;
+  width: 200px;
+  height: 32px;
+  line-height: 32px;
+  text-align: center;
+  background-color: rgb(51, 51, 51);
+  border-radius: 16px;
+  display: none;
+}
+
+.webclinet-ai-chat-inner:hover + .webclinet-ai-chat-hover {
+  display: block;
 }
 
 @media only screen and (min-width: 992px)
