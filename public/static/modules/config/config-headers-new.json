@@ -223,6 +223,10 @@
             "url": "/vue3/mapboxgl/examples/index.html"
           },
           {
+            "title": "Leaflet",
+            "url": "/vue3/leaflet/examples/index.html"
+          },
+          {
             "title": "UI",
             "url": "/vue3/ui/examples/index.html"
           }
@@ -242,6 +246,10 @@
           {
             "title": "MapboxGL",
             "url": "/vue3/mapboxgl/docs/index.html"
+          },
+          {
+            "title": "Leaflet",
+            "url": "/vue3/leaflet/docs/index.html"
           },
           {
             "title": "UI",
@@ -264,6 +272,10 @@
           {
             "title": "MapboxGL",
             "url": "/vue3/mapboxgl/storybook/index.html"
+          },
+          {
+            "title": "Leaflet",
+            "url": "/vue3/leaflet/storybook/index.html"
           },
           {
             "title": "UI",

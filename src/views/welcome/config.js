@@ -87,6 +87,10 @@ export const Develops = [
         url: "/vue3/mapboxgl/examples/index.html"
       },
       {
+        title: 'Leaflet',
+        url: '/vue3/leaflet/examples/index.html'
+      },
+      {
         title: "UI",
         url: "/vue3/ui/examples/index.html"
       },
