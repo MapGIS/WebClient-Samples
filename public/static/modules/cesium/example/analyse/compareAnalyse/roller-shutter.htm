@@ -141,8 +141,8 @@
         currentLayer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
           // 视点跳转
-          sceneView.flyTo({
-            extent: result.layer.extent
+          sceneView.goTo({
+            layer: result.layer
           })
           // 获取图层layer实例
           currentLyr = sceneView.getInnerLayer(result.layer)
@@ -173,8 +173,8 @@
         currentLayer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
           // 视点跳转
-          sceneView.flyTo({
-            extent: result.layer.extent
+          sceneView.goTo({
+            layer: result.layer
           })
           // 获取图层layer实例
           currentLyr = sceneView.getInnerLayer(result.layer)
@@ -203,8 +203,8 @@
         currentLayer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
           // 视点跳转
-          sceneView.flyTo({
-            extent: result.layer.extent
+          sceneView.goTo({
+            layer: result.layer
           })
           // 获取图层layer实例
           currentLyr = sceneView.getInnerLayer(result.layer)
@@ -230,7 +230,7 @@
           )
         )
         // 视角跳转
-        sceneView.flyTo({
+        sceneView.goTo({
           center: [114.18944441797595, 30.5690284961602, 2500000]
         })
       }
@@ -251,7 +251,7 @@
           )
         )
         // 视角跳转
-        sceneView.flyTo({
+        sceneView.goTo({
           center: [116.5258, 41.8054, 20000000]
         })
       }
@@ -269,7 +269,7 @@
           )
         )
         // 视角跳转
-        sceneView.flyTo({
+        sceneView.goTo({
           center: [116.5258, 41.8054, 20000000]
         })
       }

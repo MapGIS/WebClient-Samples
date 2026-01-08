@@ -66,8 +66,8 @@
         })
         map.add(igsTileLayer)
         igsTileLayer.on('layerview-created', (result) => {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
           // 读取初始化后视图信息
           getViewParams()

@@ -306,8 +306,8 @@
         map.add(layerOfPoint)
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
           console.log('点加载完毕:', result.layer)
         })
