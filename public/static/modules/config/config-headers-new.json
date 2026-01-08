@@ -99,8 +99,13 @@
         "url": "/fqa/cesium/ogc/wmts/WMTS"
       },
       {
-        "title": "模型分析工具",
-        "url": "http://10.10.130.72:8086/static/modules/cesium/tool/mode-cache-performance-analysis/index.html"
+        "title": "工具",
+        "children": [
+          {
+            "title": "模型缓存渲染性能分析工具",
+            "url": "http://10.10.130.72:8086/static/modules/cesium/tool/mode-cache-performance-analysis/index.html"
+          }
+        ]
       }
     ]
   },
