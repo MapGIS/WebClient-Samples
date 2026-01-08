@@ -96,8 +96,8 @@
         map.add(layerOfPoint)
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
-          sceneView.flyTo({
-            extent: result.layer.extent
+          sceneView.goTo({
+            layer: result.layer
           })
           console.log('点加载完毕:', result.layer)
         })
@@ -139,8 +139,8 @@
         map.add(layerOfPoint)
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
-          sceneView.flyTo({
-            extent: result.layer.extent
+          sceneView.goTo({
+            layer: result.layer
           })
           console.log('点加载完毕:', result.layer)
         })
@@ -183,8 +183,8 @@
         map.add(layerOfPoint)
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
-          sceneView.flyTo({
-            extent: result.layer.extent
+          sceneView.goTo({
+            layer: result.layer
           })
           console.log('点加载完毕:', result.layer)
         })
@@ -238,8 +238,8 @@
           )
           layerOfLine.renderer = getRendererOfLine()
           layerOfRegion.renderer = getRendererOfRegion()
-          sceneView.flyTo({
-            extent: result.layer.extent
+          sceneView.goTo({
+            layer: result.layer
           })
         })
       }
