@@ -139,7 +139,7 @@
             model = res
             viewer.scene.primitives.add(model)
             //飞到指定视角
-            sceneView.flyTo({
+            sceneView.goTo({
               center: [118.0385, 42.6374, 5000]
             })
           })
@@ -147,7 +147,7 @@
           model = Cesium.Model.fromGltf(modelObj)
           viewer.scene.primitives.add(model)
           //飞到指定视角
-          sceneView.flyTo({
+          sceneView.goTo({
             center: [118.0385, 42.6374, 5000]
           })
         }

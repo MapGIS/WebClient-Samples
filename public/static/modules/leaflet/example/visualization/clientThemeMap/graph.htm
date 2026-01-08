@@ -58,8 +58,8 @@
         // 图层加载完毕
         igsTileLayer.on('layerview-created', function (result) {
           //视点跳转
-          mapView.flyTo({
-            extent: result.layer.extent
+          mapView.goTo({
+            layer: result.layer
           })
           // 设置innerView
           innerView = mapView.getInnerView()

@@ -262,8 +262,8 @@
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
           console.log('点加载完毕:', result.layer)
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }
@@ -280,8 +280,8 @@
         // 图层加载完毕
         layerOfLine.on('layerview-created', function (result) {
           console.log('线加载完毕:', result.layer)
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }
@@ -310,8 +310,8 @@
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
           console.log('点加载完毕:', result.layer)
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }
@@ -328,8 +328,8 @@
         map.add(layerOfLine)
         layerOfLine.on('layerview-created', function (result) {
           console.log('线加载完毕:', result.layer)
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }
@@ -360,8 +360,8 @@
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
           console.log('点加载完毕:', result.layer)
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }

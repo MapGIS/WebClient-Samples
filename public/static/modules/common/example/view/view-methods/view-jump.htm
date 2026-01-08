@@ -61,9 +61,9 @@
             .join('')
         )
         // 视图跳转
-        view.flyTo({
+        view.goTo({
           // 范围几何
-          extent: new Extent({
+          target: new Extent({
             xmax: xmax,
             xmin: xmin,
             ymax: ymax,
@@ -113,7 +113,7 @@
             .join('')
         )
         // 视图跳转
-        view.flyTo({
+        view.goTo({
           // 跳转中心点
           center: center,
           // 地图层级
@@ -165,8 +165,8 @@
         })
         map.add(igsTileLayer)
         igsTileLayer.on('layerview-created', (result) => {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
         view.on('view-change', function (event) {

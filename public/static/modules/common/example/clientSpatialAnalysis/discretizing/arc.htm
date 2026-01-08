@@ -61,7 +61,7 @@
         // 图层加载完毕
         wmtsLayer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
-          view.flyTo({
+          view.goTo({
             center: [113.2, 30.5, 300000],
             zoom: 7
           })

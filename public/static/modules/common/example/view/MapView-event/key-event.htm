@@ -55,8 +55,8 @@
         })
         map.add(igsTileLayer)
         igsTileLayer.on('layerview-created', (result) => {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
           layer.msg(
             `<h4>操作说明</h4>1.点击按钮注册对应事件；<br>2.鼠标点击地图，回到视图中，再执行对应操作，如按下键盘某个键。`,
