@@ -307,8 +307,12 @@
           })
           .on('change', (e) => {
             if (e.value === 'M3D') {
+              cesium3DTilesModelList.hidden = true
+              M3DModelList.hidden = false
               loadTileset(DEFAULT_URL.MAPGIS_M3D_21, 'M3D')
             } else if (e.value === '3DTILES') {
+              cesium3DTilesModelList.hidden = false
+              M3DModelList.hidden = true
               loadTileset(DEFAULT_URL.CESIUM_3DTILES_10, '3DTILES')
             }
           })
