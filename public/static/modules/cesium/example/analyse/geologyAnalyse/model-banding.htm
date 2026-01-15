@@ -32,6 +32,8 @@
       const DEFAULT_URL = {
         MAPGIS_M3D_20:
           'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
+        MAPGIS_M3D_22_WITH_TEXTURE:
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.2/地质体带纹理/地质体带纹理.mcj',
         CESIUM_3DTILES_10:
           'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti_att/tileset.json',
         CESIUM_3DTILES_11:
@@ -193,6 +195,11 @@
                 field: 'OID',
                 type: 'unique',
                 valueGroups: [1, 2, 3, 4, 5]
+              },
+              {
+                field: 'tid',
+                type: 'unique',
+                valueGroups: [1, 2, 3, 4, 5]
               }
             ]
           } else if (layer instanceof Cesium.Cesium3DTileset) {
@@ -215,6 +222,11 @@
                   { start: 1, end: 4 },
                   { start: 6, end: 7 }
                 ]
+              },
+              {
+                field: 'tid',
+                type: 'range',
+                valueGroups: [{ start: 2, end: 5 }]
               }
             ]
           } else if (layer instanceof Cesium.Cesium3DTileset) {
@@ -295,10 +307,12 @@
             if (e.value === 'M3D') {
               cesium3DTilesModelList.hidden = true
               M3DModelList.hidden = false
+              M3DModelList.value = DEFAULT_URL.MAPGIS_M3D_20
               addModelCacheLayer(DEFAULT_URL.MAPGIS_M3D_20, 'M3D')
             } else if (e.value === '3DTILES') {
               cesium3DTilesModelList.hidden = false
               M3DModelList.hidden = true
+              cesium3DTilesModelList.value = DEFAULT_URL.CESIUM_3DTILES_10
               addModelCacheLayer(DEFAULT_URL.CESIUM_3DTILES_10, '3DTILES')
             }
             resetComponents()
@@ -313,6 +327,10 @@
               {
                 text: '地质体-M3D 2.0-文件服务',
                 value: DEFAULT_URL.MAPGIS_M3D_20
+              },
+              {
+                text: '地质体带纹理-M3D 2.2-文件服务',
+                value: DEFAULT_URL.MAPGIS_M3D_22_WITH_TEXTURE
               }
             ],
             value: DEFAULT_URL.MAPGIS_M3D_20

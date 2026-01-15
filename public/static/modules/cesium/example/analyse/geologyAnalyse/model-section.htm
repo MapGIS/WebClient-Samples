@@ -31,11 +31,15 @@
       let drawElement = null
       // 模型
       let tileset = null
+      // 当前的已经加载的数据的URL
+      let currentTilesetUrl = null
 
       // 定义默认的模型URL
       const DEFAULT_URL = {
         MAPGIS_M3D_21:
           'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
+        MAPGIS_M3D_22_WITH_TEXTURE:
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.2/地质体带纹理/地质体带纹理.mcj',
         CESIUM_3DTILES_10:
           'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
       }
@@ -62,6 +66,7 @@
       }
 
       async function loadTileset(url, type) {
+        currentTilesetUrl = url
         viewer.scene.primitives.remove(tileset)
         if (type === 'M3D') {
           tileset = await zondy.cesium.MapGISM3DSet.fromUrl(url, {
@@ -76,10 +81,20 @@
           })
         }
         viewer.scene.primitives.add(tileset)
-        viewer.zoomTo(
-          tileset,
-          new Cesium.HeadingPitchRange(0, -Math.PI / 4, 3000)
-        )
+
+        // 根据加载的数据不同，设置不同的相机视角
+        let offset = undefined
+        if (
+          currentTilesetUrl === DEFAULT_URL.MAPGIS_M3D_21 ||
+          currentTilesetUrl === DEFAULT_URL.CESIUM_3DTILES_10
+        ) {
+          offset = new Cesium.HeadingPitchRange(0, -Math.PI / 4, 3000)
+        } else if (
+          currentTilesetUrl === DEFAULT_URL.MAPGIS_M3D_22_WITH_TEXTURE
+        ) {
+          offset = new Cesium.HeadingPitchRange(0, -Math.PI / 4, 30000)
+        }
+        viewer.zoomTo(tileset, offset)
       }
 
       // 添加竖剖面
@@ -94,8 +109,8 @@
             for (let i = 0; i < positions.length - 1; ++i) {
               let geom = new Cesium.SectionPlaneGeometry({
                 positions: [positions[i], positions[i + 1]],
-                topHeight: 100,
-                bottomHeight: 1200
+                topHeight: 10000,
+                bottomHeight: 10000
               })
               // 设置只显示剖面,可以配合CuttingTool工具同时显示模型和剖面实现封边效果
               tileset.sectionOnly(true)
@@ -120,8 +135,8 @@
               var geom = new Cesium.SectionPlaneGeometry({
                 positions: [positions[i], positions[i + 1]],
                 // 设置topHeight和bottomHeight相同值，避免因向量方向导致正反面裁剪的深度不一致
-                topHeight: 1200,
-                bottomHeight: 1200,
+                topHeight: 10000,
+                bottomHeight: 10000,
                 isHorizontal: true
               })
               // 设置只显示剖面,可以配合CuttingTool工具同时显示模型和剖面实现封边效果
@@ -153,28 +168,56 @@
 
         let positions
         if (tileset instanceof Cesium.MapGISM3DSet) {
-          positions = [
-            {
-              x: -2560899.547952669,
-              y: 4898389.417259944,
-              z: 3170871.8996368214
-            },
-            {
-              x: -2561130.42234208,
-              y: 4898620.797173124,
-              z: 3171051.5132434503
-            },
-            {
-              x: -2560605.882524569,
-              y: 4897812.988922655,
-              z: 3171999.5037288275
-            },
-            {
-              x: -2560836.7568747043,
-              y: 4898044.36864775,
-              z: 3172179.1172290794
-            }
-          ].map(function (position) {
+          if (currentTilesetUrl === DEFAULT_URL.MAPGIS_M3D_21) {
+            positions = [
+              {
+                x: -2560899.547952669,
+                y: 4898389.417259944,
+                z: 3170871.8996368214
+              },
+              {
+                x: -2561130.42234208,
+                y: 4898620.797173124,
+                z: 3171051.5132434503
+              },
+              {
+                x: -2560605.882524569,
+                y: 4897812.988922655,
+                z: 3171999.5037288275
+              },
+              {
+                x: -2560836.7568747043,
+                y: 4898044.36864775,
+                z: 3172179.1172290794
+              }
+            ]
+          } else if (
+            currentTilesetUrl === DEFAULT_URL.MAPGIS_M3D_22_WITH_TEXTURE
+          ) {
+            positions = [
+              {
+                x: -2013658.7142789518,
+                y: 4561889.011520342,
+                z: 3963471.627499303
+              },
+              {
+                x: -2019890.2749941775,
+                y: 4558543.421145003,
+                z: 3964145.4647447034
+              },
+              {
+                x: -2018138.7579325864,
+                y: 4554304.8349244,
+                z: 3969866.6997605967
+              },
+              {
+                x: -2010900.332832421,
+                y: 4557239.914200295,
+                z: 3970169.542940124
+              }
+            ]
+          }
+          positions.map(function (position) {
             return new Cesium.Cartesian3(position.x, position.y, position.z)
           })
         } else if (tileset instanceof Cesium.Cesium3DTileset) {
@@ -325,11 +368,17 @@
               {
                 text: '地质体-M3D 2.1-文件服务',
                 value: DEFAULT_URL.MAPGIS_M3D_21
+              },
+              {
+                text: '地质体带纹理-M3D 2.2-文件服务',
+                value: DEFAULT_URL.MAPGIS_M3D_22_WITH_TEXTURE
               }
             ],
             value: DEFAULT_URL.MAPGIS_M3D_21
           })
-          .on('change', (e) => {})
+          .on('change', (e) => {
+            loadTileset(e.value, 'M3D')
+          })
 
         const cesium3DTilesModelList = modelCacheBladeFolder
           .addBlade({
@@ -348,7 +397,7 @@
 
         modelSectionFolder
           .addButton({
-            title: '添加竖面'
+            title: '绘制竖面'
           })
           .on('click', () => {
             addVerticalSection()
@@ -356,7 +405,7 @@
 
         modelSectionFolder
           .addButton({
-            title: '添加横面'
+            title: '绘制横面'
           })
           .on('click', () => {
             addHorizontalSection()
@@ -372,7 +421,7 @@
 
         modelSectionFolder
           .addButton({
-            title: '添加横面（控制点）'
+            title: '添加横面（自定义范围）'
           })
           .on('click', () => {
             addHorizontalSectionByPositions()
