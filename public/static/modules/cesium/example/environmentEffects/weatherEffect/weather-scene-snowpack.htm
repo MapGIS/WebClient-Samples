@@ -43,7 +43,12 @@
         map = new zondy.Map()
         sceneView = new zondy.cesium.SceneView({
           viewId: 'mapgis-3d-viewer',
-          map: map
+          map: map,
+          extensionOptions: {
+            timeline: true,
+            shadows: true,
+            terrainShadows: Cesium.ShadowMode.ENABLED
+          }
         })
         viewer = sceneView.getInnerView()
         // 开启地形深度测试
@@ -60,7 +65,7 @@
         map.add(modelCacheLayer)
         modelCacheLayer.on('layerview-created', function (result) {
           tileset = sceneView.getInnerLayer(result.layer)
-          viewer.zoomTo(tileset)
+          // viewer.zoomTo(tileset)
         })
       }
 
@@ -73,6 +78,20 @@
           }
         })
         map.add(terrainCacheLayer)
+        // 将视角定位到地形区域
+        viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(
+            120.33220756190961,
+            23.05535048439857,
+            17342.530828034127
+          ),
+          orientation: {
+            heading: Cesium.Math.toRadians(62.28939435690799),
+            pitch: Cesium.Math.toRadians(-12.870214031070452),
+            roll: 0
+          },
+          duration: 0
+        })
       }
 
       // 该方法用于加载天地图
@@ -91,6 +110,7 @@
       // 该方法用于添加积雪后处理特效
       function addSceneSnowpack() {
         viewer.scene.enableSnowpack = true
+        viewer.scene.snowpackDensity = 0.06
       }
 
       // 该方法用于初始化UI操作面板
@@ -110,7 +130,7 @@
         // 定义默认参数
         const paneParameters = {
           enabled: true,
-          density: 0.15,
+          density: 0.06,
           alpha: 1.0
         }
 
@@ -176,10 +196,10 @@
           })
           .on('click', () => {
             paneParameters.enabled = true
-            paneParameters.density = 0.15
+            paneParameters.density = 0.06
             paneParameters.alpha = 1
             viewer.scene.enableSnowpack = true
-            viewer.scene.snowpackDensity = 0.15
+            viewer.scene.snowpackDensity = 0.06
             viewer.scene.snowpackAlpha = 1
             pane.refresh()
           })
