@@ -152,7 +152,7 @@
       function addPointFeatureLayer() {
         // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/IGSFeatureLayer.html
         igsFeatureLayer1 = new zondy.layer.IGSFeatureLayer({
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/武汉市地图文档/FeatureServer',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/武汉市地图文档/FeatureServer/2',
           labelsVisible: true,
           labelingInfo: [pointLabelClass],
           // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/SimpleRenderer.html
@@ -361,7 +361,7 @@
       // 添加区要素图层
       function addAreaFeatureLayer() {
         igsFeatureLayer3 = new zondy.layer.IGSFeatureLayer({
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/武汉市地图文档/FeatureServer/2',
+          url: 'http://10.10.130.72:8089/igs/rest/services/Map/武汉市地图文档/FeatureServer/0',
           opacity: 0.8,
           labelsVisible: true,
           labelingInfo: [areaLabelClass],
