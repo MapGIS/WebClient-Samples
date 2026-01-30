@@ -18,6 +18,10 @@
 
 - @mapgis/webclient-common 库：`mapgis-client-for-javascript-all-v10.7.6.12\static\libs\cdn\zondyclient\webclient-common.min.js`以及`mapgis-client-for-javascript-all-v10.7.6.12\dist\cdn\zondyclient\webclient-common-resource`
 
+其他依赖的插件库：
+- Echarts 库：`mapgis-client-for-javascript-all-v10.7.6.12\static\libs\cdn\echarts\echarts.min.js`
+- MapV 库：`mapgis-client-for-javascript-all-v10.7.6.12\static\libs\cdn\mapv\mapv.min.js`
+
 # 2、引入开发库
 
 支持通过文件方式引入和 npm 方式引入，您可以根据自身情况选择其中一种。
@@ -42,17 +46,22 @@
 从 10.7.6.12 版本开始，webclient-common 库新增了静态资源，因此在使用时需要执行以下额外的操作步骤：
 第二步，配置 webclient-common 库资源路径全局变量 MAPGIS_BASE_URL。如果不做配置，则默认使用 webclient-common.min.js 文件所在的录路径作为 MAPGIS_BASE_URL 的值。
 
-## 2.2、npm 方式引入
+## 2.2、npm（或yarn、pnpm） 方式引入
 
 使用此方式前请先检查电脑中是否已安装应用程序 Node.js，并切换 npm 源为公网。
 
-第一步，获取 npm 包
+第一步，获取 js 包
 
-&ensp;&ensp;&ensp;&ensp;两种 npm install 方式：
+&ensp;&ensp;&ensp;&ensp;两种 install 方式：
 
 &ensp;&ensp;&ensp;&ensp;1.直接安装：
 ```plain
+// 使用 npm 安装
 npm install @mapgis/webclient-common
+// 使用 yarn 安装
+yarn install @mapgis/webclient-common
+// 使用 pnpm 安装
+pnpm install @mapgis/webclient-common
 ```
 &ensp;&ensp;&ensp;&ensp;2.在项目 package.json 文件中的 dependencies 内增加 @mapgis/webclient-common 及对应版本号，例如：
 
@@ -69,7 +78,12 @@ npm install @mapgis/webclient-common
 
 &ensp;&ensp;&ensp;&ensp;然后再进行安装：
 ```plain
+// 使用 npm 安装
 npm install
+// 使用 yarn 安装
+yarn install
+// 使用 pnpm 安装
+pnpm install
 ```
 &ensp;&ensp;&ensp;&ensp;安装完毕后，在项目`node_modules/@mapgis`文件夹中可找到`webclient-common`文件夹。
 
@@ -186,6 +200,40 @@ module.exports = {
 - 对于 @mapgis/webclient-common 库：
 同时支持文件方式引入和 npm 引入方式。
 `@mapgis/webclient-common/dist/es5`文件夹中 webclient-common.min.js 文件支持文件方式引入开发库，需要将 webclient-common.min.js 文件和 webclient-common-resource 文件夹拷贝到项目的静态资源目录，引入开发库方法请参考“2、引入开发库 - 2.1文件方式” 。
+
+## 2.3、使用 EchartsLayer、MapVLayer 时，需引入 Echarts 库和 MapV 库
+
+如果项目中需要用到 EchartsLayer、MapVLayer 图层功能，则需要在项目中引入 Echarts 库和 MapV 库（当前仅支持文件方式引入 Echarts 库和 MapV 库）：
+
+在 index.html 中引入 Echarts 库和 MapV 库。
+
+```html
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=Edge,chrome=1">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, minimum-scale=1, user-scalable=no">
+    <!--common库-->
+    <script src="http://{ip}:{port}/{你的路径}/zondyclient/webclient-common.min.js"></script>
+    <script src="http://{ip}:{port}/{你的路径}/echarts/echarts.min.js"></script>
+    <script src="http://{ip}:{port}/{你的路径}/mapv/mapv.min.js"></script>
+</head>
+</html>
+```
+
+说明：Echarts 库和 MapV 库当前仅支持使用 MapGIS Client for JavaScript（common） 开发包中提供的 Echarts、MapV 资源库。其他版本库可能存在不兼容情况，请谨慎选择。
+
+## 2.4、查看 webclient-common 库版本号
+
+@mapgis/webclient-common 库版本号查看方式：
+zondy.VERSION
+
+附：其他 weblcient-javascript 基础库版本查看方式
+@mapgis/webclient-cesium-plugin 库：zondy.cesium.VERSION
+@mapgis/webclient-leaflet-plugin 库：zondy.leaflet.VERSION
+@mapgis/webclient-mapboxgl-plugin 库：zondy.mapboxgl.VERSION
+@mapgis/webclient-cesium 库：Cesium.MAPGIS_VERSION
 
 # 3、调用库中的接口进行功能开发
 
