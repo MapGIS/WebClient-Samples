@@ -49,19 +49,26 @@
 从 10.7.4.10 版本开始，webclient-cesium-plugin 库新增了静态资源，因此在使用时需要执行以下额外的操作步骤：
 第二步，配置 webclient-cesium-plugin 库资源路径全局变量 MAPGIS_BASE_URL。如果不做配置，则默认 webclient-cesium-plugin.min.js 文件所在的录路径为 MAPGIS_BASE_URL 的值。
 
-## 2.2、npm 方式引入
+## 2.2、npm（或yarn、pnpm） 方式引入
 
 使用此方式前请先检查电脑中是否已安装应用程序 Node.js，并切换 npm 源为公网。
 
-第一步，获取 npm 包
+第一步，获取 js 包
 
-&ensp;&ensp;&ensp;&ensp;两种 npm install 方式：
+&ensp;&ensp;&ensp;&ensp;两种 install 方式：
 
 &ensp;&ensp;&ensp;&ensp;1.直接安装：
 
 ```plain
+// 使用 npm 安装
 npm install @mapgis/cesium
 npm install @mapgis/webclient-cesium-plugin
+// 使用 yarn 安装
+yarn install @mapgis/cesium
+yarn install @mapgis/webclient-cesium-plugin
+// 使用 pnpm 安装
+pnpm install @mapgis/cesium
+pnpm install @mapgis/webclient-cesium-plugin
 ```
 
 &ensp;&ensp;&ensp;&ensp;2.在项目 package.json 文件中的 dependencies 内增加@mapgis/cesium、@mapgis/webclient-cesium-plugin 及对应版本号，例如：
@@ -81,7 +88,12 @@ npm install @mapgis/webclient-cesium-plugin
 &ensp;&ensp;&ensp;&ensp;然后再进行安装：
 
 ```plain
+// 使用 npm 安装
 npm install
+// 使用 yarn 安装
+yarn install
+// 使用 pnpm 安装
+pnpm install
 ```
 
 &ensp;&ensp;&ensp;&ensp;安装完毕后，在项目`node_modules/@mapgis`文件夹中可找到`cesium`文件夹、`webclient-cesium-plugin`文件夹。
@@ -261,6 +273,17 @@ new Vue({
 - 对于 @mapgis/webclient-cesium-plugin 库：
   同时支持文件方式引入和 npm 引入方式。
   `@mapgis/webclient-cesium-plugin/dist/es5`文件夹中 webclient-cesium-plugin.min.js 文件支持文件方式引入开发库，需要将 webclient-cesium-plugin.min.js 文件和 webclient-cesium-plugin-resource 文件夹拷贝到项目的静态资源目录，引入开发库方法请参考“2、引入开发库 - 2.1 文件方式” 。
+
+## 2.3、查看 webclient-cesium-plugin 库版本号
+
+@mapgis/webclient-cesium-plugin 库版本号查看方式：
+zondy.cesium.VERSION
+
+附：其他 weblcient-javascript 基础库版本查看方式
+@mapgis/webclient-common 库：zondy.VERSION
+@mapgis/webclient-leaflet-plugin 库：zondy.leaflet.VERSION
+@mapgis/webclient-mapboxgl-plugin 库：zondy.mapboxgl.VERSION
+@mapgis/webclient-cesium 库：Cesium.MAPGIS_VERSION
 
 # 3、调用库中的接口进行功能开发
 
