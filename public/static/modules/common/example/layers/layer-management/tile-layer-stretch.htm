@@ -32,7 +32,7 @@
         view,
         layer,
         igsFeatureLayer,
-        tileDisplayMode = 'stretch'
+        tileDisplayStrategy = 'stretch'
       const { Map, MapView, SceneView, Basemap, Collection, Color, Feature } =
         zondy
       const { Extent } = zondy.geometry
@@ -100,8 +100,8 @@
           tokenValue: getTDTToken(),
           // 图层透明度
           opacity: 1,
-          // 瓦片显示模式
-          tileDisplayMode
+          // 瓦片显示策略
+          tileDisplayStrategy
         })
         map.add(layer)
       }
@@ -116,8 +116,8 @@
           title: '湖北省瓦片图层',
           // 设置透明度
           opacity: 1,
-          // 瓦片显示模式
-          tileDisplayMode
+          // 瓦片显示策略
+          tileDisplayStrategy
         })
         map.add(layer)
       }
@@ -132,8 +132,8 @@
           tokenKey: 'tk',
           // token请在天地图官网申请
           tokenValue: getTDTToken(),
-          // 瓦片显示模式
-          tileDisplayMode
+          // 瓦片显示策略
+          tileDisplayStrategy
         })
         map.add(layer)
       }
@@ -144,8 +144,8 @@
           url: 'http://10.10.130.72:8089/igs/rest/services/VectorTile/湖北省3857矢量瓦片/VectorTileServer',
           // 图层名称
           title: '湖北省矢量瓦片图层',
-          // 瓦片显示模式
-          tileDisplayMode
+          // 瓦片显示策略
+          tileDisplayStrategy
         })
         layer.on('layerview-created', function (result) {
           layer.setStyleLayerVisibility('背景', false)
@@ -158,8 +158,8 @@
         layer = new IGSImageryTileLayer({
           // 服务基地址
           url: 'http://10.10.130.72:8089/igs/rest/services/Image/world/ImageServer',
-          // 瓦片显示模式
-          tileDisplayMode
+          // 瓦片显示策略
+          tileDisplayStrategy
         })
         // 添加图层
         map.add(layer)
@@ -171,8 +171,8 @@
           url: 'https://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer',
           // 图层透明度
           opacity: 1,
-          // 瓦片显示模式
-          tileDisplayMode
+          // 瓦片显示策略
+          tileDisplayStrategy
         })
         map.add(layer)
       }
@@ -181,8 +181,8 @@
         layer = new ArcGISVectorTileLayer({
           // 基地址
           url: 'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer',
-          // 瓦片显示模式
-          tileDisplayMode
+          // 瓦片显示策略
+          tileDisplayStrategy
         })
         map.add(layer)
       }
@@ -262,18 +262,18 @@
             })
           })
 
-          form.on('select(tileDisplayMode)', function (data) {
+          form.on('select(tileDisplayStrategy)', function (data) {
             switch (data.value) {
               case 'stretch':
-                tileDisplayMode = 'stretch'
+                tileDisplayStrategy = 'stretch'
                 if (layer) {
-                  layer.tileDisplayMode = tileDisplayMode
+                  layer.tileDisplayStrategy = tileDisplayStrategy
                 }
                 break
               case 'hide':
-                tileDisplayMode = 'hide'
+                tileDisplayStrategy = 'hide'
                 if (layer) {
-                  layer.tileDisplayMode = tileDisplayMode
+                  layer.tileDisplayStrategy = tileDisplayStrategy
                 }
                 break
             }
@@ -406,13 +406,13 @@
           <label
             class="layui-form-label"
             title="超过瓦片的请求层级范围后，设置拉伸瓦片还是隐藏瓦片"
-            >显示模式</label
+            >显示策略</label
           >
           <div class="layui-input-block layui-input-block-select">
             <select
-              id="tileDisplayMode"
-              name="tileDisplayMode"
-              lay-filter="tileDisplayMode"
+              id="tileDisplayStrategy"
+              name="tileDisplayStrategy"
+              lay-filter="tileDisplayStrategy"
             >
               <option value="stretch">瓦片拉伸</option>
               <option value="hide">瓦片隐藏</option>
