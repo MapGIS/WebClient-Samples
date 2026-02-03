@@ -4,18 +4,16 @@
 
 **前往**[司马云官网](http://smaryun.com/dev/download_detail.html#/download828)**下载MapGIS Client for JavaScript开发库**
 
-以 10.7.4.10 为例，其中：
+以 10.7.6.10 为例，其中：
 
-- mapgis-client-for-javascript-dist-v10.7.4.10.rar为开发库
+- mapgis-client-for-javascript-dist-v10.7.6.10.rar为开发库
 
-- mapgis-client-for-javascript-all-v10.7.4.10.rar为开发库+示例站点
+- mapgis-client-for-javascript-all-v10.7.6.10.rar为开发库+示例站点
 
 
 **Webclient-Leaflet-Plugin所需开发包位于如下文件夹中**
 
-- @mapgis/webclient-leaflet-plugin 库：`mapgis-client-for-javascript-all-v10.7.4.10\dist\cdn\zondyclient\webclient-leaflet-plugin.min.js`
-
-- @mapgis/leaflet 库：`mapgis-client-for-javascript-all-v10.7.4.10\dist\cdn\leaflet`
+- @mapgis/webclient-leaflet-plugin 库：`mapgis-client-for-javascript-all-v10.7.6.10\dist\cdn\zondyclient\webclient-leaflet-plugin.min.js`
 
 # 2、引入开发库
 
@@ -52,11 +50,17 @@
 &ensp;&ensp;&ensp;&ensp;1.直接安装：
 
 ```plain
+npm install leaflet@1.9.2
+npm install @mapgis/webclient-common
 npm install @mapgis/webclient-leaflet-plugin
 // 使用 yarn 安装
-yarn install @mapgis/webclient-leaflet-plugin
+yarn add leaflet@1.9.2
+yarn add @mapgis/webclient-common
+yarn add @mapgis/webclient-leaflet-plugin
 // 使用 pnpm 安装
-pnpm install @mapgis/webclient-leaflet-plugin
+pnpm add leaflet@1.9.2
+pnpm add @mapgis/webclient-common
+pnpm add @mapgis/webclient-leaflet-plugin
 ```
 
 &ensp;&ensp;&ensp;&ensp;2.在项目 package.json 文件中的 dependencies 内增加 @mapgis/webclient-leaflet-plugin 及对应版本号，例如：
@@ -66,7 +70,9 @@ pnpm install @mapgis/webclient-leaflet-plugin
   "version": "0.0.0",
   "scripts": {},
   "dependencies": {
-    "@mapgis/webclient-leaflet-plugin": "^17.4.0"
+    "leaflet": "1.9.2",
+    "@mapgis/webclient-common": "^17.6.0",
+    "@mapgis/webclient-leaflet-plugin": "^17.6.0"
   },
   "devDependencies": {}
 }
@@ -166,7 +172,7 @@ zondy.leaflet.VERSION
 **在项目的main.js文件中引入leaflet引擎的样式文件**
 
 ```javascript
-import '@mapgis/leaflet/dist/leaflet.css'
+import 'leaflet/dist/leaflet.css'
 ```
 
 **在项目的 css 文件中设置地图视图容器的样式，否则地图视图无法显示**

@@ -4,17 +4,17 @@
 
 **前往**[司马云官网](http://smaryun.com/dev/download_detail.html#/download828)**下载 MapGIS 3DClient for WebGL 开发库**
 
-以 10.7.4.10 为例，其中：
+以 10.7.6.10 为例，其中：
 
-- mapgis-client-for-javascript-dist-v10.7.4.10.rar 为开发库
+- mapgis-client-for-javascript-dist-v10.7.6.10.rar 为开发库
 
-- mapgis-client-for-javascript-all-v10.7.4.10.rar 为开发库+示例站点
+- mapgis-client-for-javascript-all-v10.7.6.10.rar 为开发库+示例站点
 
 **开发包位于如下位置**
 
-- @mapgis/webclient-cesium-plugin 库：`mapgis-client-for-javascript-all-v10.7.4.10\dist\cdn\zondyclient\webclient-cesium-plugin.min.js`以及`mapgis-client-for-javascript-all-v10.7.4.10\dist\cdn\zondyclient\webclient-cesium-plugin-resource`
+- @mapgis/webclient-cesium-plugin 库：`mapgis-client-for-javascript-all-v10.7.6.10\dist\cdn\zondyclient\webclient-cesium-plugin.min.js`以及`mapgis-client-for-javascript-all-v10.7.6.10\dist\cdn\zondyclient\webclient-cesium-plugin-resource`
 
-- @mapgis/cesium 库：`mapgis-client-for-javascript-all-v10.7.4.10\dist\cdn\cesium`
+- @mapgis/cesium 库：`mapgis-client-for-javascript-all-v10.7.6.10\dist\cdn\cesium`
 
 # 2、引入开发库
 
@@ -62,13 +62,16 @@
 ```plain
 // 使用 npm 安装
 npm install @mapgis/cesium
+npm install @mapgis/webclient-common
 npm install @mapgis/webclient-cesium-plugin
 // 使用 yarn 安装
-yarn install @mapgis/cesium
-yarn install @mapgis/webclient-cesium-plugin
+yarn add @mapgis/cesium
+yarn add @mapgis/webclient-common
+yarn add @mapgis/webclient-cesium-plugin
 // 使用 pnpm 安装
-pnpm install @mapgis/cesium
-pnpm install @mapgis/webclient-cesium-plugin
+pnpm add @mapgis/cesium
+pnpm add @mapgis/webclient-common
+pnpm add @mapgis/webclient-cesium-plugin
 ```
 
 &ensp;&ensp;&ensp;&ensp;2.在项目 package.json 文件中的 dependencies 内增加@mapgis/cesium、@mapgis/webclient-cesium-plugin 及对应版本号，例如：
@@ -78,8 +81,9 @@ pnpm install @mapgis/webclient-cesium-plugin
   "version": "0.0.0",
   "scripts": {},
   "dependencies": {
-    "@mapgis/cesium": "^17.4.0",
-    "@mapgis/webclient-cesium-plugin": "^17.4.0"
+    "@mapgis/cesium": "^17.6.0",
+    "@mapgis/webclient-common": "^17.6.0",
+    "@mapgis/webclient-cesium-plugin": "^17.6.0"
   },
   "devDependencies": {}
 }
