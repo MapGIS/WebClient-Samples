@@ -42,10 +42,15 @@
         // 视角定位到指定区域
         viewer.camera.flyTo({
           destination: Cesium.Cartesian3.fromDegrees(
-            121.0076,
-            23.3814,
-            80000.0
+            120.53895699242996,
+            23.055458351019944,
+            17708.52367426732
           ),
+          orientation: {
+            heading: Cesium.Math.toRadians(51.45866128053401),
+            pitch: Cesium.Math.toRadians(-20.3165948732863),
+            roll: 0.0
+          },
           duration: 0
         })
       }
