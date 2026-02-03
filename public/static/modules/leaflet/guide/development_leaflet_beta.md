@@ -15,7 +15,7 @@
 
 - [@mapgis/leaflet](http://192.168.11.130:4873/-/web/detail/@mapgis/leaflet)
 
-以 17.5.0 版本为例进行说明
+以 17.7.0 版本为例进行说明
 
 1.在该网页中请先选择要下载的版本
 
@@ -35,9 +35,7 @@
 
 **开发包位于如下位置**
 
-- @mapgis/webclient-leaflet-plugin 库：`webclient-leaflet-plugin-17.5.0\package\dist\webclient-leaflet-plugin.min.js`
-
-- @mapgis/leaflet 库：`leaflet-17.5.0\package\dist`
+- @mapgis/webclient-leaflet-plugin 库：`webclient-leaflet-plugin-17.7.0\package\dist\webclient-leaflet-plugin.min.js`
 
 # 2、引入开发库
 
@@ -78,11 +76,17 @@ npm set registry http://192.168.11.130:4873/
 &ensp;&ensp;&ensp;&ensp;1.直接安装：
 
 ```plain
+npm install leaflet@1.9.2
+npm install @mapgis/webclient-common
 npm install @mapgis/webclient-leaflet-plugin
 // 使用 yarn 安装
-yarn install @mapgis/webclient-leaflet-plugin
+yarn add leaflet@1.9.2
+yarn add @mapgis/webclient-common
+yarn add @mapgis/webclient-leaflet-plugin
 // 使用 pnpm 安装
-pnpm install @mapgis/webclient-leaflet-plugin
+pnpm add leaflet@1.9.2
+pnpm add @mapgis/webclient-common
+pnpm add @mapgis/webclient-leaflet-plugin
 ```
 
 &ensp;&ensp;&ensp;&ensp;2.在项目 package.json 文件中的 dependencies 内增加 @mapgis/webclient-leaflet-plugin 及对应版本号，例如：
@@ -92,7 +96,9 @@ pnpm install @mapgis/webclient-leaflet-plugin
   "version": "0.0.0",
   "scripts": {},
   "dependencies": {
-    "@mapgis/webclient-leaflet-plugin": "^17.5.0"
+    "leaflet": "1.9.2",
+    "@mapgis/webclient-common": "^17.7.0",
+    "@mapgis/webclient-leaflet-plugin": "^17.7.0"
   },
   "devDependencies": {}
 }
