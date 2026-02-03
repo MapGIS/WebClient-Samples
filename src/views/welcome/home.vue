@@ -115,10 +115,10 @@
                 </div>
             </div>
         </el-row>
-        <div class="webclinet-ai-chat-container">
+        <!-- <div class="webclinet-ai-chat-container">
           <div class="webclinet-ai-chat-inner" @click="openWebClientAI()">AI智答</div>
           <div class="webclinet-ai-chat-hover">你好，我是AI智答！</div>
-        </div>
+        </div> -->
     </div>
 </template>
 

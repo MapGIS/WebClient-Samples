@@ -13,6 +13,15 @@
 
 <br />
 
+# V10.7.8.10 接口变更表
+
+| <span style="display:inline-block;width: 50px"> 命名空间 </span> | 类名             | <span style="display:inline-block;width: 60px">类中文说明</span> | <span style="display:inline-block;width: 70px"> 类变更<br />类型 </span> | <span style="display:inline-block;width: 65px"> 成员名(方法/属性/枚举/常量/事件)</span> | <span style="display:inline-block;width: 70px"> 成员变<br />更类型 </span> | <span style="display:inline-block;width: 80px"> 被替代接口<br />（废弃） </span> | 变更内容说明                                            |
+| ------------------------------------------------------------ | ---------------- | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------------ | ------------------------------------------------------- |
+| mapboxgl                                                     | RasterTileSource | 栅格瓦片source类                                             | 更新                                                         | enableMinzoomDownscaling                                     | 新增                                                         |                                                              | 新增当层级小于source上的minzoom时，是否缩小最小级别显示 |
+| mapboxgl                                                     | VectorTileSource | 矢量瓦片source类                                             | 更新                                                         | enableMinzoomDownscaling                                     | 新增                                                         |                                                              | 新增当层级小于source上的minzoom时，是否缩小最小级别显示 |
+
+<br />
+
 # V10.7.6.10 接口变更表
 
 | <span style="display:inline-block;width: 50px"> 命名空间 </span> | 类名           | <span style="display:inline-block;width: 60px">类中文说明</span> | <span style="display:inline-block;width: 70px"> 类变更<br />类型 </span> | <span style="display:inline-block;width: 65px"> 成员名(方法/属性/枚举/常量/事件)</span> | <span style="display:inline-block;width: 70px"> 成员变<br />更类型 </span> | <span style="display:inline-block;width: 80px"> 被替代接口<br />（废弃） </span> | 变更内容说明                                                 |
