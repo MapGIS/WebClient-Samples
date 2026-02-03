@@ -11,7 +11,7 @@
 
 * [@mapgis/](http://192.168.11.130:4873/-/web/detail/@mapgis/webclient-common)[webclient-common](http://192.168.11.130:4873/-/web/detail/@mapgis/webclient-common)
 
-以 17.5.0 版本为例进行说明
+以 17.7.0 版本为例进行说明
 
 1.在该网页中请先选择要下载的版本
 
@@ -91,7 +91,7 @@ pnpm install @mapgis/webclient-common
   "version": "0.0.0",
   "scripts": {},
   "dependencies": {
-    "@mapgis/webclient-common": "^17.5.0"
+    "@mapgis/webclient-common": "^17.7.0"
   },
   "devDependencies": {}
 }

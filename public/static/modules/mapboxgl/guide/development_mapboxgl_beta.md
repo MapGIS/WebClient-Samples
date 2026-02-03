@@ -14,7 +14,7 @@
 
 - [@mapgis/mapboxgl](http://192.168.11.130:4873/-/web/detail/@mapgis/mapbox-gl)
 
-以 17.5.0 版本为例进行说明
+以 17.7.0 版本为例进行说明
 
 1.在该网页中请先选择要下载的版本
 
@@ -34,9 +34,9 @@
 
 **开发包位于如下位置**
 
-- @mapgis/webclient-mapboxgl-plugin 库：`webclient-mapboxgl-plugin-17.5.0\package\dist\webclient-mapboxgl-plugin.min.js`
+- @mapgis/webclient-mapboxgl-plugin 库：`webclient-mapboxgl-plugin-17.7.0\package\dist\webclient-mapboxgl-plugin.min.js`
 
-- @mapgis/mapbox-gl 库：`mapboxgl-17.5.0\package\dist`
+- @mapgis/mapbox-gl 库：`mapboxgl-17.7.0\package\dist`
 
 # 2、引入开发库
 
@@ -78,11 +78,17 @@ npm set registry http://192.168.11.130:4873/
 
 ```plain
 // 使用 npm 安装
+npm install @mapgis/mapbox-gl
+npm install @mapgis/webclient-common
 npm install @mapgis/webclient-mapboxgl-plugin
 // 使用 yarn 安装
-yarn install @mapgis/webclient-mapboxgl-plugin
+yarn add @mapgis/mapbox-gl
+yarn add @mapgis/webclient-common
+yarn add @mapgis/webclient-mapboxgl-plugin
 // 使用 pnpm 安装
-pnpm install @mapgis/webclient-mapboxgl-plugin
+pnpm add @mapgis/mapbox-gl
+pnpm add @mapgis/webclient-common
+pnpm add @mapgis/webclient-mapboxgl-plugin
 ```
 
 &ensp;&ensp;&ensp;&ensp;2.在项目 package.json 文件中的 dependencies 内增加 @mapgis/webclient-mapboxgl-plugin 及对应版本号，例如：
@@ -92,7 +98,9 @@ pnpm install @mapgis/webclient-mapboxgl-plugin
   "version": "0.0.0",
   "scripts": {},
   "dependencies": {
-    "@mapgis/webclient-mapboxgl-plugin": "^17.5.0"
+    "@mapgis/mapbox-gl": "^17.7.0",
+    "@mapgis/webclient-common": "^17.7.0",
+    "@mapgis/webclient-mapboxgl-plugin": "^17.7.0"
   },
   "devDependencies": {}
 }
