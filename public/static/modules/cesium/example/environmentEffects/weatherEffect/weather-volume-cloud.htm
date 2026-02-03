@@ -39,7 +39,9 @@
         minHeight: 7500,
         maxHeight: 8000,
         speed: 0.1,
-        direction: 90
+        direction: 90,
+        minCameraHeight: 0,
+        maxCameraHeight: 25000
       }
       async function init() {
         initViewer()
@@ -129,6 +131,35 @@
           })
           .on('change', (e) => {
             volumeCloud.show = e.value
+          })
+        volumeCloudFolder
+          .addBinding(volumeCloudControls, 'minCameraHeight', {
+            label: '云层可见最低相机高度',
+            min: 0,
+            max: 100000
+          })
+          .on('change', (e) => {
+            if (e.value >= volumeCloudControls.maxCameraHeight) {
+              volumeCloudControls.minCameraHeight =
+                volumeCloudControls.maxCameraHeight - 1
+              pane.refresh()
+            }
+            volumeCloud.minCameraHeight = volumeCloudControls.minCameraHeight
+          })
+
+        volumeCloudFolder
+          .addBinding(volumeCloudControls, 'maxCameraHeight', {
+            label: '云层可见最高相机高度',
+            min: 0,
+            max: 100000
+          })
+          .on('change', (e) => {
+            if (e.value <= volumeCloudControls.minCameraHeight) {
+              volumeCloudControls.maxCameraHeight =
+                volumeCloudControls.minCameraHeight + 1
+              pane.refresh()
+            }
+            volumeCloud.maxCameraHeight = volumeCloudControls.maxCameraHeight
           })
 
         volumeCloudFolder
