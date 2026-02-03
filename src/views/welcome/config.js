@@ -252,9 +252,9 @@ export const NewGallerys = [
     index: "/modules/common/layers/modelCacheLayer/voxel-model",
   },
   {
-    icon: ".static/modules/cesium/example-gallery/environmentEffects/weatherEffect/weather-height-fog.png",
+    icon: "./static/modules/cesium/example-gallery/environmentEffects/weatherEffect/weather-height-fog.png",
     title: "环境特效",
-    subtitle: "实现高度雾、体积光、集群动物等高级环境特效",
+    subtitle: "新增高度雾、体积光、动物集群等高级环境特效",
     index: "/modules/cesium/environmentEffects/weatherEffect/weather-height-fog"
   },
   {
