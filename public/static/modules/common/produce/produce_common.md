@@ -129,6 +129,31 @@ npm install @mapgis/webclient-common
 
 ## 版本说明
 
+### <font color=red>V10.7.8.10</font>
+
+1. 功能新增
+
+- 场景下支持图标和图标上动态 Tip 的避让
+- 提供视图卷帘工具（当前仅 leaflet 引擎中的 MapView 支持）
+- 支持 GeoServer 平台发布的 WMS、WMTS、WFS 服务
+
+2. 功能优化
+
+- 统一部分符号属性在不同引擎上的效果差异
+- 优化服务请求失败的状态信息
+- GeoJson 接入能力增强，支持加载 MapGIS Desktop 上导出的 GeoJson (ESRI WKT)
+
+3. API接口变更
+  <a href="http://10.10.130.72:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
+
+4. 新增示例
+
+- <a href="http://10.10.130.72:8086/#/modules/common/layers/sceneLayer/mapgis-covering" target="_blank">MapGIS覆盖物服务</a>
+- <a href="http://10.10.130.72:8086/#/modules/common/view/view-tool/swipe-tool" target="_blank">卷帘</a>
+- <a href="http://10.10.130.72:8086/#/modules/common/layers/graphicsLayer/graphics-layer-collision" target="_blank">几何图层 - 图元避让显示</a>
+- <a href="http://10.10.130.72:8086/#/modules/common/visualization/clientThemeMap/breaks-voxel" target="_blank">分段专题图-栅格体元</a>
+- <a href="http://10.10.130.72:8086/#/modules/common/layers/layer-management/tile-layer-stretch" target="_blank">瓦片显示设置</a>
+
 ### <font color=red>V10.7.6.10</font>
 
 1. 功能新增
