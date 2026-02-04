@@ -135,13 +135,13 @@ npm install @mapgis/webclient-common
 
 - 场景下支持图标和图标上动态 Tip 的避让
 - 提供视图卷帘工具（当前仅 leaflet 引擎中的 MapView 支持）
-- 支持 GeoServer 平台发布的 WMS、WMTS、WFS 服务
 
 2. 功能优化
 
 - 统一部分符号属性在不同引擎上的效果差异
 - 优化服务请求失败的状态信息
 - GeoJSON 接入能力增强，支持加载 MapGIS Desktop 上导出的 GeoJSON (ESRI WKT)
+- 兼容 GeoServer 发布的 OGC 服务
 
 3. API接口变更
   <a href="http://webclient.smaryun.com/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
