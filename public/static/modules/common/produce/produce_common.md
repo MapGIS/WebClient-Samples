@@ -141,18 +141,18 @@ npm install @mapgis/webclient-common
 
 - 统一部分符号属性在不同引擎上的效果差异
 - 优化服务请求失败的状态信息
-- GeoJson 接入能力增强，支持加载 MapGIS Desktop 上导出的 GeoJson (ESRI WKT)
+- GeoJSON 接入能力增强，支持加载 MapGIS Desktop 上导出的 GeoJSON (ESRI WKT)
 
 3. API接口变更
   <a href="http://webclient.smaryun.com/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
 
 4. 新增示例
 
-- <a href="http://webclient.smaryun.com/#/modules/common/layers/sceneLayer/mapgis-covering" target="_blank">MapGIS覆盖物服务</a>
+- <a href="http://webclient.smaryun.com/#/modules/common/layers/sceneLayer/mapgis-covering" target="_blank">MapGIS场景覆盖物服务</a>
 - <a href="http://webclient.smaryun.com/#/modules/common/view/view-tool/swipe-tool" target="_blank">卷帘</a>
 - <a href="http://webclient.smaryun.com/#/modules/common/layers/graphicsLayer/graphics-layer-collision" target="_blank">几何图层 - 图元避让显示</a>
 - <a href="http://webclient.smaryun.com/#/modules/common/visualization/clientThemeMap/breaks-voxel" target="_blank">分段专题图-栅格体元</a>
-- <a href="http://webclient.smaryun.com/#/modules/common/layers/layer-management/tile-layer-stretch" target="_blank">瓦片显示设置</a>
+- <a href="http://webclient.smaryun.com/#/modules/common/layers/layer-management/tile-layer-stretch" target="_blank">瓦片显示策略设置</a>
 
 ### <font color=red>V10.7.6.10</font>
 

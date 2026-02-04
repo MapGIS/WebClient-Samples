@@ -175,11 +175,11 @@
               "tags": ["layers", "空间裁剪", "客户端"]
             },
             {
-              "name": "瓦片显示设置",
+              "name": "瓦片显示策略设置",
               "file": "tile-layer-stretch",
               "icon": "tile-layer-stretch.png",
               "diffcult": "1",
-              "tags": ["layers", "瓦片拉伸", "瓦片显示设置"]
+              "tags": ["layers", "瓦片拉伸", "瓦片显示策略设置"]
             },
             {
               "name": "子图层筛选",
@@ -911,7 +911,7 @@
               ]
             },
             {
-              "name": "MapGIS覆盖物服务",
+              "name": "MapGIS场景覆盖物服务",
               "file": "mapgis-covering",
               "icon": "mapgis-covering.png",
               "diffcult": "1",
