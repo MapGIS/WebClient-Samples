@@ -200,7 +200,6 @@
         "routes": [
           [
             "/guideMulti/cesium/development_cesium",
-            "/guideMulti/cesium/development_cesium_beta",
             "/guideMulti/cesium/开发入门：创建一幅地图",
             "/guideMulti/cesium/development_cesium_plugin_api_update",
             "/guideMulti/cesium/development_cesium_api_update",
@@ -368,7 +367,6 @@
         "routes": [
           [
             "/guideMulti/mapboxgl/development_mapboxgl",
-            "/guideMulti/mapboxgl/development_mapboxgl_beta",
             "/guideMulti/mapboxgl/开发入门：创建一幅地图",
             "/guideMulti/mapboxgl/development_mapboxgl_plugin_api_update",
             "/guideMulti/mapboxgl/development_mapboxgl_api_update",
@@ -561,7 +559,6 @@
         "routes": [
           [
             "/guideMulti/leaflet/development_leaflet",
-            "/guideMulti/leaflet/development_leaflet_beta",
             "/guideMulti/leaflet/开发入门：创建一幅地图",
             "/guideMulti/leaflet/development_leaflet_plugin_api_update",
             "/guideMulti/leaflet/development_leaflet_api_update",
@@ -875,7 +872,6 @@
         "routes": [
           [
             "/guideMulti/common/development_common",
-            "/guideMulti/common/development_common_beta",
             "/guideMulti/common/开发入门：创建一幅地图",
             "/guideMulti/common/development_api_update",
             "/guideMulti/common/development_common_update",
