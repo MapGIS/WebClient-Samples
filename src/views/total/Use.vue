@@ -19,23 +19,23 @@ p<template>
         </div>
             <div  class="tip">
              <h4>MapGIS Client for JavaScript（Common） </h4>
-            请参考 <a href="http://10.10.130.72:8086/#/guideMulti/common/development_common" target="_blank">http://10.10.130.72:8086/#/guideMulti/common/development_common</a>
+            请参考 <a href="http://webclient.smaryun.com/#/guideMulti/common/development_common" target="_blank">http://webclient.smaryun.com/#/guideMulti/common/development_common</a>
             </div>
             <div  class="tip">
              <h4>MapGIS Client for JavaScript（Cesium） </h4>
-            请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium" target="_blank">http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium</a>
+            请参考 <a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium" target="_blank">http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium</a>
             </div>
             <div  class="tip">
              <h4>MapGIS Client for JavaScript（MapboxGL） </h4>
-            请参考 <a href="http://10.10.130.72:8086/#/guideMulti/mapboxgl/development_mapboxgl" target="_blank">http://10.10.130.72:8086/#/guideMulti/mapboxgl/development_mapboxgl</a>
+            请参考 <a href="http://webclient.smaryun.com/#/guideMulti/mapboxgl/development_mapboxgl" target="_blank">http://webclient.smaryun.com/#/guideMulti/mapboxgl/development_mapboxgl</a>
             </div>
             <div  class="tip">
              <h4>MapGIS Client for JavaScript（Leaflet） </h4>
-            请参考 <a href="http://10.10.130.72:8086/#/guideMulti/leaflet/development_leaflet" target="_blank">http://10.10.130.72:8086/#/guideMulti/leaflet/development_leaflet</a>
+            请参考 <a href="http://webclient.smaryun.com/#/guideMulti/leaflet/development_leaflet" target="_blank">http://webclient.smaryun.com/#/guideMulti/leaflet/development_leaflet</a>
             </div>
             <div  class="tip">
              <h4>MapGIS Client for JavaScript（OpenLayers） </h4>
-            请参考 <a href="http://10.10.130.72:8086/#/guide/openlayers/development_ol" target="_blank">http://10.10.130.72:8086/#/guide/openlayers/development_ol</a>
+            请参考 <a href="http://webclient.smaryun.com/#/guide/openlayers/development_ol" target="_blank">http://webclient.smaryun.com/#/guide/openlayers/development_ol</a>
             </div>
         </div>
 
@@ -107,19 +107,19 @@ export default {
             smaryun: [
                 {
                     name: 'Openlayers',
-                    href: 'http://10.10.130.72:8086/static/libs/include-openlayers-local.js'
+                    href: 'http://webclient.smaryun.com/static/libs/include-openlayers-local.js'
                 },
                 {
                     name: 'leaflet',
-                    href: 'http://10.10.130.72:8086/static/libs/include-leaflet-local.js'
+                    href: 'http://webclient.smaryun.com/static/libs/include-leaflet-local.js'
                 },
                 {
                     name: 'mapboxgl',
-                    href: 'http://10.10.130.72:8086/static/libs/include-mapboxgl-local.js'
+                    href: 'http://webclient.smaryun.com/static/libs/include-mapboxgl-local.js'
                 },
                 {
                     name: 'cesium',
-                    href: 'http://10.10.130.72:8086/static/libs/include-cesium-local.js'
+                    href: 'http://webclient.smaryun.com/static/libs/include-cesium-local.js'
                 }
             ],
 

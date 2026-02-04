@@ -75,7 +75,7 @@
          source: {
             type: "raster",
             tiles: [                
-            "http://10.10.130.72:6163/igs/rest/ogc/beijing/WMTSServer?" +
+            "http://webclient.smaryun.com:6163/igs/rest/ogc/beijing/WMTSServer?" +
                   "service=WMTS" +
                   "&request=GetTile" +
                   "&version=1.0.0" +
@@ -235,6 +235,6 @@
 
 * Example:
   ```javascript
-  http://10.10.130.72:6163/igs/rest/ogc/OGC_4326_CHINA_WMTS/WMTSServer?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=EPSG:4326_OGC_4326_CHINA_arcgis_GB&format=image/png&layer=OGC_4326_CHINA_WMTS&tilematrix=2&tilerow=1&tilecol=7
+  http://webclient.smaryun.com:6163/igs/rest/ogc/OGC_4326_CHINA_WMTS/WMTSServer?service=WMTS&request=GetTile&version=1.0.0&style=default&tilematrixSet=EPSG:4326_OGC_4326_CHINA_arcgis_GB&format=image/png&layer=OGC_4326_CHINA_WMTS&tilematrix=2&tilerow=1&tilecol=7
   ```
 

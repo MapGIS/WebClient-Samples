@@ -31,7 +31,7 @@
             viewer: webGlobe.viewer
         });
         //加载三维地形地图文档（服务地址，配置参数）
-        terrainlayer = terrain.append("http://10.10.130.72:6163/igs/rest/g3d/terrain", {});
+        terrainlayer = terrain.append("http://webclient.smaryun.com:6163/igs/rest/g3d/terrain", {});
     ```
 
 * Example:

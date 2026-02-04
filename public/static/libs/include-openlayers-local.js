@@ -125,10 +125,10 @@
 
   load();
   window.webclient = {
-    ip: "10.10.130.72",
+    ip: 'webclient.smaryun.com',
     port: 6163,
-    protocol: "http",
-  };
+    protocol: 'http'
+  }
   window.isLocal = false;
   window.server = document.location.toString().match(/file:\/\//) ? "http://localhost:8899" : 'http://' + document.location.host;
 })();

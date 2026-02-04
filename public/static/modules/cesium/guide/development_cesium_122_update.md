@@ -11,8 +11,8 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
   - Cesium内核库的变更：webclient-cesium 库，依赖的开源Cesium库由 1.84升级到1.122。
   - 功能所属库的变更：请参考本文档《三、功能所属库变更对照表》
   - 接口变更表：
-  <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">《**webclient-cesium-plugin 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表”）</font>
-  <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">《**webclient-cesium 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表”）</font>
+  <a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">《**webclient-cesium-plugin 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表”）</font>
+  <a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium_api_update" target="_blank">《**webclient-cesium 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表”）</font>
   
 2. **10.7.4.10 版本引入库的方式发生了哪些变化?**
   
@@ -24,14 +24,14 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
         import * as Cesium from "@mapgis/cesium"
         ```
       - 拷贝cesium静态资源，并配置资源路径。
-      **webclient-cesium资源配置方式：** 请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium" target="_blank">开发指南-正式版库</a> 中的章节 “2、引入开发库 - 2.2、npm 方式引入” （第二步，资源导入；第三步，配置全局变量）。
+      **webclient-cesium资源配置方式：** 请参考 <a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium" target="_blank">开发指南-正式版库</a> 中的章节 “2、引入开发库 - 2.2、npm 方式引入” （第二步，资源导入；第三步，配置全局变量）。
 
       
   - webclient-cesium-plugin 库：
     - 新增webclient-cesium-plugin拷贝静态资源，并配置资源路径。
-      **webclient-cesium-plugin资源配置方式：** 请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium" target="_blank">开发指南-正式版库</a> 中的章节“2、引入开发库 - 2.2、npm 方式引入” （第二步，资源导入；第三步，配置全局变量）。
+      **webclient-cesium-plugin资源配置方式：** 请参考 <a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium" target="_blank">开发指南-正式版库</a> 中的章节“2、引入开发库 - 2.2、npm 方式引入” （第二步，资源导入；第三步，配置全局变量）。
 
-  获取开发包、引入开发库的方法，请参考 <a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium">开发指南</a><font color=gray size=2>（参考章节“1、获取 MapGIS 3DClient for WebGL 开发包” 和“2、引入开发库”）</font>
+  获取开发包、引入开发库的方法，请参考 <a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium">开发指南</a><font color=gray size=2>（参考章节“1、获取 MapGIS 3DClient for WebGL 开发包” 和“2、引入开发库”）</font>
   
 3.  **如何查看当前使用的 API 版本号？**
   
@@ -80,17 +80,17 @@ webclient-cesium-plugin及webclient-cesium 10.7.4.10，将依赖的开源Cesium�
     
   - 第二步：升级命名空间变更的相关接口
 
-    &ensp;&ensp;&ensp;&ensp;根据<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">《**所属命名空间（所属库）发生变化的接口列表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表 - 所属命名空间（所属库）变更的接口列表”）</font>中列举的接口名称，逐条处理，在项目以接口名为关键词搜索，将用该方法的代码，将“升级前所属命名空间.接口名”统一替换成“使用升级后所属命名空间.接口名"的形式（如果是ES6 impor口，则统一替换成“接口名”）。例如：
+    &ensp;&ensp;&ensp;&ensp;根据<a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">《**所属命名空间（所属库）发生变化的接口列表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表 - 所属命名空间（所属库）变更的接口列表”）</font>中列举的接口名称，逐条处理，在项目以接口名为关键词搜索，将用该方法的代码，将“升级前所属命名空间.接口名”统一替换成“使用升级后所属命名空间.接口名"的形式（如果是ES6 impor口，则统一替换成“接口名”）。例如：
     
     &ensp;&ensp;&ensp;&ensp;《所属命名空间（所属库）发生变化的接口列表》中的接口“WaterReflection”，可在项目中全文搜索“Cesium.WaterReflection”关键词，统一替换成“zondy.cesium.WaterReflection”（如果是ES6 import方式引入WaterReflection方法，则统一替换成“WaterReflection”）。
     
   - 第三步：升级API方法变更的相关接口
   
-    &ensp;&ensp;&ensp;&ensp;根据<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">《**webclient-cesium-plugin 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表 - 类接口变更表”）</font>以及<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">《**webclient-cesium 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表 - 类接口变更表”）</font>的列举的变更记录，逐条处理，在项目已“类名”或“成员名”为关键词搜索：如果是“类变更类型”为“废弃”或“计划废弃”，则在项目中直接以“类名”作为关键词搜索，将于该类相关逻辑，按照“变更内容说明”中的指导做更改；如果是“类变更类型”为“更新”，且“成员变成类型”不为空，则说明，该类中有成员方法/属性/枚举/常量/事件发生变化，在项目中直接以“成员名”作为关键词搜索，将使用该类的成员相关逻辑，按照“变更内容说明”中的指导做更改。
+    &ensp;&ensp;&ensp;&ensp;根据<a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">《**webclient-cesium-plugin 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表 - 类接口变更表”）</font>以及<a href="http://webclient.smaryun.com/#/guideMulti/cesium/development_cesium_api_update" target="_blank">《**webclient-cesium 类接口变更表**》 </a><font color=gray size=2>（参考章节“V10.7.4.10 接口变更表 - 类接口变更表”）</font>的列举的变更记录，逐条处理，在项目已“类名”或“成员名”为关键词搜索：如果是“类变更类型”为“废弃”或“计划废弃”，则在项目中直接以“类名”作为关键词搜索，将于该类相关逻辑，按照“变更内容说明”中的指导做更改；如果是“类变更类型”为“更新”，且“成员变成类型”不为空，则说明，该类中有成员方法/属性/枚举/常量/事件发生变化，在项目中直接以“成员名”作为关键词搜索，将使用该类的成员相关逻辑，按照“变更内容说明”中的指导做更改。
   
   - 第四步：升级开源CesiumAPI方法变更的相关接口
   
-    &ensp;&ensp;&ensp;&ensp;该类接口变动较多，建议在项目升级过程中调试代码时依次排查。如果调试时遇到无法调通的方法时，首先在<a href="http://10.10.130.72:8086/static/modules/cesium/guide/开源Cesium接口变更.xlsx" target="_blank">《**开源Cesium API接口变更表**》</a><font color=gray size=2>（点击下载）</font>中查找，是否是开源Cesium接口变更导致的，并进行新接口的适配。
+    &ensp;&ensp;&ensp;&ensp;该类接口变动较多，建议在项目升级过程中调试代码时依次排查。如果调试时遇到无法调通的方法时，首先在<a href="http://webclient.smaryun.com/static/modules/cesium/guide/开源Cesium接口变更.xlsx" target="_blank">《**开源Cesium API接口变更表**》</a><font color=gray size=2>（点击下载）</font>中查找，是否是开源Cesium接口变更导致的，并进行新接口的适配。
   
 - **MapGIS 3DClient for WebGL 产品版本对应的开源Cesium库版本**
 

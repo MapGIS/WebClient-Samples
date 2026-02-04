@@ -164,20 +164,20 @@
 | 参数      | 类型                                                                                                                                    | 描述                                 |
 | --------- | --------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
 | LayerName | Array-[Number]                                                                                                                          | 图层索引数组,图层序号默认从 0 开始。 |
-| ThemeArr  | Array-[<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CTheme">Zondy.Object.Theme.CTheme</a>] | 专题图数组                           |
+| ThemeArr  | Array-[<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CTheme">Zondy.Object.Theme.CTheme</a>] | 专题图数组                           |
 
 #### 2.【统计专题图图形信息类】`Zondy.Object.Theme.CChartTheme(opt_options)`
 
 | 参数名      | 类型   | 描述                                                                                                                                                                                                                                           |
 | ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| opt_options | Object | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CTheme.html">Zondy.Object.Theme.CTheme</a>类的 属性。例如：{key1：value1, key2：value2…} |
+| opt_options | Object | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CTheme.html">Zondy.Object.Theme.CTheme</a>类的 属性。例如：{key1：value1, key2：value2…} |
 
 - `opt_options`参数属性说明
 
 | 属性              | 类型                                                                                                                                                           | 默认值 | 描述               |
 | ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | ------------------ |
-| ChartType         | <a href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CChartType.html" target="_blank">Zondy.Object.Theme.CChartType</a>                   | 1      | 统计图类型         |
-| ChartThemeInfoArr | Array-[<a href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CChartThemeInfo.html" target="_blank">Zondy.Object.Theme.CChartThemeInfo</a>] | Null   | 统计专题图信息     |
+| ChartType         | <a href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CChartType.html" target="_blank">Zondy.Object.Theme.CChartType</a>                   | 1      | 统计图类型         |
+| ChartThemeInfoArr | Array-[<a href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CChartThemeInfo.html" target="_blank">Zondy.Object.Theme.CChartThemeInfo</a>] | Null   | 统计专题图信息     |
 | RepresentInfo     | Number                                                                                                                                                         | Null   | 统计图符号参数信息 |
 
 #### 3.【未参与分类数据图形参数类】`Zondy.Object.Theme.CChartType`
@@ -233,9 +233,9 @@
 
 | 属性           | 类型                                                                                                                                                       | 默认值 | 描述                                                                       |
 | -------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------- | ------ | -------------------------------------------------------------------------- |
-| AnnInfoLabel   | <a href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CAnnInfo.html" target="_blank">Zondy.Object.Theme.CAnnInfo</a>                   |        | 统计值作为注记的表现信息                                                   |
+| AnnInfoLabel   | <a href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CAnnInfo.html" target="_blank">Zondy.Object.Theme.CAnnInfo</a>                   |        | 统计值作为注记的表现信息                                                   |
 | DigitLabel     | Number                                                                                                                                                     | 0      | 统计值小数点位置                                                           |
-| FormatLabel    | <a href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CChartLabelFormat.html" target="_blank">Zondy.Object.Theme.CChartLabelFormat</a> | 0      | 统计值类型                                                                 |
+| FormatLabel    | <a href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CChartLabelFormat.html" target="_blank">Zondy.Object.Theme.CChartLabelFormat</a> | 0      | 统计值类型                                                                 |
 | IsDrawLabel    | Number                                                                                                                                                     | TRUE   | 是否显示统计值                                                             |
 | LineColor      | Number                                                                                                                                                     | -1     | 线颜色值（请参考 MapGIS 颜色库中颜色编号）                                 |
 | MaxLength      | Number                                                                                                                                                     | 30     | 统计图标最大长度                                                           |
@@ -310,7 +310,7 @@
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | mapDocName    | String                                                                                                                                                | 地图文档名称                                                                                       |
 | idxArr        | String                                                                                                                                                | 专题图索引与图层索引对应关系。语法为：“图层索引号/专题图索引号”，多个用“，”隔开。如："0/0,1/1,2/2" |
-| ThemesInfoArr | Array-[<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.ThemesInfo.html" >Zondy.Object.Theme.ThemesInfo</a>] | 更新的专题图信息数组                                                                               |
+| ThemesInfoArr | Array-[<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.ThemesInfo.html" >Zondy.Object.Theme.ThemesInfo</a>] | 更新的专题图信息数组                                                                               |
 | onSuccess     | Function                                                                                                                                              | 成功回调函数                                                                                       |
 
 ##### 【method】`addThemesInfo(mapDocName,idxArr,ThemesInfoArr,onSuccess)`：添加专题图信息
@@ -319,5 +319,5 @@
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | mapDocName    | String                                                                                                                                                | 地图文档名称                                                                                       |
 | idxArr        | String                                                                                                                                                | 专题图索引与图层索引对应关系。语法为：“图层索引号/专题图索引号”，多个用“，”隔开。如："0/0,1/1,2/2" |
-| ThemesInfoArr | Array-[<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.ThemesInfo.html" >Zondy.Object.Theme.ThemesInfo</a>] | 添加的专题图信息数组                                                                               |
+| ThemesInfoArr | Array-[<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.ThemesInfo.html" >Zondy.Object.Theme.ThemesInfo</a>] | 添加的专题图信息数组                                                                               |
 | onSuccess     | Function                                                                                                                                              | 成功回调函数                                                                                       |

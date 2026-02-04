@@ -71,7 +71,7 @@
          source: {
             type: "raster",
             tiles: [
-            "http://10.10.130.72:6163/igs/rest/ogc/doc/北京市/WMSServer?" +
+            "http://webclient.smaryun.com:6163/igs/rest/ogc/doc/北京市/WMSServer?" +
                   "service=WMS" +
                   "&request=GetMap" +
                   "&layers=" +
@@ -235,6 +235,6 @@
 
 * Example:
   ```javascript
-  http://10.10.130.72:6163/igs/rest/ogc/doc/OGC_4326_CHINA/WMSServer?service=WMS&request=GetMap&layers=背景,中国,省级行政区,首都点,省会城市&styles=&format=image/jpeg&transparent=false&version=1.1.1&height=512&width=512&srs=EPSG:4326&bbox=90,0,180,90
+  http://webclient.smaryun.com:6163/igs/rest/ogc/doc/OGC_4326_CHINA/WMSServer?service=WMS&request=GetMap&layers=背景,中国,省级行政区,首都点,省会城市&styles=&format=image/jpeg&transparent=false&version=1.1.1&height=512&width=512&srs=EPSG:4326&bbox=90,0,180,90
   ```
 

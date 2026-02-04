@@ -659,9 +659,9 @@ var map = new mapboxgl.Map({
   style: {
     "version": 8,
     //特别注意，这里是字体库，下面的sprite才是样式库
-    "glyphs": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
+    "glyphs": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
     //特别注意，这里是真正的图片样式库
-    "sprite": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite",
+    "sprite": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/sprite",
   },
 });
 ```
@@ -742,9 +742,9 @@ var map = new mapboxgl.Map({
   style: {
     "version": 8,
     //特别注意，这里是字体库,字体库往往和下面的样式库一起使用
-    "glyphs": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
+    "glyphs": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/fonts/{fontstack}/{range}.pbf",
     //特别注意，这里是真正的图片样式库
-    "sprite": "http://10.10.130.72:6163/igs/rest/mrms/vtiles/sprite"
+    "sprite": "http://webclient.smaryun.com:6163/igs/rest/mrms/vtiles/sprite"
   },
 });
 ```

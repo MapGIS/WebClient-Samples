@@ -48,7 +48,7 @@ var tileMatrixLabels = Array.from(
   >
     <mapgis-3d-ogc-wmts-layer
       v-if="tileMatrixLabels.length > 0"
-      baseUrl="http://10.10.130.72:8089/igs/rest/services/东城区_瓦片_MAPGIS/WMTSServer"
+      baseUrl="http://webclient.smaryun.com:8089/igs/rest/services/东城区_瓦片_MAPGIS/WMTSServer"
       :options="{
         tileMatrixLabels: tileMatrixLabels,
       }"

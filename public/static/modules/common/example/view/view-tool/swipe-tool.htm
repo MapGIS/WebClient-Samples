@@ -10,27 +10,27 @@
     <!-- 引入地图引擎库 -->
     <script
       include="engine:leaflet"
-      src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"
+      src="http://webclient.smaryun.com/static/libs/include-lib-local-upgrade.js"
     ></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://webclient.smaryun.com/static/assets/js/TDT-token.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/layui/layui.js"></script>
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+      href="http://webclient.smaryun.com/static/libs/cdn/layui/css/layui.css"
     />
     <!--示例公共样式-->
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/style.css"
+      href="http://webclient.smaryun.com/static/libs/css/style.css"
     />
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/visual.css"
+      href="http://webclient.smaryun.com/static/libs/css/visual.css"
     />
     <script type="module">
       'use strict'
-      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+      import { Pane } from 'http://webclient.smaryun.com/static/libs/cdn/tweakpane/tweakpane.min.js'
       let $ = layui.$
       // 定义变量
       let map,
@@ -81,14 +81,14 @@
         igsVectorTileLayer = new zondy.layer.IGSVectorTileLayer({
           type: 'igs-vector-tile',
           // 矢量瓦片服务地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/VectorTile/wuhan_3857_256_custom_mvt/VectorTileServer'
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/VectorTile/wuhan_3857_256_custom_mvt/VectorTileServer'
         })
 
         igsMapImageLayer = new zondy.layer.IGSMapImageLayer({
           type: 'igs-map-image',
           renderMode: 'image',
           // 地图服务地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/武汉市4547/MapServer'
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/武汉市4547/MapServer'
         })
 
         igsVectorTileLayer.on('layerview-created', (e) => {

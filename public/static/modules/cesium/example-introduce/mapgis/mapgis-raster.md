@@ -54,7 +54,7 @@
       tileHeight: 256,
     }
     //添加MapGIS IGServer发布的二维瓦片地图服务
-    var tilelayer = layer.appendMapGISTile('http://10.10.130.72:6163/igs/rest/mrms/tile/250DEM', options)
+    var tilelayer = layer.appendMapGISTile('http://webclient.smaryun.com:6163/igs/rest/mrms/tile/250DEM', options)
   ```
 
 ### 关键接口

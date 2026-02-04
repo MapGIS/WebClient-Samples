@@ -76,7 +76,7 @@
 
 #### 【图层叠加分析类】`Zondy.Service.OverlayByLayer(option)`
 
-`父类`：<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Service.OverlayBase.html">Zondy.Service.OverlayBase</a>
+`父类`：<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Service.OverlayBase.html">Zondy.Service.OverlayBase</a>
 
 | 参数名 | 类型   | 描述       |
 | ------ | ------ | ---------- |

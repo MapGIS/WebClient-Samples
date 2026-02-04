@@ -8,21 +8,21 @@
     />
     <title>动态剖切</title>
     <!--加载不同版本Cesium库-->
-    <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/loadCesium.js"></script>
     <!--plugin脚本库-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/assets/js/TDT-token.js"></script>
     <!--引入Cesium.js库相关css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/layui/layui.js"></script>
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+      href="http://webclient.smaryun.com/static/libs/cdn/layui/css/layui.css"
     />
     <!--示例公共样式-->
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/style.css"
+      href="http://webclient.smaryun.com/static/libs/css/style.css"
     />
   </head>
 
@@ -34,7 +34,7 @@
 
     <script type="module">
       'use strict'
-      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+      import { Pane } from 'http://webclient.smaryun.com/static/libs/cdn/tweakpane/tweakpane.min.js'
 
       // 定义创建图层与UI交互相关的变量
       let map,
@@ -66,7 +66,7 @@
         viewer.scene.globe.show = false
 
         // 创建绘制工具
-        // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/DrawElement.html
+        // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/DrawElement.html
         drawElement = new zondy.cesium.DrawElement(viewer)
       }
 
@@ -106,7 +106,7 @@
               viewer.scene.primitives.remove(lastLayer)
             }
             removeCuttingPlane()
-            // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium-mapgis/CuttingTool.html
+            // 参考API: http://webclient.smaryun.com/static/modules/cesium/api/cesium-mapgis/CuttingTool.html
             cutTool = new zondy.cesium.CuttingTool(viewer, [layer])
           })
         }
@@ -263,14 +263,14 @@
               cesium3DTilesModelList.hidden = true
               M3DModelList.hidden = false
               addModelCacheLayer(
-                'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
+                'http://webclient.smaryun.com:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
                 'M3D'
               )
             } else if (e.value === '3DTILES') {
               cesium3DTilesModelList.hidden = false
               M3DModelList.hidden = true
               addModelCacheLayer(
-                'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json',
+                'http://webclient.smaryun.com:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json',
                 '3DTILES'
               )
             }
@@ -286,16 +286,16 @@
               {
                 text: '地质体-M3D 2.0-文件服务',
                 value:
-                  'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj'
+                  'http://webclient.smaryun.com:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj'
               },
               {
                 text: '地质体-M3D 2.0-M3DServer',
                 value:
-                  'http://10.10.130.72:8089/igs/rest/services/M3Dv2/地质体封边模型/M3dServer'
+                  'http://webclient.smaryun.com:8089/igs/rest/services/M3Dv2/地质体封边模型/M3dServer'
               }
             ],
             value:
-              'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj'
+              'http://webclient.smaryun.com:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj'
           })
           .on('change', (e) => {
             addModelCacheLayer(e.value, 'M3D')
@@ -312,16 +312,16 @@
               {
                 text: '地质体-3D Tiles 1.0-文件服务',
                 value:
-                  'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
+                  'http://webclient.smaryun.com:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
               },
               {
                 text: '地质体-3D Tiles 1.1-文件服务',
                 value:
-                  'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.1/wujiangdizhiti/tileset.json'
+                  'http://webclient.smaryun.com:8200/3DData/ModelCache/3DTileset/1.1/wujiangdizhiti/tileset.json'
               }
             ],
             value:
-              'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
+              'http://webclient.smaryun.com:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
           })
           .on('change', (e) => {
             addModelCacheLayer(e.value, '3DTILES')
@@ -503,7 +503,7 @@
         initViewer()
         createChangeTab()
         addModelCacheLayer(
-          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
+          'http://webclient.smaryun.com:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
           'M3D'
         )
         initUI()

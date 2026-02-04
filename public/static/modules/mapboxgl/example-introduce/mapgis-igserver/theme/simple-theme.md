@@ -120,19 +120,19 @@
 | 参数      | 类型                                                                                                                                         | 描述                                 |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------------ |
 | LayerName | Array-[Number]                                                                                                                               | 图层索引数组,图层序号默认从 0 开始。 |
-| ThemeArr  | Array-[<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CTheme.html">Zondy.Object.Theme.CTheme</a>] | 专题图数组                           |
+| ThemeArr  | Array-[<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CTheme.html">Zondy.Object.Theme.CTheme</a>] | 专题图数组                           |
 
 #### 2.【统一配置专题图图形信息类】`Zondy.Object.Theme.CSimpleTheme(opt_options)`
 
 | 参数名      | 类型   | 描述                                                                                                                                                                                                                                           |
 | ----------- | ------ | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| opt_options | Object | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CTheme.html">Zondy.Object.Theme.CTheme</a>类的 属性。例如：{key1：value1, key2：value2…} |
+| opt_options | Object | 可选项，设置其他属性键值对对象。对象中的属性来自本类的属性和<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CTheme.html">Zondy.Object.Theme.CTheme</a>类的 属性。例如：{key1：value1, key2：value2…} |
 
 - `opt_options`属性参数说明
 
 | **属性**  | **类型**                                                                                                                                     | 描述                     |
 | --------- | -------------------------------------------------------------------------------------------------------------------------------------------- | ------------------------ |
-| ThemeInfo | <a href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CThemeInfo.html" target="_blank">Zondy.Object.Theme.CThemeInfo</a> | 统一配置专题图的图形信息 |
+| ThemeInfo | <a href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CThemeInfo.html" target="_blank">Zondy.Object.Theme.CThemeInfo</a> | 统一配置专题图的图形信息 |
 
 #### 3.【专题图图形信息类】`Zondy.Object.CThemeInfo(opt_options)`
 
@@ -148,9 +148,9 @@
 | IsVisible | Boolean                                                                                                                                     | TRUE   | 可见标志，专题图信息是否可见。         |
 | MaxScale  | Number                                                                                                                                      | 0      | 最大显示比                             |
 | MinScale  | Number                                                                                                                                      | 0      | 最小显示比                             |
-| RegInfo   | <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CRegInfo.html" >Zondy.Object.Theme.CRegInfo</a>   | Null   | 区要素信息，当专题图基于区图层时设置。 |
-| LinInfo   | <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CLineInfo.html" >Zondy.Object.Theme.CLineInfo</a> | Null   | 线要素信息，当专题图基于线图层时设置。 |
-| PntInfo   | <a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.CPntInfo.html" >Zondy.Object.Theme.CPntInfo</a>   | Null   | 点要素信息，当专题图基于点图层时设置。 |
+| RegInfo   | <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CRegInfo.html" >Zondy.Object.Theme.CRegInfo</a>   | Null   | 区要素信息，当专题图基于区图层时设置。 |
+| LinInfo   | <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CLineInfo.html" >Zondy.Object.Theme.CLineInfo</a> | Null   | 线要素信息，当专题图基于线图层时设置。 |
+| PntInfo   | <a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.CPntInfo.html" >Zondy.Object.Theme.CPntInfo</a>   | Null   | 点要素信息，当专题图基于点图层时设置。 |
 
 #### 4. 【区符号参数信息类】`Zondy.Object.CRegInfo(opt_options)`
 
@@ -211,7 +211,7 @@
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | mapDocName    | String                                                                                                                                                | 地图文档名称                                                                                       |
 | idxArr        | String                                                                                                                                                | 专题图索引与图层索引对应关系。语法为：“图层索引号/专题图索引号”，多个用“，”隔开。如："0/0,1/1,2/2" |
-| ThemesInfoArr | Array-[<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.ThemesInfo.html" >Zondy.Object.Theme.ThemesInfo</a>] | 更新的专题图信息数组                                                                               |
+| ThemesInfoArr | Array-[<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.ThemesInfo.html" >Zondy.Object.Theme.ThemesInfo</a>] | 更新的专题图信息数组                                                                               |
 | onSuccess     | Function                                                                                                                                              | 成功回调函数                                                                                       |
 
 ##### 【method】`addThemesInfo(mapDocName,idxArr,ThemesInfoArr,onSuccess)`：添加专题图信息
@@ -220,5 +220,5 @@
 | ------------- | ----------------------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | mapDocName    | String                                                                                                                                                | 地图文档名称                                                                                       |
 | idxArr        | String                                                                                                                                                | 专题图索引与图层索引对应关系。语法为：“图层索引号/专题图索引号”，多个用“，”隔开。如："0/0,1/1,2/2" |
-| ThemesInfoArr | Array-[<a target="_blank" href="http://10.10.130.72:8086/docs/mapboxgl/Zondy.Object.Theme.ThemesInfo.html" >Zondy.Object.Theme.ThemesInfo</a>] | 添加的专题图信息数组                                                                               |
+| ThemesInfoArr | Array-[<a target="_blank" href="http://webclient.smaryun.com/docs/mapboxgl/Zondy.Object.Theme.ThemesInfo.html" >Zondy.Object.Theme.ThemesInfo</a>] | 添加的专题图信息数组                                                                               |
 | onSuccess     | Function                                                                                                                                              | 成功回调函数                                                                                       |

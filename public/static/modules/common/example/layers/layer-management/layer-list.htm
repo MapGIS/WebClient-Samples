@@ -6,23 +6,23 @@
     <!-- 引入地图引擎库 -->
     <script
       include="jquery,fancytree"
-      src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"
+      src="http://webclient.smaryun.com/static/libs/include-lib-local-upgrade.js"
     ></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://webclient.smaryun.com/static/assets/js/TDT-token.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/layui/layui.js"></script>
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+      href="http://webclient.smaryun.com/static/libs/cdn/layui/css/layui.css"
     />
     <!--示例公共样式-->
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/style.css"
+      href="http://webclient.smaryun.com/static/libs/css/style.css"
     />
     <link
       rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/analyse.css"
+      href="http://webclient.smaryun.com/static/libs/css/analyse.css"
     />
     <script type="text/javascript">
       //使用严格模式
@@ -134,7 +134,7 @@
         // 创建地图服务图层
         igsMapImageLayer = new IGSMapImageLayer({
           //服务地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/MapServer',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省3857/MapServer',
           // 设置子图层
           sublayers: [
             {
@@ -167,7 +167,7 @@
         // 创建地图图片图层
         igsTileLayer = new IGSTileLayer({
           // 服务基地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Tile/湖北省_3857_normal_3-10/TileServer',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Tile/湖北省_3857_normal_3-10/TileServer',
           // 图层名称
           title: '湖北省瓦片图层',
           // 设置透明度
@@ -189,7 +189,7 @@
         // 创建WMS图层
         wmsLayer = new WMSLayer({
           // 服务基地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/WMSServer',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省3857/WMSServer',
           // 图层名称
           title: '湖北省WMS图层',
           // 显示或隐藏
@@ -202,7 +202,7 @@
         // 创建WMTS图层
         wmtsLayer = new WMTSLayer({
           // 服务基地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/WMTSServer',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省3857/WMTSServer',
           // 图层名称
           title: '湖北省WMTS图层',
           // 显示或隐藏
@@ -214,7 +214,7 @@
       function addIGSVectorTileLayer() {
         // 创建矢量瓦片图层
         igsVectorTileLayer = new IGSVectorTileLayer({
-          url: 'http://10.10.130.72:8089/igs/rest/services/VectorTile/湖北省3857矢量瓦片/VectorTileServer',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/VectorTile/湖北省3857矢量瓦片/VectorTileServer',
           // 图层名称
           title: '湖北省矢量瓦片图层',
           // 显示或隐藏
@@ -228,7 +228,7 @@
       // 添加同空间参考系（3857）不同裁图方式图层叠加用例
       function addSpatialReferenceGroupLayer() {
         const wuhan_3857_256_custom_mvt = new IGSVectorTileLayer({
-          url: 'http://10.10.130.72:8089/igs/rest/services/VectorTile/wuhan_3857_256_custom_mvt/VectorTileServer',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/VectorTile/wuhan_3857_256_custom_mvt/VectorTileServer',
           title: '自定义原点分辨率矢量瓦片',
           // 显示或隐藏
           visible: true
@@ -238,7 +238,7 @@
           title: '同空间参考系不同裁图方式瓦片的叠加',
           layers: [
             new IGSTileLayer({
-              url: 'http://10.10.130.72:8089/igs/rest/services/Tile/wuhan_3857_512_custom/TileServer',
+              url: 'http://webclient.smaryun.com:8089/igs/rest/services/Tile/wuhan_3857_512_custom/TileServer',
               title: '自定义原点分辨率瓦片'
             }),
             wuhan_3857_256_custom_mvt
@@ -254,7 +254,7 @@
       function addIGSFeatureLayer() {
         // 创建要素图层
         igsFeatureLayer = new IGSFeatureLayer({
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/FeatureServer',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省3857/FeatureServer',
           title: '湖北省要素图层',
           sublayerId: 0,
           // 显示或隐藏
@@ -280,7 +280,7 @@
         // 创建GeoJOSN图层
         geojsonLayer = new GeoJSONLayer({
           // 服务基地址
-          url: 'http://10.10.130.72:8200/Vector/json/populationSizeGeoJson_2017.json',
+          url: 'http://webclient.smaryun.com:8200/Vector/json/populationSizeGeoJson_2017.json',
           // 设置渲染样式-随机专题图
           renderer: new SimpleRenderer({
             symbol: new SimpleFillSymbol({
@@ -305,7 +305,7 @@
         // 创建WFS图层
         wfsLayer = new WFSLayer({
           // 服务基地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省4326/WFSServer',
           // 图层名称
           title: '湖北省WFS图层',
           // 显示或隐藏
@@ -370,7 +370,7 @@
           visible: false,
           layers: [
             new IGSFeatureLayer({
-              url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/FeatureServer/1-8',
+              url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省3857/FeatureServer/1-8',
               title: '要素图层-大学位置',
               renderer: new SimpleRenderer({
                 symbol: new SimpleMarkerSymbol({
@@ -379,7 +379,7 @@
               })
             }),
             new IGSFeatureLayer({
-              url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/FeatureServer/8',
+              url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省3857/FeatureServer/8',
               title: '要素图层-地级市',
               renderer: new SimpleRenderer({
                 symbol: new SimpleMarkerSymbol({

@@ -4,25 +4,25 @@
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>视频调绘</title>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"/>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/layui/layui.js"></script>
+    <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/cdn/layui/css/layui.css"/>
     <!-- videojs -->
-    <link rel="stylesheet" type="text/css" href="http://10.10.130.72:8086/static/libs/cdn/videojs/video-js.min.css"/>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/videojs/video.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/videojs/videojs-flash.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="http://webclient.smaryun.com/static/libs/cdn/videojs/video-js.min.css"/>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/videojs/video.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/videojs/videojs-flash.min.js"></script>
     <!-- 引入地图引擎库 -->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/leaflet/leaflet.css"/>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/leaflet/leaflet.js"></script>
+    <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/cdn/leaflet/leaflet.css"/>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/leaflet/leaflet.js"></script>
     <!-- 获取天地图token -->
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://webclient.smaryun.com/static/assets/js/TDT-token.js"></script>
     <!--video plugin库-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-leaflet-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-video-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/libs/cdn/sketch-draw-tool/SketchEllipseDrawTool.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-leaflet-plugin.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/zondyclient/webclient-video-plugin.min.js"></script>
+    <script src="http://webclient.smaryun.com/static/libs/cdn/sketch-draw-tool/SketchEllipseDrawTool.js"></script>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/analyse.css"/>
+    <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/css/style.css"/>
+    <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/css/analyse.css"/>
     <script type="text/javascript">
       //使用严格模式
       'use strict'
@@ -54,9 +54,9 @@
         videoSource: {
           protocol: 'mp4', // 视频传输协议
           videoUrl:
-            'http://10.10.130.72:8200/NoneSpatialData/video/zondy_garden.mp4' // 视频服务地址
+            'http://webclient.smaryun.com:8200/NoneSpatialData/video/zondy_garden.mp4' // 视频服务地址
           // videoUrl: 'rtmp://127.0.0.1:1935/live/hls' // 视频服务地址
-          // videoUrl: 'http://10.10.130.72:8200/NoneSpatialData/video/scenePro.m3u8' // 视频服务地址
+          // videoUrl: 'http://webclient.smaryun.com:8200/NoneSpatialData/video/scenePro.m3u8' // 视频服务地址
         },
         // 视频配准参数
         videoRegistrationParam: {

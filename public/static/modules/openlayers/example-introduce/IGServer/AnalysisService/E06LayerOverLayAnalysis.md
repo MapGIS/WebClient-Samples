@@ -144,6 +144,6 @@
 | guid    | String                            |             | 矢量图层缓存的唯一标识          |
 
 **详细信息见 OpenLayers API**
-http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.OverlayByLayer.html
-http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.OverlayBase.html
-http://10.10.130.72:8086/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.AnalysisBase.html
+http://webclient.smaryun.com/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.OverlayByLayer.html
+http://webclient.smaryun.com/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.OverlayBase.html
+http://webclient.smaryun.com/docs/openlayers/module-%25E5%2588%2586%25E6%259E%2590%25E6%259C%258D%25E5%258A%25A1.AnalysisBase.html

@@ -5,15 +5,15 @@
     <title>地图图片图层 - 自定义坐标系</title>
     <!-- 引入地图引擎库 -->
     <script
-            src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"
+            src="http://webclient.smaryun.com/static/libs/include-lib-local-upgrade.js"
     ></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css" />
+    <script src="http://webclient.smaryun.com/static/libs/cdn/layui/layui.js"></script>
+    <link rel="stylesheet" href="http://webclient.smaryun.com/static/libs/cdn/layui/css/layui.css" />
     <!--示例公共样式-->
     <link
             rel="stylesheet"
-            href="http://10.10.130.72:8086/static/libs/css/style.css"
+            href="http://webclient.smaryun.com/static/libs/css/style.css"
     />
     <script type="text/javascript">
       //使用严格模式
@@ -24,7 +24,7 @@
         renderMode = 'tile', httpMethod = 'GET',
         sublayers = undefined, clipGeometry = undefined, geometryFilter = undefined,
         definitionExpression = undefined, filterLayerId = undefined,
-        url = 'http://10.10.130.72:8089/igs/rest/services/Map/武汉市4547/MapServer'
+        url = 'http://webclient.smaryun.com:8089/igs/rest/services/Map/武汉市4547/MapServer'
       const {
         IGSMapImageLayer
       } = zondy.layer
@@ -189,7 +189,7 @@
                 // 匹配到该值后的样式
                 symbol: new PictureFillSymbol({
                   // 设置图片数据
-                  url: 'http://10.10.130.72:8086/static/assets/logo/mapgis_logo_blue.png',
+                  url: 'http://webclient.smaryun.com/static/assets/logo/mapgis_logo_blue.png',
                   // 简单填充符号宽度，默认为12，单位像素
                   width: 12,
                   // 简单填充符号高度，默认为12，单位像素
@@ -256,7 +256,7 @@
             //匹配到该值后的样式，更多样式详见：《SimpleFillSymbol》
             defaultSymbol: new PictureFillSymbol({
               // 设置图片数据
-              url: 'http://10.10.130.72:8086/static/assets/logo/mapgis_logo_blue.png',
+              url: 'http://webclient.smaryun.com/static/assets/logo/mapgis_logo_blue.png',
               // 简单填充符号宽度，默认为12，单位像素
               width: 12,
               // 简单填充符号高度，默认为12，单位像素
@@ -280,7 +280,7 @@
                 //匹配到该值后的样式，更多样式详见：《SimpleFillSymbol》
                 symbol: new PictureFillSymbol({
                   // 设置图片数据
-                  url: 'http://10.10.130.72:8086/static/assets/logo/mapgis_logo_blue.png',
+                  url: 'http://webclient.smaryun.com/static/assets/logo/mapgis_logo_blue.png',
                   // 简单填充符号宽度，默认为12，单位像素
                   width: 12,
                   // 简单填充符号高度，默认为12，单位像素

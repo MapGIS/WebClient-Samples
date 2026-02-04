@@ -35,7 +35,7 @@
 - Example:
   ```javascript
     //加载地图文档
-    webGlobe.append('http://10.10.130.72:6163/igs/rest/g3d/TongLiang', {})
+    webGlobe.append('http://webclient.smaryun.com:6163/igs/rest/g3d/TongLiang', {})
   ```
 
 ### 关键接口
