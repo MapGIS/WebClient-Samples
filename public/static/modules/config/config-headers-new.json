@@ -95,10 +95,6 @@
         ]
       },
       {
-        "title": "常见问题",
-        "url": "/fqa/cesium/ogc/wmts/WMTS"
-      },
-      {
         "title": "工具",
         "children": [
           {
@@ -106,6 +102,10 @@
             "url": "http://10.10.130.72:8086/static/modules/cesium/tool/mode-cache-performance-analysis/index.html"
           }
         ]
+      },
+      {
+        "title": "常见问题",
+        "url": "/fqa/cesium/ogc/wmts/WMTS"
       }
     ]
   },
