@@ -186,12 +186,13 @@
                 url: 'http://webclient.smaryun.com:8089/igs/rest/services/VectorTile/湖北省4326矢量瓦片/VectorTileServer'
               })
             }
+            addLayerToMap()
             break
           case 'JSON':
             if (igsVersion === '1.0') {
               layer = new IGSVectorTileLayer({
                 // 矢量瓦片样式文件地址
-                url: 'http://webclient.smaryun.com:8200/VectorTile/湖北省4326矢量瓦片/湖北省4326矢量瓦片_style_192.168.82.91_6163.json',
+                url: 'http://webclient.smaryun.com:8200/VectorTile/湖北省4326矢量瓦片/湖北省4326矢量瓦片_style_webclient.smaryun.com_6163.json',
                 // IGS1.0版本的服务必须知道坐标系
                 spatialReference: new SpatialReference({
                   wkid: 4326
@@ -200,13 +201,14 @@
             } else {
               layer = new IGSVectorTileLayer({
                 // 基地址
-                url: 'http://webclient.smaryun.com:8200/VectorTile/湖北省4326矢量瓦片/湖北省4326矢量瓦片_style_192.168.82.91_8089.json'
+                url: 'http://webclient.smaryun.com:8200/VectorTile/湖北省4326矢量瓦片/湖北省4326矢量瓦片_style_webclient.smaryun.com_8089.json'
               })
             }
+            addLayerToMap()
             break
           case 'Style':
             if (igsVersion === '1.0') {
-              FetchRequest.commit('get', 'http://webclient.smaryun.com:8200/VectorTile/湖北省4326矢量瓦片/湖北省4326矢量瓦片_style_192.168.82.91_6163.json', {}).then((result) => {
+              FetchRequest.commit('get', 'http://webclient.smaryun.com:8200/VectorTile/湖北省4326矢量瓦片/湖北省4326矢量瓦片_style_webclient.smaryun.com_6163.json', {}).then((result) => {
                 return result.json().then((styleJSON) => {
                   console.log('样式对象请求完毕:', styleJSON)
                   layer = new IGSVectorTileLayer({
@@ -220,19 +222,23 @@
                 })
               })
             } else {
-              FetchRequest.commit('get', 'http://webclient.smaryun.com:8200/VectorTile/湖北省4326矢量瓦片/湖北省4326矢量瓦片_style_192.168.82.91_8089.json', {}).then((result) => {
+              FetchRequest.commit('get', 'http://webclient.smaryun.com:8200/VectorTile/湖北省4326矢量瓦片/湖北省4326矢量瓦片_style_webclient.smaryun.com_8089.json', {}).then((result) => {
                 return result.json().then((styleJSON) => {
                   console.log('样式对象请求完毕:', styleJSON)
                   layer = new IGSVectorTileLayer({
                     // 矢量瓦片样式对象
                     style: styleJSON
                   })
+                  addLayerToMap()
                 })
               })
             }
             break
         }
-        // 添加图层
+      }
+
+      // 添加图层，并在添加图层之后设置初始专题图
+      function addLayerToMap() { 
         map.add(layer)
         // 图层添加完毕后，跳转到图层范围内
         layer.on('layerview-created', (result) => {

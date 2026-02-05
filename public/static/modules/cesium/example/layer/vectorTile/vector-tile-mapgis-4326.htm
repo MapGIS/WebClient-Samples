@@ -189,6 +189,11 @@
           // 切换注记渲染方式
           layui.form.on('select(labelMode)', function (data) {
             // 切换三维注记渲染模式
+            if (data.value === 'off-screen') {
+              document.getElementById('labelStyleBox').style.display = 'none'
+            } else {
+              document.getElementById('labelStyleBox').style.display = 'block'
+            }
             igsVectorTileLayer.labelsRenderMode = data.value
           })
           // 切换注记样式
@@ -219,7 +224,7 @@
                 </div>
             </div>
         </form>
-        <form class="layui-form" action="">
+        <form class="layui-form" action="" id="labelStyleBox">
             <div class="layui-form-item">
                 <label class="layui-form-label" style="width: 100px">注记样式切换</label>
                 <div class="layui-input-block layui-input-block-select">
