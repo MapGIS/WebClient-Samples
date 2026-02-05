@@ -35,6 +35,7 @@
       // 当前分析类型
       let currentType = 'MODEL'
       let pane = null
+      let startMousePosition = null
 
       // 初始化三维球体
       function initViewer() {
@@ -78,24 +79,43 @@
         handler.setInputAction(function (movement) {
           if (viewshed3d !== undefined) {
             if (viewshed3dAction) {
-              viewer.scene.visualAnalysisManager.add(viewshed3d, viewshedId)
+              if (
+                startMousePosition &&
+                Cesium.Cartesian2.equals(movement.position, startMousePosition)
+              ) {
+                console.warn('点击位置与起始位置相同，请重新选择终点')
+                return
+              }
+
               let cartesian = viewer.scene.pickPosition(movement.position)
               let cartographic = Cesium.Cartographic.fromCartesian(cartesian)
               cartographic.height += 2.0
               cartesian = Cesium.Cartographic.toCartesian(cartographic)
               if (cartesian) {
                 if (!viewshed3ding) {
+                  // 记录起始位置
+                  startMousePosition = Cesium.Cartesian2.clone(
+                    movement.position
+                  )
+                  viewer.scene.visualAnalysisManager.add(viewshed3d, viewshedId)
                   viewshed3d.viewPosition = cartesian
+                  viewshed3ding = true
                 } else {
                   viewshed3d.targetPosition = cartesian
                   viewshed3dAction = false
+                  viewshed3ding = false
+                  viewshedId++
+                  startMousePosition = null
                 }
-                viewshed3ding = true
               }
             }
           }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
         handler.setInputAction(function (movement) {
+          if (Cesium.Cartesian2.equals(movement.position, startMousePosition)) {
+            console.warn('点击位置与起始位置相同，请重新选择终点')
+            return
+          }
           if (viewshed3ding) {
             let cartesian = viewer.scene.pickPosition(movement.position)
             if (cartesian) {
@@ -104,6 +124,7 @@
             viewshed3dAction = false
             viewshed3ding = false
             viewshedId++
+            startMousePosition = null
           }
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK)
         handler.setInputAction(function (movement) {
