@@ -58,11 +58,11 @@
         })
         map.add(TDTLayer)
         TDTLayer.on('layerview-created', function (result) {
-          const tdtLyr = sceneView.getInnerLayer(result.layer)
+          tdtLyr = sceneView.getInnerLayer(result.layer)
           // 开启卷帘
           tdtLyr.swipeEnabled = true
           //将影像直接翻转，layer里面的inverse优先级将高于scene里面swipeController的inverse
-          tdtLyr.swipeInverse = 1
+          tdtLyr.swipeInverse = -1
         })
       }
 
@@ -111,6 +111,10 @@
         // 图层加载完毕
         currentLayer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
+          // 视点跳转
+          sceneView.goTo({
+            layer: result.layer
+          })
           // 获取图层layer实例
           currentLyr = sceneView.getInnerLayer(result.layer)
           currentLyr.swipeEnabled = currentSwipeEnabled
@@ -308,8 +312,12 @@
           bdLyr.swipeEnabled = data.elem.checked
         })
         layui.form.on('checkbox(businessLayerShow)', function (data) {
-          currentLyr.swipeEnabled = data.elem.checked
-          currentDataSource.swipeEnabled = data.elem.checked
+          if (currentLyr) {
+            currentLyr.swipeEnabled = data.elem.checked
+          }
+          if (currentDataSource) {
+            currentDataSource.swipeEnabled = data.elem.checked
+          }
           currentSwipeEnabled = data.elem.checked
         })
         layui.form.on('radio(allInverse)', function (data) {
@@ -512,10 +520,10 @@
           // 计算出移动点的比例
           let splitPosition =
             (moveDiv.offsetLeft + relativeOffset) /
-            moveDiv.parentElement.parentElement.offsetWidth
+            moveDiv.parentElement.offsetWidth
           let splitPositionY =
             (moveDiv.offsetTop + relativeOffsetY) /
-            moveDiv.parentElement.parentElement.offsetHeight
+            moveDiv.parentElement.offsetHeight
           //重新对region赋值，因为移动点在矩形正中间
           viewer.scene.swipeController.region = new Cesium.Cartesian4(
             splitPosition - 0.2,
