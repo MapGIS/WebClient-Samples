@@ -26,11 +26,7 @@
             {
               url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省4326/WMSServer',
               serverType: 'igs',
-            },
-            {
-              url: 'http://10.10.130.72:8030/geoserver/shp/wms',
-              serverType: 'geoserver',
-            },
+            },\
           ]
           
       const {
@@ -176,8 +172,6 @@
               <div class="layui-input-block layui-input-block-select">
                 <select id="serverType" name="serverType" lay-filter="serverType">
                   <option value="igs" selected>IGS图层服务</option>
-                  <option value="geoserver">GeoServer图层服务</option>
-                  <!-- <option value="geoservergroup">GeoServer组图层服务</option> -->
                 </select>
               </div>
             </div>

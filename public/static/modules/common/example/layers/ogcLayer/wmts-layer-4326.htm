@@ -26,11 +26,7 @@
             {
               url: 'http://webclient.smaryun.com:8089/igs/rest/services/Tile/HuBei_4326/WMTSServer',
               serverType: 'igs',
-            },
-            {
-              url: 'http://10.10.130.72:8030/geoserver/hbjwd/gwc/service/wmts',
-              serverType: 'geoserver',
-            },
+            },\
           ]
       const {
         WMTSLayer
@@ -148,8 +144,7 @@
               <label class="layui-form-label">图层服务</label>
               <div class="layui-input-block layui-input-block-select">
                 <select id="serverType" name="serverType" lay-filter="serverType">
-                  <option value="igs" selected>IGS图层服务</option>
-                  <option value="geoserver">GeoServer图层服务</option>
+                  <option value="igs" selected>IGS图层服务</option>\
                 </select>
               </div>
             </div>
