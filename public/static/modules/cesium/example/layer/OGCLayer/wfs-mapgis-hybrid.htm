@@ -57,6 +57,8 @@
         // 透明度
         opacity: 0.8,
       })
+      // 请求图层元数据
+      await wfsLayerPoint.load()
       // 请求获取要素集
       const featureSet = await wfsLayerPoint.queryFeatures()
       const features = featureSet.features
@@ -89,6 +91,8 @@
         // 透明度
         opacity: 0.8,
       })
+      // 请求图层元数据
+      await wfsLayerLine.load()
       // 请求获取要素集
       const featureSet = await wfsLayerLine.queryFeatures()
       const features = featureSet.features
@@ -117,6 +121,8 @@
           })
         })
       })
+      // 请求图层元数据
+      await wfsLayerPolygon.load()
       // 创建wfs的区图层
       wfsLayerPolygon = new WFSLayer({
         // 服务基地址

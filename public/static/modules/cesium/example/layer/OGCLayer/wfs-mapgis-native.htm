@@ -20,6 +20,7 @@
       let map, sceneView, points, lines, polygons
       // 获取构造函数
       const { WFSServer } = zondy.service
+      const { WFSLayer } = zondy.layer
 
       //地图初始化函数
       function init() {
@@ -44,48 +45,45 @@
       }
 
       // 添加点类型的图层
-      function addPointLayer() {
-        // 初始化一个WFS服务对象
-        // 参考API: http://webclient.smaryun.com/static/modules/common/api/common-mapgis/WFSLayer.html
-        const server = new WFSServer({
-          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省4326/WFSServer'
+      async function addPointLayer() {
+        // 创建wfs的线图层
+        const wfsLayerLine = new WFSLayer({
+          // 服务基地址
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+          // 指定图层id
+          sublayerId: 'Map_湖北省4326:t70',
         })
-        // 指定子图层的要素查询
-        server.queryFeatures({
-          // 子图层ID
-          typename: 'Map_湖北省4326:t70',
-          // WFS服务版本号
-          version: '2.0.0'
-        }).then(function (result) {
-          console.log("WFS查询成功:", result)
-          // 获取所有点要素集合
-          const { features } = result.data
-          // 初始化一个Cesium的点集合对象
-          points = sceneView.scene.primitives.add(new Cesium.PointPrimitiveCollection());
-          // 循环添加点对象
-          features.forEach(function (feature) {
-            // 构造点的初始化参数
-            const pointOptions = {
-              // 几何坐标
-              position: Cesium.Cartesian3.fromDegrees(
-                feature.geometry.coordinates[0],
-                feature.geometry.coordinates[1],
-                feature.geometry.coordinates[2] || 0
-              ),
-              // 填充颜色
-              color: Cesium.Color.RED,
-              // 外边线颜色
-              outlineColor: Cesium.Color.BLUE,
-              // 外边线宽度
-              outlineWidth: 4,
-              // 点的半径
-              pixelSize: 20,
-              // Cesium的高程模式
-              heightReference: Cesium.HeightReference.NONE
-            }
-            // 添加点Primitive
-            points.add(pointOptions)
-          })
+        // 请求图层元信息
+        await wfsLayerLine.load()
+        // 请求获取要素集
+        const featureSet = await wfsLayerLine.queryFeatures()
+        const features = featureSet.features
+        // 初始化一个Cesium的点集合对象
+        points = sceneView.scene.primitives.add(new Cesium.PointPrimitiveCollection());
+        console.log(features)
+        // 循环添加点对象
+        features.forEach(function (feature) {
+          // 构造点的初始化参数
+          const pointOptions = {
+            // 几何坐标
+            position: Cesium.Cartesian3.fromDegrees(
+              feature.geometry.coordinates[0],
+              feature.geometry.coordinates[1],
+              feature.geometry.coordinates[2] || 0
+            ),
+            // 填充颜色
+            color: Cesium.Color.RED,
+            // 外边线颜色
+            outlineColor: Cesium.Color.BLUE,
+            // 外边线宽度
+            outlineWidth: 4,
+            // 点的半径
+            pixelSize: 20,
+            // Cesium的高程模式
+            heightReference: Cesium.HeightReference.NONE
+          }
+          // 添加点Primitive
+          points.add(pointOptions)
         })
       }
 
@@ -95,63 +93,60 @@
       }
 
       // 添加线类型的图层
-      function addLineLayer() {
-        // 初始化一个WFS服务对象
-        const server = new WFSServer({
-          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省4326/WFSServer'
+      async function addLineLayer() {
+        // 创建wfs的线图层
+        const wfsLayerLine = new WFSLayer({
+          // 服务基地址
+          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+          // 指定图层id
+          sublayerId: 'Map_湖北省4326:t20',
         })
-        // 指定子图层的要素查询
-        server.queryFeatures({
-          // 子图层ID
-          typename: 'Map_湖北省4326:t20',
-          // WFS服务版本号
-          version: '2.0.0'
-        }).then(function (result) {
-          console.log("WFS查询成功:", result)
-          // 获取所有线要素集合
-          const { features } = result.data
-          // 初始化一个Cesium的线集合对象
-          lines = sceneView.scene.primitives.add(new Cesium.PrimitiveCollection());
-          // 循环添线点对象
-          features.forEach(function (feature) {
-            // 将线的经纬度点坐标转为笛卡尔坐标
-            const cartesian3Array = []
-            feature.geometry.coordinates.forEach(function (coordinate) {
-              cartesian3Array.push(
-                Cesium.Cartesian3.fromDegrees(
-                  coordinate[0],
-                  coordinate[1],
-                  coordinate[2] || 0
-                )
+        // 请求图层元信息
+        await wfsLayerLine.load()
+        // 请求获取要素集
+        const featureSet = await wfsLayerLine.queryFeatures()
+        const features = featureSet.features
+        // 初始化一个Cesium的线集合对象
+        lines = sceneView.scene.primitives.add(new Cesium.PrimitiveCollection());
+        // 循环添线点对象
+        features.forEach(function (feature) {
+          // 将线的经纬度点坐标转为笛卡尔坐标
+          const cartesian3Array = []
+          feature.geometry.coordinates.forEach(function (coordinate) {
+            cartesian3Array.push(
+              Cesium.Cartesian3.fromDegrees(
+                coordinate[0],
+                coordinate[1],
+                coordinate[2] || 0
               )
-            })
-            // 创建一个线Primitive对象
-            const polylinePrimitive = new Cesium.Primitive({
-              // 线几何实例对象
-              geometryInstances: new Cesium.GeometryInstance({
-                // 设置线几何
-                geometry: new Cesium.PolylineGeometry({
-                  // 线的笛卡尔点坐标
-                  positions: cartesian3Array,
-                  // 线宽
-                  width: 4,
-                  // 线的地理类型
-                  arcType: Cesium.ArcType.NONE
-                }),
-                // 在这里设置线颜色
-                attributes: {
-                  color: Cesium.ColorGeometryInstanceAttribute.fromColor(new Cesium.Color(Math.random(), Math.random(), Math.random(), 1))
-                }
-              }),
-              // 是否显示线
-              show: true,
-              // 设置线外观，纯色线仅需要传入一个空的PolylineColorAppearance即可
-              appearance: new Cesium.PolylineColorAppearance(),
-              // 是否是同步绘制，这里关闭，否则绘制会闪烁
-              asynchronous: false
-            })
-            lines.add(polylinePrimitive)
+            )
           })
+          // 创建一个线Primitive对象
+          const polylinePrimitive = new Cesium.Primitive({
+            // 线几何实例对象
+            geometryInstances: new Cesium.GeometryInstance({
+              // 设置线几何
+              geometry: new Cesium.PolylineGeometry({
+                // 线的笛卡尔点坐标
+                positions: cartesian3Array,
+                // 线宽
+                width: 4,
+                // 线的地理类型
+                arcType: Cesium.ArcType.NONE
+              }),
+              // 在这里设置线颜色
+              attributes: {
+                color: Cesium.ColorGeometryInstanceAttribute.fromColor(new Cesium.Color(Math.random(), Math.random(), Math.random(), 1))
+              }
+            }),
+            // 是否显示线
+            show: true,
+            // 设置线外观，纯色线仅需要传入一个空的PolylineColorAppearance即可
+            appearance: new Cesium.PolylineColorAppearance(),
+            // 是否是同步绘制，这里关闭，否则绘制会闪烁
+            asynchronous: false
+          })
+          lines.add(polylinePrimitive)
         })
       }
 
@@ -161,75 +156,72 @@
       }
 
       // 添加区类型的图层
-      function addPolygonLayer() {
-        // 初始化一个WFS服务对象
-        const server = new WFSServer({
-          url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省4326/WFSServer'
-        })
-        // 指定子图层的要素查询
-        server.queryFeatures({
-          // 子图层ID
-          typename: 'Map_湖北省4326:t3',
-          // WFS服务版本号
-          version: '2.0.0'
-        }).then(function (result) {
-          console.log("WFS查询成功:", result)
-          // 获取所有区要素集合
-          const { features } = result.data
-          // 初始化一个Cesium的线集合对象
-          polygons = sceneView.scene.primitives.add(new Cesium.PrimitiveCollection());
-          // 循环添加区
-          features.forEach(function (feature) {
-            // 要绘制的笛卡尔坐标数组
-            const cartesian3Array = []
-            // 将几何点从经纬度坐标转为笛卡尔坐标
-            // 几何点数组中，第一个数组是外圈，其余的是内圈
-            const { coordinates } = feature.geometry
-            for (let i = 0; i < coordinates.length; i++) {
-              cartesian3Array.push([])
-              for (let j = 0; j < coordinates[i].length; j++) {
-                cartesian3Array[i].push(
-                  Cesium.Cartesian3.fromDegrees(coordinates[i][j][0], coordinates[i][j][1], coordinates[i][j][2] || 0)
-                )
-              }
+      async function addPolygonLayer() {
+             // 创建wfs的区图层
+      const wfsLayerPolygon = new WFSLayer({
+        // 服务基地址
+        url: 'http://webclient.smaryun.com:8089/igs/rest/services/Map/湖北省4326/WFSServer',
+        // 指定图层id
+        sublayerId: 'Map_湖北省4326:t3',
+      })
+           // 请求图层元信息
+      await wfsLayerPolygon.load()
+      // 请求获取要素集
+      const featureSet = await wfsLayerPolygon.queryFeatures()
+        const features = featureSet.features
+        // 初始化一个Cesium的线集合对象
+        polygons = sceneView.scene.primitives.add(new Cesium.PrimitiveCollection());
+        // 循环添加区
+        features.forEach(function (feature) {
+          // 要绘制的笛卡尔坐标数组
+          const cartesian3Array = []
+          // 将几何点从经纬度坐标转为笛卡尔坐标
+          // 几何点数组中，第一个数组是外圈，其余的是内圈
+          const { coordinates } = feature.geometry
+          for (let i = 0; i < coordinates.length; i++) {
+            cartesian3Array.push([])
+            for (let j = 0; j < coordinates[i].length; j++) {
+              cartesian3Array[i].push(
+                Cesium.Cartesian3.fromDegrees(coordinates[i][j][0], coordinates[i][j][1], coordinates[i][j][2] || 0)
+              )
             }
-            // 如果多边形有内圈，则构造Cesium的内圈对象
-            const holes = []
-            for (let i = 1; i < cartesian3Array.length; i++) {
-              holes.push(new Cesium.PolygonHierarchy(cartesian3Array[i]))
-            }
-            // 构造Cesium的多边形几何对象
-            const polygonGeometry = new Cesium.PolygonGeometry({
-              // 多边形几何结构
-              polygonHierarchy: new Cesium.PolygonHierarchy(cartesian3Array[0], holes),
-              // 是否使用单个点的高度
-              perPositionHeight: true
-            })
-            // 构造多边形的材质对象
-            const color = new Cesium.Color(Math.random(), Math.random(), Math.random(), 1)
-            const material = Cesium.Material.fromType('Color', {
-              color: color
-            })
-            const appearance = new Cesium.MaterialAppearance({
-              // 几何材质
-              material: material
-            })
-            // 构造Primitive对象
-            const polygonPrimitive = new Cesium.Primitive({
-              // 几何实例
-              geometryInstances: new Cesium.GeometryInstance({
-                geometry: polygonGeometry,
-                attributes: {
-                  color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
-                }
-              }),
-              // 几何外观
-              appearance: appearance,
-              asynchronous: false
-            })
-            // 将primitive对象添加到Cesium中
-            polygons.add(polygonPrimitive)
+          }
+          // 如果多边形有内圈，则构造Cesium的内圈对象
+          const holes = []
+          for (let i = 1; i < cartesian3Array.length; i++) {
+            holes.push(new Cesium.PolygonHierarchy(cartesian3Array[i]))
+          }
+          // 构造Cesium的多边形几何对象
+          const polygonGeometry = new Cesium.PolygonGeometry({
+            // 多边形几何结构
+            polygonHierarchy: new Cesium.PolygonHierarchy(cartesian3Array[0], holes),
+            // 是否使用单个点的高度
+            perPositionHeight: true
           })
+          // 构造多边形的材质对象
+          const color = new Cesium.Color(Math.random(), Math.random(), Math.random(), 1)
+          const material = Cesium.Material.fromType('Color', {
+            color: color
+          })
+          const appearance = new Cesium.MaterialAppearance({
+            // 几何材质
+            material: material
+          })
+          // 构造Primitive对象
+          const polygonPrimitive = new Cesium.Primitive({
+            // 几何实例
+            geometryInstances: new Cesium.GeometryInstance({
+              geometry: polygonGeometry,
+              attributes: {
+                color: Cesium.ColorGeometryInstanceAttribute.fromColor(color)
+              }
+            }),
+            // 几何外观
+            appearance: appearance,
+            asynchronous: false
+          })
+          // 将primitive对象添加到Cesium中
+          polygons.add(polygonPrimitive)
         })
       }
 
