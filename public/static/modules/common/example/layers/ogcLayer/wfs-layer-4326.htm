@@ -28,14 +28,6 @@
               serverType: 'igs',
               sublayerId: 'Map_湖北省4326:t70',
             },
-            {
-              url: 'http://10.10.130.72:8030/geoserver/shp/wfs',
-              serverType: 'geoserver',
-              sublayerId: 'shp:road_jwd',
-              spatialReference: new zondy.SpatialReference({
-                wkid: 4326
-              })
-            },
           ]
       const {
         IGSTileLayer,
@@ -214,7 +206,6 @@
               <div class="layui-input-block layui-input-block-select">
                 <select id="serverType" name="serverType" lay-filter="serverType">
                   <option value="igs" selected>IGS图层服务</option>
-                  <option value="geoserver">GeoServer图层服务</option>
                 </select>
               </div>
             </div>
