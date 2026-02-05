@@ -88,6 +88,7 @@ yarn lint
 
 #### 4.1、依赖库地址
 将 “http://10.10.130.72:8086/” 或 “http://webclient.smaryun.com/” 替换为  “http://你的内网服务器地址/”
+将 “http://10.10.130.72:8086” 或 “http://webclient.smaryun.com” 替换为  “http://你的内网服务器地址”
 #### 4.2、服务地址
 
 - 文件服务：将 “http://10.10.130.72:8200/” 或 “http://webclient.smaryun.com:8200/” 替换为  “http://你的内网文件服务地址/”

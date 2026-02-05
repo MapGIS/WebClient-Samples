@@ -190,7 +190,6 @@
         "hightlights": [[false, false]],
         "links": [[
           "开发指南-正式版库",
-          "开发指南-Beta版库",
           "开发入门：创建一幅地图",
           "webclient-cesium-plugin API变更",
           "webclient-cesium API变更",
@@ -200,7 +199,7 @@
         "routes": [
           [
             "/guideMulti/cesium/development_cesium",
-            "/guideMulti/cesium/开发入门：创建一幅地图",
+            "/guideMulti/cesium/example_cesium",
             "/guideMulti/cesium/development_cesium_plugin_api_update",
             "/guideMulti/cesium/development_cesium_api_update",
             "/guideMulti/cesium/development_cesium_122_update",
@@ -358,7 +357,6 @@
         "hightlights": [[false, false]],
         "links": [[
           "开发指南-正式版库",
-          "开发指南-Beta版库",
           "开发入门：创建一幅地图",
           "webclient-mapboxgl-plugin API变更",
           "webclient-mapboxgl API变更",
@@ -367,7 +365,7 @@
         "routes": [
           [
             "/guideMulti/mapboxgl/development_mapboxgl",
-            "/guideMulti/mapboxgl/开发入门：创建一幅地图",
+            "/guideMulti/mapboxgl/example_mapboxgl",
             "/guideMulti/mapboxgl/development_mapboxgl_plugin_api_update",
             "/guideMulti/mapboxgl/development_mapboxgl_api_update",
             "/guideMulti/mapboxgl/development_mapboxgl_update"
@@ -549,7 +547,6 @@
         "hightlights": [[false, false]],
         "links": [[
           "开发指南-正式版库",
-          "开发指南-Beta版库",
           "开发入门：创建一幅地图",
           "webclient-leaflet-plugin API变更",
           "webclient-leaflet API变更",
@@ -559,7 +556,7 @@
         "routes": [
           [
             "/guideMulti/leaflet/development_leaflet",
-            "/guideMulti/leaflet/开发入门：创建一幅地图",
+            "/guideMulti/leaflet/example_leaflet",
             "/guideMulti/leaflet/development_leaflet_plugin_api_update",
             "/guideMulti/leaflet/development_leaflet_api_update",
             "/guideMulti/leaflet/development_leaflet_update"
@@ -863,7 +860,6 @@
         "hightlights": [[false, false]],
         "links": [[
           "开发指南-正式版库",
-          "开发指南-Beta版库",
           "开发入门：创建一幅地图",
           "API变更",
           "10.6.2.10到10.6.4.10接口升级",
@@ -872,7 +868,7 @@
         "routes": [
           [
             "/guideMulti/common/development_common",
-            "/guideMulti/common/开发入门：创建一幅地图",
+            "/guideMulti/common/example_common",
             "/guideMulti/common/development_api_update",
             "/guideMulti/common/development_common_update",
             "/guideMulti/common/development_common_support"
