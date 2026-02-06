@@ -376,8 +376,6 @@
           layerOfRegion = igsVectorTileLayer.findSublayerById(
             '湖北省市级区划_simplerender'
           )
-          layerOfLine.renderer = getRendererOfLine()
-          layerOfRegion.renderer = getRendererOfRegion()
         })
       }
 
@@ -465,7 +463,8 @@
 
       // 切换点要素专题图样式
       function changeStyleOfPoint() {
-        layerOfPoint.renderer.classBreakInfos = [
+        const renderer = getRendererOfPoint()
+        renderer.classBreakInfos = [
           {
             //分段最小值
             minValue: 0,
@@ -507,11 +506,13 @@
             })
           }
         ]
+        layerOfPoint.renderer = renderer
       }
 
       // 切换线要素专题图样式
       function changeStyleOfLine() {
-        layerOfLine.renderer.classBreakInfos = [
+        const renderer = getRendererOfLine()
+        renderer.classBreakInfos = [
           {
             // 分段最大值
             minValue: 100000000,
@@ -539,11 +540,13 @@
             })
           }
         ]
+        layerOfLine.renderer = renderer
       }
 
       // 切换区要素专题图样式
       function changeStyleOfRegion() {
-        layerOfRegion.renderer.classBreakInfos = [
+        const renderer = getRendererOfRegion()
+        renderer.classBreakInfos = [
           {
             // 分段最大值
             minValue: 0,
@@ -599,6 +602,7 @@
             })
           }
         ]
+        layerOfRegion.renderer = renderer
       }
 
       // 销毁多个图层

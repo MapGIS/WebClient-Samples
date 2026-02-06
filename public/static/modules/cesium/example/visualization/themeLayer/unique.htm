@@ -470,8 +470,6 @@
           layerOfRegion = igsVectorTileLayer.findSublayerById(
             '湖北省市级区划_simplerender'
           )
-          layerOfLine.renderer = getRendererOfLine()
-          layerOfRegion.renderer = getRendererOfRegion()
           sceneView.goTo({
             layer: result.layer
           })
@@ -562,7 +560,8 @@
 
       // 切换点要素专题图样式
       function changeStyleOfPoint() {
-        layerOfPoint.renderer.uniqueValueInfos = [
+        const renderer = getRendererOfPoint()
+        renderer.uniqueValueInfos = [
           {
             value: '襄阳',
             symbol: new SimpleMarkerSymbol({
@@ -597,11 +596,13 @@
             })
           }
         ]
+        layerOfPoint.renderer = renderer
       }
 
       // 切换线要素专题图样式
       function changeStyleOfLine() {
-        layerOfLine.renderer.uniqueValueInfos = [
+        const renderer = getRendererOfLine()
+        renderer.uniqueValueInfos = [
           {
             value: 'F',
             symbol: new SimpleLineSymbol({
@@ -617,11 +618,13 @@
             })
           }
         ]
+        layerOfLine.renderer = renderer
       }
 
       // 切换区要素专题图样式
       function changeStyleOfRegion() {
-        layerOfRegion.renderer.uniqueValueInfos = [
+        const renderer = getRendererOfRegion()
+        renderer.uniqueValueInfos = [
           {
             value: '襄阳市',
             symbol: new SimpleFillSymbol({
@@ -793,6 +796,7 @@
             })
           }
         ]
+        layerOfRegion.renderer = renderer
       }
 
       // 销毁多个图层
