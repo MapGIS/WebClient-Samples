@@ -10,7 +10,7 @@ function inputCSS(url) {
 }
 
 function load() {
-  const basePath = 'http://10.10.130.72:8086'
+  const basePath = 'http://webclient.smaryun.com'
   let currentCesiumVersion = localStorage.getItem('currentCesiumVersion')
   if (!currentCesiumVersion) {
     currentCesiumVersion = '10.7.2.10'
