@@ -236,8 +236,6 @@
           layerOfRegion = igsVectorTileLayer.findSublayerById(
             '湖北省市级区划_simplerender'
           )
-          layerOfLine.renderer = getRendererOfLine()
-          layerOfRegion.renderer = getRendererOfRegion()
           sceneView.goTo({
             layer: result.layer
           })
@@ -328,23 +326,29 @@
 
       // 切换点要素专题图样式
       function changeStyleOfPoint() {
-        layerOfPoint.renderer.symbol.outline = new SimpleLineSymbol({
+        const renderer = getRendererOfPoint()
+        renderer.symbol.outline = new SimpleLineSymbol({
           //线符号颜色
           color: randomColor(),
           //线宽
           width: 4
         })
+        layerOfPoint.renderer = renderer
       }
 
       // 切换线要素专题图样式
       function changeStyleOfLine() {
         isRandom = true
-        layerOfLine.renderer.symbol.color = randomColor()
+        const renderer = getRendererOfLine()
+        renderer.symbol.color = randomColor()
+        layerOfLine.renderer = renderer
       }
 
       // 切换区要素专题图样式
       function changeStyleOfRegion() {
-        layerOfRegion.renderer.symbol.color = randomColor()
+        const renderer = getRendererOfRegion()
+        renderer.symbol.color = randomColor()
+        layerOfRegion.renderer = renderer
       }
 
       // 销毁多个图层
