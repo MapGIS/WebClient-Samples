@@ -18,7 +18,7 @@
     //使用严格模式
     'use strict'
     // 定义三维视图的主要类
-    let map, viewer, sceneView, wfsLayerPoint, wfsLayerLine, wfsLayerPolygon
+    let map, viewer, sceneView, wfsLayerPoint, wfsLayerLine, wfsLayerPolygon, points = [], lines = [], polygons = []
     // 获取构造函数
     const { Map, layer, Color, renderer } = zondy
     const { RendererUtil } = zondy.util
@@ -67,7 +67,8 @@
         viewer
       })
       for (let i = 0; i < primitives.length; i++) {
-        viewer.scene.primitives.add(primitives[i])
+        const point = viewer.scene.primitives.add(primitives[i])
+        points.push(point)
       }
     }
 
@@ -101,7 +102,8 @@
         viewer
       })
       for (let i = 0; i < primitives.length; i++) {
-        viewer.scene.primitives.add(primitives[i])
+        const line = viewer.scene.primitives.add(primitives[i])
+        lines.push(line)
       }
     }
 
@@ -121,8 +123,6 @@
           })
         })
       })
-      // 请求图层元数据
-      await wfsLayerPolygon.load()
       // 创建wfs的区图层
       wfsLayerPolygon = new WFSLayer({
         // 服务基地址
@@ -132,6 +132,8 @@
         // 透明度
         opacity: 0.8,
       })
+      // 请求图层元数据
+      await wfsLayerPolygon.load()
       // 请求获取要素集
       const featureSet = await wfsLayerPolygon.queryFeatures()
       const features = featureSet.features
@@ -140,7 +142,8 @@
         viewer
       })
       for (let i = 0; i < primitives.length; i++) {
-        viewer.scene.primitives.add(primitives[i])
+        const polygon = viewer.scene.primitives.add(primitives[i])
+        polygons.push(polygon)
       }
     }
 
@@ -171,7 +174,9 @@
           addWFSLayerPoint()
         } else {
           // 图层显示或隐藏
-          wfsLayerPoint.visible = data.elem.checked
+          for (let i = 0; i < points.length; i++) {
+            points[i].show = !points[i].show 
+          }
         }
       })
       layui.form.on('checkbox(line)', function (data) {
@@ -180,7 +185,9 @@
           addWFSLayerLine()
         } else {
           // 图层显示或隐藏
-          wfsLayerLine.visible = data.elem.checked
+          for (let i = 0; i < lines.length; i++) {
+            lines[i].show = !lines[i].show 
+          }
         }
       })
       layui.form.on('checkbox(polygon)', function (data) {
@@ -189,7 +196,9 @@
           addWFSLayerPolygon()
         } else {
           // 图层显示或隐藏
-          wfsLayerPolygon.visible = data.elem.checked
+          for (let i = 0; i < polygons.length; i++) {
+            polygons[i].show = !polygons[i].show 
+          }
         }
       })
     }
