@@ -76,9 +76,11 @@
         nameOverlay.style.position = 'absolute'
         nameOverlay.style.bottom = '0'
         nameOverlay.style.left = '0'
-        nameOverlay.style['pointer-events'] = 'none'
         nameOverlay.style.padding = '4px'
         nameOverlay.style.backgroundColor = 'white'
+        nameOverlay.style.width = '400px'
+        nameOverlay.style.maxHeight = '200px'
+        nameOverlay.style.overflow = 'auto'
 
         // 设置点击函数
         viewer.screenSpaceEventHandler.setInputAction(function onLeftClick(
@@ -97,26 +99,21 @@
               }
             })
 
+            // 获取高亮要素的属性字段列表
+            const propertyNames = pickedFeature.getPropertyIds ? pickedFeature.getPropertyIds() : pickedFeature.getPropertyNames()
             // 更新要素属性数据
-            nameOverlay.style.display = 'block'
-            nameOverlay.style.bottom =
-              viewer.canvas.clientHeight - movement.position.y + 'px'
-            nameOverlay.style.left = movement.position.x + 'px'
-            nameOverlay.innerHTML =
-              '<table><tbody>' +
-              '<tr><th>oid</th><td>' +
-              pickedFeature.getProperty('OID') +
-              '</td></tr>' +
-              '<tr><th>类别</th><td>' +
-              pickedFeature.getProperty('类别') +
-              '</td></tr>' +
-              '<tr><th>体积</th><td>' +
-              pickedFeature.getProperty('体积') +
-              '</td></tr>' +
-              '<tr><th>面积</th><td>' +
-              pickedFeature.getProperty('面积') +
-              '</td></tr>' +
-              '</tbody></table>'
+            if (propertyNames) {
+              nameOverlay.style.display = 'block'
+              nameOverlay.style.bottom =
+                viewer.canvas.clientHeight - movement.position.y + 'px'
+              nameOverlay.style.left = movement.position.x + 'px'
+              let innerHTML = '<table><tbody>'
+              propertyNames.forEach(function (propertyName) {
+                innerHTML += '<tr><th>' + propertyName + '</th><td>' + pickedFeature.getProperty(propertyName) + '</td></tr>'
+              })
+              innerHTML += '</tbody></table>'
+              nameOverlay.innerHTML = innerHTML
+            }
           }
         },
         Cesium.ScreenSpaceEventType.LEFT_CLICK)

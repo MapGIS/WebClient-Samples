@@ -917,6 +917,20 @@
                 "3DTiles1.1",
                 "3dtiles1.1"
               ]
+            },
+            {
+              "name": "BIM(M3D 2.1/2.2 DB属性查询)",
+              "file": "m3d-db-data-attribute",
+              "icon": "m3d-db-data-attribute.png",
+              "diffcult": "1",
+              "tags": ["BIM(M3D 2.1/2.2 DB属性查询)", "M3D 2.1", "M3D 2.2"]
+            },
+            {
+              "name": "3D Gaussian Splatting(M3D 2.2)",
+              "file": "m3d-gaussian-splatting",
+              "icon": "m3d-gaussian-splatting.png",
+              "diffcult": "1",
+              "tags": ["3D Gaussian Splatting", "M3D 2.2"]
             }
           ]
         },
@@ -1722,6 +1736,13 @@
               "diffcult": "1"
             },
             {
+              "name": "分段(栅格体元)",
+              "file": "breaks-voxel",
+              "icon": "breaks-voxel.png",
+              "diffcult": "1",
+              "tags": ["分段(栅格体元)", "breaks-voxel", "fenduanshangetiyuan"]
+            },
+            {
               "name": "单值(M3D-2.0)",
               "file": "unique-m3d2-model",
               "icon": "unique-m3d2-model.png",
@@ -2027,27 +2048,88 @@
           "leaffolder": true,
           "childs": [
             {
-              "name": "天气效果(雾)",
+              "name": "雾",
               "file": "weather-fog",
               "icon": "weather-fog.png",
               "diffcult": "1"
             },
             {
-              "name": "天气效果(雨)",
+              "name": "高度雾",
+              "file": "weather-height-fog",
+              "icon": "weather-height-fog.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "大气雾",
+              "file": "weather-atmosphere-fog",
+              "icon": "weather-atmosphere-fog.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "雨+地面积水",
               "file": "weather-rain",
               "icon": "weather-rain.png",
               "diffcult": "1"
             },
             {
-              "name": "天气效果(雪)",
+              "name": "雪",
               "file": "weather-snow",
               "icon": "weather-snow.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "后处理积雪",
+              "file": "weather-postprocess-snowpack",
+              "icon": "weather-postprocess-snowpack.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "场景积雪",
+              "file": "weather-scene-snowpack",
+              "icon": "weather-scene-snowpack.png",
               "diffcult": "1"
             },
             {
               "name": "积雨",
               "file": "rain-area",
               "icon": "rain-area.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "体积云",
+              "file": "weather-volume-cloud",
+              "icon": "weather-volume-cloud.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "自定义大气层",
+              "file": "weather-custom-atmosphere",
+              "icon": "weather-custom-atmosphere.png",
+              "diffcult": "1"
+            }
+          ]
+        },
+        {
+          "name": "镜头特效",
+          "folder": "lensEffect",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "镜头光晕",
+              "file": "lens-flare",
+              "icon": "lens-flare.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "景深移轴",
+              "file": "depth-of-field",
+              "icon": "depth-of-field.png",
+              "diffcult": "1"
+            },
+            {
+              "name": "体积光",
+              "file": "god-ray",
+              "icon": "god-ray.png",
               "diffcult": "1"
             }
           ]
@@ -2086,6 +2168,19 @@
               "name": "聚光源",
               "file": "spot-lighter",
               "icon": "spot-lighter.png",
+              "diffcult": "1"
+            }
+          ]
+        },
+        {
+          "name": "动物集群特效",
+          "folder": "animalsEffect",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "鸟群特效",
+              "file": "bird-boids",
+              "icon": "bird-boids.png",
               "diffcult": "1"
             }
           ]

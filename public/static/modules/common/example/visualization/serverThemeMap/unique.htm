@@ -270,8 +270,8 @@
         layerOfLine.renderer = getRendererOfLine()
         // 设置区图层的专题图
         layerOfRegion.renderer = getRendererOfRegion()
-        view.flyTo({
-          extent: result.layer.extent
+        view.goTo({
+          layer: result.layer
         })
       })
     }

@@ -51,11 +51,8 @@
         layer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
           // 视点跳转
-          view.flyTo({
-            center: [121.0076, 23.3814, 9000.0],
-            orientation: {
-              pitch: Cesium.Math.toRadians(-35.0)
-            }
+          view.goTo({
+            layer: layer
           })
         })
       }

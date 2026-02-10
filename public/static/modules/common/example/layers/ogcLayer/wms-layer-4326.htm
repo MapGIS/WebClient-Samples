@@ -21,6 +21,18 @@
       // 定义二维视图的主要类
 
       let map, view, layer, layerOpacity = 1, layerRenderMode = 'tile', layerOptions = {}
+      let serverType = 'igs', serverVersion = '1.1.1', 
+          serverList = [
+            {
+              url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WMSServer',
+              serverType: 'igs',
+            },
+            {
+              url: 'http://10.10.130.72:8030/geoserver/shp/wms',
+              serverType: 'geoserver',
+            },
+          ]
+          
       const {
         WMSLayer
       } = zondy.layer
@@ -57,8 +69,8 @@
         map.add(layer)
         // 图层添加完毕后，跳转到图层范围内
         layer.on('layerview-created', (result) => {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }
@@ -90,14 +102,24 @@
 
       // 获取图层构造参数
       function getLayerOptions() {
-        return {
-          // 服务基地址
-          url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/WMSServer',
+        const serverInfo = serverList.find(item => item.serverType === serverType)
+        const options = {
+          // 服务版本号
+          version: serverVersion,
           // 图层透明度
           opacity: layerOpacity,
           // 渲染模式
           renderMode: layerRenderMode
         }
+        // 服务基地址
+        if (serverInfo && serverInfo.url) {
+          options.url = serverInfo.url
+        }
+        // 服务基子图层id
+        if (serverInfo && serverInfo.sublayerIds) {
+          options.sublayers = serverInfo.sublayerIds
+        }
+        return options
       }
 
       //初始化示例UI操作
@@ -126,6 +148,18 @@
             // 重置图层
             resetLayer()
           })
+          // 服务类型
+          form.on('select(serverType)', function (data) {
+            serverType = data.value
+            // 重置图层
+            resetLayer()
+          })
+          // 服务版本
+          form.on('select(serverVersion)', function (data) {
+            serverVersion = data.value
+            // 重置图层
+            resetLayer()
+          })
         })
       }
     </script>
@@ -137,6 +171,25 @@
     <!--  示例UI  -->
         <div class="layui-panel layui-panel-right ogc-layer-panel">
         <form class="layui-form" action="">
+            <div class="layui-form-item" style="margin-top: 10px">
+              <label class="layui-form-label">图层服务</label>
+              <div class="layui-input-block layui-input-block-select">
+                <select id="serverType" name="serverType" lay-filter="serverType">
+                  <option value="igs" selected>IGS图层服务</option>
+                  <option value="geoserver">GeoServer图层服务</option>
+                  <!-- <option value="geoservergroup">GeoServer组图层服务</option> -->
+                </select>
+              </div>
+            </div>
+            <div class="layui-form-item" style="margin-top: 10px">
+              <label class="layui-form-label">服务版本</label>
+              <div class="layui-input-block layui-input-block-select">
+                <select id="serverVersion" name="serverVersion" lay-filter="serverVersion">
+                  <option value="1.1.1">1.1.1</option>
+                  <option value="1.3.0">1.3.0</option>
+                </select>
+              </div>
+            </div>
             <div class="layui-form-item">
                 <label class="layui-form-label" style="width: 100px;">图层透明度</label>
                 <div class="layui-input-block sample-slider" style="width: 160px;">

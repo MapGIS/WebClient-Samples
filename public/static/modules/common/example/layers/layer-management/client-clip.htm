@@ -17,7 +17,7 @@
     //使用严格模式
     'use strict'
     // 定义视图的主要类
-    let map, view, layer, clippingArea
+    let map, view, layer, layer2, clippingArea
     const { Map, MapView, SceneView, Basemap, Collection, Color, Feature } =
       zondy
     const {
@@ -105,8 +105,8 @@
 
       layer.on('layerview-created', function (result) {
         //视点跳转
-        view.flyTo({
-          extent: result.layer.extent
+        view.goTo({
+          layer: result.layer
         })
       })
       map.add(layer)
@@ -126,11 +126,21 @@
       layer.on('layerview-created', function (result) {
         console.log('result: ', result);
         //视点跳转
-        view.flyTo({
-          extent: result.layer.extent
+        view.goTo({
+          layer: result.layer
         })
       })
       map.add(layer)
+      // 创建地图图片图层
+      layer2 = new IGSTileLayer({
+        // 服务基地址
+        url: 'http://10.10.130.72:8089/igs/rest/services/Tile/wuhan_3857_512_custom/TileServer',
+        // 图层名称
+        title: '武汉市瓦片图层',
+        // 显示或隐藏
+        visible: true
+      })
+      map.add(layer2)
     }
 
     // 添加WMS图层
@@ -147,8 +157,8 @@
       layer.on('layerview-created', function (result) {
         console.log('result: ', result);
         //视点跳转
-        view.flyTo({
-          extent: result.layer.extent
+        view.goTo({
+          layer: result.layer
         })
       })
       map.add(layer)
@@ -167,8 +177,8 @@
       })
       layer.on('layerview-created', function (result) {
         //视点跳转
-        view.flyTo({
-          extent: result.layer.extent
+        view.goTo({
+          layer: result.layer
         })
       })
       map.add(layer)
@@ -197,6 +207,7 @@
         // 切换底图
         form.on('select(changeLayer)', function (data) {
           map.remove(layer)
+          map.remove(layer2)
           switch (data.value) {
             case '地图服务图层':
               addIGSMapImageLayer()
@@ -215,6 +226,9 @@
               break
           }
           layer.clippingArea = clippingArea
+          if (layer2) {
+            layer2.clippingArea = clippingArea
+          }
         })
 
         // 客户端空间裁剪
@@ -237,6 +251,10 @@
           if (layer) {
             layer.clippingArea = clippingArea
           }
+          // 设置裁剪区
+          if (layer2) {
+            layer2.clippingArea = clippingArea
+          }
         })
       })
     }
@@ -246,12 +264,15 @@
       return new Polygon({
         coordinates: [
           [
-            [111.36341, 29.032578],
-            [113, 30],
-            [114.13094, 29.032578],
-            [114.13094, 31.273224],
-            [111.36341, 31.273224],
-            [111.36341, 29.032578]
+            [112.9, 30.8],
+            [113.3, 31.2],
+            [113.7, 31],
+            [114.1, 31.2],
+            [114.5, 30.8],
+            [114.1, 30.4],
+            [113.7, 30.6],
+            [113.3, 30.4],
+            [112.9, 30.8]
           ]
         ]
       })
@@ -264,8 +285,8 @@
           [
             [
               [113.5, 30.5],
-              [114, 30.5],
-              [114, 31],
+              [114.2, 30.5],
+              [114.2, 31],
               [113.5, 31],
               [113.5, 30.5]
             ]

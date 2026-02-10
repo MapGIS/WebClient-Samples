@@ -2,24 +2,32 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no"/>
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
     <title>压平分析</title>
     <!--加载不同版本Cesium库-->
     <script src="http://10.10.130.72:8086/static/libs/loadCesium.js"></script>
     <!--plugin脚本库-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
-    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"/>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/tool.css"/>
-    <script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <div id="app-tips">提示：10.7.2.10版本不支持3D Tiles压平</div>
+    <script type="module">
       'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
       // 定义三维视图的主要类
-      let map, sceneView, viewer
+      let map, sceneView, viewer, tileset, pane
       // 压平工具
       let flattenTool = null
       // 绘制多边形的工具
@@ -29,9 +37,50 @@
       // 绘制的polygon的points
       let positions = null
       // 压平高度
-      let height = 10
+      let height = 0
       // 是否开启根据ID压平
-      let flattenWithId = true
+      let flattenWithId = false
+
+      // 定义默认的模型URL
+      const DEFAULT_URL = {
+        MAPGIS_M3D_21:
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.1/景观_建筑模型/景观_建筑模型.mcj',
+        CESIUM_3DTILES_10:
+          'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/景观_建筑模型/tileset.json'
+      }
+
+      let currentCesiumVersion = localStorage.getItem('currentCesiumVersion')
+
+      // 初始化球体
+      function initViewer() {
+        // 初始化图层管理容器
+        map = new zondy.Map()
+        // 初始化地图视图对象
+        sceneView = new zondy.cesium.SceneView({
+          // 视图id
+          viewId: 'mapgis-3d-viewer',
+          // 图层管理容器
+          map: map
+        })
+        // 获取视图对象
+        viewer = sceneView.getInnerView()
+      }
+
+      async function loadTileset(url, type) {
+        viewer.scene.primitives.remove(tileset)
+        if (type === 'M3D') {
+          tileset = await zondy.cesium.MapGISM3DSet.fromUrl(url, {
+            _scene: viewer.scene,
+            maximumScreenSpaceError: 0
+          })
+        } else if (type === '3DTILES') {
+          tileset = await zondy.cesium.Cesium3DTileset.fromUrl(url, {
+            maximumScreenSpaceError: 0
+          })
+        }
+        viewer.scene.primitives.add(tileset)
+        viewer.zoomTo(tileset)
+      }
 
       // 绘制工具
       function addDrawElement() {
@@ -102,156 +151,153 @@
         }
       }
 
-      // 添加一个模型
-      function addM3DModelCacheLayer() {
-        let M3DLayer = new zondy.layer.M3DModelCacheLayer({
-          // 服务基地址
-          url: 'http://10.10.130.72:8200/3DData/ModelCache/M3D//1.0/景观示例/景观_建筑模型_1.mcj',
-          // 初始化参数
-          extensionOptions: {
-            // 开启自动跳转
-            autoReset: true
-          }
-        })
-        map.add(M3DLayer)
-        // 图层加载完毕
-        M3DLayer.on('layerview-created', function (result) {
-          let layer = sceneView.getInnerLayer(result.layer)
-          // 设置细化级别的最大屏幕空间误差为0，如果不设置0，会影响压平效果
-          layer.maximumScreenSpaceError = 0
-        })
-      }
-
       // 初始化UI操作面板
       function initUI() {
-        layui.slider.render({
-          elem: '#heightSlide',
-          value: height,
-          max: 25,
-          theme: 'rgb(102, 147, 251)',
-          input: true,
-          change: function (value) {
-            height = value
-            // 重新压平
+        pane = new Pane({
+          title: '操作面板'
+        })
+
+        const controls = {
+          height: 0,
+          flattenWithId: false
+        }
+
+        const modelCacheBladeFolder = pane.addFolder({
+          title: '模型缓存类型'
+        })
+
+        const modelFlattenFolder = pane.addFolder({
+          title: '压平操作选项'
+        })
+
+        const modelTypeList = modelCacheBladeFolder
+          .addBlade({
+            view: 'list',
+            label: '切换类型',
+            options: [
+              {
+                text: 'MapGIS M3D',
+                value: 'M3D'
+              },
+              {
+                text: 'Cesium 3D Tiles',
+                value: '3DTILES'
+              }
+            ],
+            value: 'M3D'
+          })
+          .on('change', (e) => {
+            removeFlatten()
+            initFlattenTool()
+            if (e.value === 'M3D') {
+              loadTileset(DEFAULT_URL.MAPGIS_M3D_21, 'M3D')
+            } else if (e.value === '3DTILES') {
+              loadTileset(DEFAULT_URL.CESIUM_3DTILES_10, '3DTILES')
+            }
+          })
+
+        if (currentCesiumVersion === '10.7.2.10') {
+          modelTypeList.disabled = true
+        }
+
+        const M3DModelList = modelCacheBladeFolder
+          .addBlade({
+            view: 'list',
+            label: 'M3D',
+            options: [
+              {
+                text: '景观模型-M3D 2.1-文件服务',
+                value: DEFAULT_URL.MAPGIS_M3D_21
+              }
+            ],
+            value: DEFAULT_URL.MAPGIS_M3D_21
+          })
+          .on('change', (e) => {})
+
+        const cesium3DTilesModelList = modelCacheBladeFolder
+          .addBlade({
+            hidden: true,
+            view: 'list',
+            label: '3D Tiles',
+            options: [
+              {
+                text: '景观模型-3D Tiles 1.0-文件服务',
+                value: DEFAULT_URL.CESIUM_3DTILES_10
+              }
+            ],
+            value: DEFAULT_URL.CESIUM_3DTILES_10
+          })
+          .on('change', (e) => {})
+
+        modelFlattenFolder
+          .addBinding(controls, 'height', {
+            label: '高度',
+            min: -20,
+            max: 20
+          })
+          .on('change', (e) => {
+            height = e.value
             addFlatten()
-          }
-        })
+          })
 
-        layui.form.on('switch(flattenWithId)', (data) => {
-          flattenWithId = data.elem.checked
-        })
-      }
+        modelFlattenFolder
+          .addBinding(controls, 'flattenWithId', {
+            label: '使用ID'
+          })
+          .on('change', (e) => {
+            flattenWithId = e.value
+            addFlatten()
+          })
 
-      // 初始化球体
-      function initViewer() {
-        // 初始化图层管理容器
-        map = new zondy.Map()
-        // 初始化地图视图对象
-        sceneView = new zondy.cesium.SceneView({
-          // 视图id
-          viewId: 'mapgis-3d-viewer',
-          // 图层管理容器
-          map: map
-        })
-        // 获取视图对象
-        viewer = sceneView.getInnerView()
+        pane
+          .addButton({
+            title: '绘制区域'
+          })
+          .on('click', () => {
+            addDrawElement()
+          })
+
+        pane
+          .addButton({
+            title: '清除压平'
+          })
+          .on('click', () => {
+            removeFlatten()
+          })
       }
 
       // 地图初始化函数
       function init() {
         // 初始化球体
         initViewer()
-        //创建切换Cesium版本的按钮
+        // 创建切换Cesium版本的按钮
         createChangeTab()
-        // 三维试图类构造完毕，添加一个模型
-        addM3DModelCacheLayer()
+        // 加载默认的3D模型
+        loadTileset(DEFAULT_URL.MAPGIS_M3D_21, 'M3D')
         // 创建压平工具
         initFlattenTool()
-        // 构建一个滑块，方便对高度进行调整
+        // 初始化UI操作面板
         initUI()
       }
+
+      init()
     </script>
-  </head>
-
-  <body onload="init()">
-    <div id="mapgis-3d-viewer"></div>
-    <div class="layui-panel layui-panel-right">
-      <form class="layui-form" action="">
-        <div class="sample-main-panel">
-          <div class="layui-form-item">
-            <label class="layui-form-label">压平高度</label>
-            <div class="layui-input-block decimal-slider">
-              <div id="heightSlide"></div>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label class="layui-form-label">根据ID压平</label>
-            <div class="layui-input-block">
-              <input
-                type="checkbox"
-                name="switch"
-                lay-skin="switch"
-                lay-text="开启|关闭"
-                lay-filter="flattenWithId"
-                checked
-              />
-            </div>
-          </div>
-        </div>
-        <div class="sample-button-panel">
-          <button
-            type="button"
-            class="layui-btn layui-btn-sm layui-btn-normal"
-            onclick="addDrawElement()"
-          >
-            绘制压平区
-          </button>
-          <button
-            type="button"
-            class="layui-btn layui-btn-sm layui-btn-normal"
-            onclick="removeFlatten()"
-          >
-            移除压平区
-          </button>
-        </div>
-      </form>
-    </div>
     <style>
-      .layui-slider-input {
-        top: 0px;
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
       }
-
-      .layui-form-item {
-        display: flex;
-        align-items: center;
-        margin: 0px;
-      }
-
-      .layui-panel-left {
+      #app-tips {
         position: absolute;
         top: 10px;
         left: 10px;
-      }
-
-      .sample-main-panel {
+        background: #28292e;
+        color: #f5f5f5;
+        padding: 5px;
+        user-select: none;
         font-size: 12px;
-        height: 80px;
-        border: none;
-        margin: 0px;
-      }
-
-      .layui-panel-right {
-        padding: 10px;
-        width: 280px;
-      }
-
-      .layui-form-label {
-        width: 100px;
-      }
-
-      .layui-input-block,
-      .layui-form-select {
-        width: 150px;
+        border-radius: 2px;
       }
     </style>
   </body>

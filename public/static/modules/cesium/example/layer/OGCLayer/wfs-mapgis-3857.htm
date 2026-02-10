@@ -129,8 +129,8 @@
 
         // 图层加载完毕
         igsTileLayer.on('layerview-created', function (result) {
-          sceneView.flyTo({
-            extent: result.layer.extent,
+          sceneView.goTo({
+            layer: result.layer,
             complete: addWFSLayerPolygon
           })
         })
@@ -189,6 +189,8 @@
         createChangeTab()
         // 添加瓦片图层
         addIGSTileLayer()
+        // 添加WFS区图层
+        addWFSLayerPolygon()
         // 初始化示例UI
         initUI()
       }

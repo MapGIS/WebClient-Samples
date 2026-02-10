@@ -124,6 +124,18 @@
 
 ## 版本说明
 
+### <font color=red>V10.7.8.10</font>
+
+<font size=4>**webclient-leaflet-plugin**</font>
+
+1. 功能新增
+
+- 新增视图卷帘工具
+
+2. API接口变更
+<a href="http://10.10.130.72:8086/#/guideMulti/leaflet/development_leaflet_plugin_api_update" target="_blank">webclient-leaflet-plugin 接口变更表</a>
+
+
 ### <font color=red>V10.7.6.10</font>
 
 <font size=4>**webclient-leaflet-plugin**</font>
@@ -132,11 +144,7 @@
 
 - 支持百度、高德瓦片服务纠偏显示
 
-2. 功能优化
-
-- 此版本无更新
-
-3. API接口变更
+2. API接口变更
 <a href="http://10.10.130.72:8086/#/guideMulti/leaflet/development_leaflet_plugin_api_update" target="_blank">webclient-leaflet-plugin 接口变更表</a>
 
 备注：10.7.6.10 及以后的版本，不再维护 `@mapgis/leaflet` 库，推荐使用官方 `leaflet` v1.9.2
