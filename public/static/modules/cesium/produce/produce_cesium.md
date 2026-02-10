@@ -120,9 +120,9 @@
 | @mapgis/cesium                  | 地图引擎库，提供 Cesium 引擎基础功能                         |
 | @mapgis/webclient-common        | 公用 JS 库。<br />1、提供基础对象接口的定义；<br />2、提供 IGS 等服务接口的封装；<br />3、提供地图（场景）管理接口的定义；<br />4、提供草图编辑、空间分析、行业标绘、视频调绘，以及其它与引擎无关的功能。 |
 
-<br>
-
 > 核心库分别提供ES5压缩版（webclient-cesium-plugin.min.js）与ES6压缩版（webclient-cesium-plugin-es6.min.js）两个版本。
+> 从 10.7.4.10 版本开始，新增 webclient-cesium-plugin 静态资源文件夹webclient-cesium-plugin-resource。
+
 
 ### API 参考
 
@@ -167,6 +167,60 @@
 <br/>
 
 ## 版本说明
+
+### <font color=red>V10.7.8.10</font>
+
+<font size=4>**webclient-cesium-plugin**</font>
+
+1. 功能新增
+
+- Cesium 地形剖切支持凹多边形
+- 新增路径漫游工具 RouteAnimationTool 支持实例化多个路径漫游工具
+- 地质体剖切功能支持 3D Tiles 格式数据（3D Tiles 1.0和 3D Tiles 1.1）
+- 环境特效增强，支持天气特效、水下特效、集群鸟类与动物、镜头特效
+
+2. 功能优化
+
+- 优化使用非 FID 属性时更新 Cesium3DTileStyle 场景渲染效率
+
+3. API接口变更
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_plugin_api_update" target="_blank">webclient-cesium-plugin 接口变更表</a>
+
+4. 新增示例
+
+- <a href="http://10.10.130.72:8086/#/modules/cesium/layer/layerControl/model-appearance-control" target="_blank">模型缓存图层样式设置</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/layer/modelCacheLayer/m3d-db-data-attribute" target="_blank">BIM(M3D 2.1/2.2 DB属性查询)</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/layer/modelCacheLayer/m3d-gaussian-splatting" target="_blank">3D Gaussian Splatting(M3D 2.2)</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/visualization/themeLayer/breaks-voxel" target="_blank">分段(栅格体元)</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/weatherEffect/weather-height-fog" target="_blank">高度雾</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/weatherEffect/weather-atmosphere-fog" target="_blank">大气雾</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/weatherEffect/weather-postprocess-snowpack" target="_blank">后处理积雪</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/weatherEffect/weather-scene-snowpack" target="_blank">场景积雪</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/weatherEffect/weather-volume-cloud" target="_blank">体积云</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/weatherEffect/weather-custom-atmosphere" target="_blank">自定义大气层</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/lensEffect/lens-flare" target="_blank">镜头光晕</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/lensEffect/depth-of-field" target="_blank">景深移轴</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/lensEffect/god-ray" target="_blank">体积光</a>
+- <a href="http://10.10.130.72:8086/#/modules/cesium/environmentEffects/animalsEffect/bird-boids" target="_blank">鸟群特效</a>
+
+<font size=4>**webclient-cesium**</font>
+
+1. 功能新增
+
+- 模型缓存图层增加是否受场景 z 向缩放参数影响的开关
+- 模型缓存图层增加是否开启光照的开关
+- 3D Tiles 支持运行时生成唯一要素 ID
+- 支持高斯泼溅数据接入
+- 模型缓存图层在 Web 前端加载效率问题分析、诊断工具
+- 新增场景积雪、动物集群特效
+
+2. 功能优化
+
+- 优化使用非 FID 属性时更新 Cesium3DTileStyle 场景渲染效率
+- 压平分析功能增强，支持各版本 3D Tiles 和 M3D 模型数据
+
+3. API接口变更
+<a href="http://10.10.130.72:8086/#/guideMulti/cesium/development_cesium_api_update" target="_blank">webclient-cesium 接口变更表</a>
 
 ### <font color=red>V10.7.6.10</font>
 

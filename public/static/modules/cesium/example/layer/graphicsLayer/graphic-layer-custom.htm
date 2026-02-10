@@ -66,8 +66,8 @@
         // 图层加载完毕
         igsTileLayer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }
@@ -251,8 +251,8 @@
       function bindEvent() {
         graphicsLayer.on('layerview-created', (result) => {
           console.log('加载完毕', result.layer)
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
           // 修改图层透明度
           graphicsLayer.opacity = opacity

@@ -300,7 +300,7 @@
         // 图层加载完毕
         wmtsLayer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
-          view.flyTo({
+          view.goTo({
             center: new Point({
               coordinates: [12520996.73, 3637179.55, 4000000],
               spatialReference: new SpatialReference({

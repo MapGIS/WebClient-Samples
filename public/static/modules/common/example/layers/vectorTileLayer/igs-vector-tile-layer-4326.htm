@@ -118,29 +118,35 @@
         map.add(layer)
         // 图层添加完毕后，跳转到图层范围内
         layer.on('layerview-created', (result) => {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }
 
       // 显隐子图层
       function setSubLayerVisible() {
-        layer.setStyleLayerVisibility("地级市_simplerender", !layer.getStyleLayerVisibility("地级市_simplerender"))
+        const layout = layer.getLayoutProperties(
+          '湖北省市级区划_simplerender'
+        )
+        layer.setLayoutProperties('湖北省市级区划_simplerender', {
+          // 设置颜色
+          visibility: layout.visibility === 'visible' ? 'none' : 'visible'
+        })
       }
 
       // 修改子图层绘制属性，和MapboxGL的矢量瓦片参数一致
       function setPaintProperties() {
-        layer.setPaintProperties("高速公路_6-7_simplerender_lininfo_0", {
+        layer.setPaintProperties("湖北省市级区划_simplerender", {
           // 设置颜色
-          "line-color": "rgba(11,178,97,1.000000)"
+          "fill-color": "rgba(11,178,97,1.000000)"
         })
       }
 
       // 修改子图层布局属性，和MapboxGL的矢量瓦片参数一致
       function setLayoutProperties() {
-        const layout = layer.getLayoutProperties("高速公路_6-7_simplerender_lininfo_0")
-        layer.setLayoutProperties("高速公路_6-7_simplerender_lininfo_0", {
+        const layout = layer.getLayoutProperties("湖北省市级区划_simplerender")
+        layer.setLayoutProperties("湖北省市级区划_simplerender", {
           // 设置颜色
           "visibility": layout.visibility === "visible" ? "none" : "visible"
         })

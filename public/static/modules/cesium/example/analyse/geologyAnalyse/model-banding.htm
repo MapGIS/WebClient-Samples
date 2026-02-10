@@ -8,7 +8,6 @@
     <!--plugin脚本库-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
     <!--示例公共样式-->
     <link
       rel="stylesheet"
@@ -19,8 +18,7 @@
   <body>
     <div id="mapgis-3d-viewer"></div>
     <div id="app-tips">
-      提示：10.7.2.10暂不支持3D Tiles剖面封边，10.7.4.10暂不支持3D
-      Tiles封边属性过滤
+      提示：剖切封边不支持凹多边形，10.7.2.10暂不支持3D Tiles剖切封边
     </div>
 
     <script type="module">
@@ -29,6 +27,18 @@
 
       // 定义创建图层与UI交互相关的变量
       let map, sceneView, viewer, cutTool, drawElement, pane, layer
+
+      // 定义默认的模型URL
+      const DEFAULT_URL = {
+        MAPGIS_M3D_20:
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
+        MAPGIS_M3D_22_WITH_TEXTURE:
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.2/地质体带纹理/地质体带纹理.mcj',
+        CESIUM_3DTILES_10:
+          'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti_att/tileset.json',
+        CESIUM_3DTILES_11:
+          'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.1/wujiangdizhiti_att/tileset.json'
+      }
 
       // 该方法用于初始化三维地图查看器，包括创建图层管理容器，初始化地图视图对象以及获取Cesium场景视图对象
       function initViewer() {
@@ -179,26 +189,31 @@
           layer.cuttingFilter = []
         } else if (clippingFilterType === 'SINGLE_VALUE') {
           // 单值过滤
-          if (layer.version === '2.0') {
+          if (layer instanceof Cesium.MapGISM3DSet) {
             cuttingFilter = [
               {
                 field: 'OID',
                 type: 'unique',
                 valueGroups: [1, 2, 3, 4, 5]
-              }
-            ]
-          } else if (layer.version === '2.1') {
-            cuttingFilter = [
+              },
               {
                 field: 'tid',
                 type: 'unique',
-                valueGroups: [0, 1, 2, 3, 4]
+                valueGroups: [1, 2, 3, 4, 5]
+              }
+            ]
+          } else if (layer instanceof Cesium.Cesium3DTileset) {
+            cuttingFilter = [
+              {
+                field: 'ID',
+                type: 'unique',
+                valueGroups: [2, 3, 4]
               }
             ]
           }
         } else if (clippingFilterType === 'CLASS_BREAK') {
           // 分段过滤
-          if (layer.version === '2.0') {
+          if (layer instanceof Cesium.MapGISM3DSet) {
             cuttingFilter = [
               {
                 field: 'OID',
@@ -207,36 +222,38 @@
                   { start: 1, end: 4 },
                   { start: 6, end: 7 }
                 ]
-              }
-            ]
-          } else if (layer.version === '2.1') {
-            cuttingFilter = [
+              },
               {
                 field: 'tid',
                 type: 'range',
-                valueGroups: [
-                  { start: 1, end: 2 },
-                  { start: 5, end: 7 }
-                ]
+                valueGroups: [{ start: 2, end: 5 }]
+              }
+            ]
+          } else if (layer instanceof Cesium.Cesium3DTileset) {
+            cuttingFilter = [
+              {
+                field: 'ID',
+                type: 'range',
+                valueGroups: [{ start: 0, end: 1 }]
               }
             ]
           }
         } else if (clippingFilterType === 'CONTAIN') {
           // 包含过滤
-          if (layer.version === '2.0') {
+          if (layer instanceof Cesium.MapGISM3DSet) {
             cuttingFilter = [
               {
-                field: 'FeaName',
+                field: 'Floor',
                 type: 'contain',
-                valueGroups: ['object']
+                valueGroups: ['1', '2']
               }
             ]
-          } else if (layer.version === '2.1') {
+          } else if (layer instanceof Cesium.Cesium3DTileset) {
             cuttingFilter = [
               {
-                field: 'LayerName',
+                field: 'name',
                 type: 'contain',
-                valueGroups: ['BottomFace']
+                valueGroups: ['nodes[3]', 'nodes[4]', 'nodes[2]', 'nodes[0]']
               }
             ]
           }
@@ -290,17 +307,13 @@
             if (e.value === 'M3D') {
               cesium3DTilesModelList.hidden = true
               M3DModelList.hidden = false
-              addModelCacheLayer(
-                'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
-                'M3D'
-              )
+              M3DModelList.value = DEFAULT_URL.MAPGIS_M3D_20
+              addModelCacheLayer(DEFAULT_URL.MAPGIS_M3D_20, 'M3D')
             } else if (e.value === '3DTILES') {
               cesium3DTilesModelList.hidden = false
               M3DModelList.hidden = true
-              addModelCacheLayer(
-                'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json',
-                '3DTILES'
-              )
+              cesium3DTilesModelList.value = DEFAULT_URL.CESIUM_3DTILES_10
+              addModelCacheLayer(DEFAULT_URL.CESIUM_3DTILES_10, '3DTILES')
             }
             resetComponents()
           })
@@ -313,17 +326,14 @@
             options: [
               {
                 text: '地质体-M3D 2.0-文件服务',
-                value:
-                  'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj'
+                value: DEFAULT_URL.MAPGIS_M3D_20
               },
               {
-                text: '地质体-M3D 2.0-M3DServer',
-                value:
-                  'http://10.10.130.72:8089/igs/rest/services/M3Dv2/地质体封边模型/M3dServer'
+                text: '地质体带纹理-M3D 2.2-文件服务',
+                value: DEFAULT_URL.MAPGIS_M3D_22_WITH_TEXTURE
               }
             ],
-            value:
-              'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj'
+            value: DEFAULT_URL.MAPGIS_M3D_20
           })
           .on('change', (e) => {
             addModelCacheLayer(e.value, 'M3D')
@@ -339,17 +349,14 @@
             options: [
               {
                 text: '地质体-3D Tiles 1.0-文件服务',
-                value:
-                  'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
+                value: DEFAULT_URL.CESIUM_3DTILES_10
               },
               {
                 text: '地质体-3D Tiles 1.1-文件服务',
-                value:
-                  'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.1/wujiangdizhiti/tileset.json'
+                value: DEFAULT_URL.CESIUM_3DTILES_11
               }
             ],
-            value:
-              'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
+            value: DEFAULT_URL.CESIUM_3DTILES_10
           })
           .on('change', (e) => {
             addModelCacheLayer(e.value, '3DTILES')
@@ -362,8 +369,6 @@
           })
           .on('click', () => {
             addClippingPlane()
-            attributesFilterChecker.disabled = true
-            attributesFilterBlade.disabled = true
             clippingDistanceSlider.disabled = false
           })
 
@@ -384,8 +389,6 @@
           })
           .on('click', () => {
             addClippingPolygon()
-            attributesFilterChecker.disabled = true
-            attributesFilterBlade.disabled = true
           })
 
         const attributesFilterChecker = clippingAttributesFilterFolder
@@ -436,8 +439,6 @@
 
         // 该方法用于重置UI组件
         function resetComponents() {
-          attributesFilterChecker.disabled = false
-          attributesFilterBlade.disabled = false
           clippingDistanceSlider.disabled = true
           paneParameters.clippingDistance = 0
           paneParameters.enableClippingAttributesFilter = false
@@ -450,10 +451,7 @@
       function init() {
         initViewer()
         createChangeTab()
-        addModelCacheLayer(
-          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
-          'M3D'
-        )
+        addModelCacheLayer(DEFAULT_URL.MAPGIS_M3D_20, 'M3D')
         initUI()
       }
 

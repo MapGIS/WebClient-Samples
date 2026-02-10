@@ -12,35 +12,94 @@
     <!--plugin脚本库-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
-
-    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-    <link
-      rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
-    />
     <!--示例公共样式-->
     <link
       rel="stylesheet"
       href="http://10.10.130.72:8086/static/libs/css/style.css"
     />
-    <link
-      rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/tool.css"
-    />
-    <script>
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <script type="module">
       'use strict'
-      //定义三维视图的主要类
-      let map, sceneView, viewer
-      //绘制工具
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
+      // 定义三维视图的主要类
+      let map, sceneView, viewer, pane
+      // 绘制工具
       let drawElement = null
-      //模型
-      let modelLyr = null
+      // 模型
+      let tileset = null
+      // 当前的已经加载的数据的URL
+      let currentTilesetUrl = null
+
+      // 定义默认的模型URL
+      const DEFAULT_URL = {
+        MAPGIS_M3D_21:
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/wujiangdizhiti/wujiangdizhiti.mcj',
+        MAPGIS_M3D_22_WITH_TEXTURE:
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.2/地质体带纹理/地质体带纹理.mcj',
+        CESIUM_3DTILES_10:
+          'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
+      }
+
+      // 初始化球体
+      function initViewer() {
+        // 初始化图层管理容器
+        map = new zondy.Map()
+        // 初始化地图视图对象
+        sceneView = new zondy.cesium.SceneView({
+          // 视图id
+          viewId: 'mapgis-3d-viewer',
+          // 图层管理容器
+          map: map
+        })
+        // 获取视图对象
+        viewer = sceneView.getInnerView()
+        viewer.scene.skyBox.show = false
+        viewer.scene.skyAtmosphere.show = false
+        viewer.scene.sun.show = false
+        viewer.scene.moon.show = false
+        viewer.scene.globe.showGroundAtmosphere = false
+        viewer.scene.globe.show = false
+      }
+
+      async function loadTileset(url, type) {
+        currentTilesetUrl = url
+        viewer.scene.primitives.remove(tileset)
+        if (type === 'M3D') {
+          tileset = await zondy.cesium.MapGISM3DSet.fromUrl(url, {
+            _scene: viewer.scene,
+            // 开启剖面几何
+            hasSectionGeometry: true
+          })
+        } else if (type === '3DTILES') {
+          tileset = await zondy.cesium.Cesium3DTileset.fromUrl(url, {
+            // 开启剖面几何
+            hasSectionGeometry: true
+          })
+        }
+        viewer.scene.primitives.add(tileset)
+
+        // 根据加载的数据不同，设置不同的相机视角
+        let offset = undefined
+        if (
+          currentTilesetUrl === DEFAULT_URL.MAPGIS_M3D_21 ||
+          currentTilesetUrl === DEFAULT_URL.CESIUM_3DTILES_10
+        ) {
+          offset = new Cesium.HeadingPitchRange(0, -Math.PI / 4, 3000)
+        } else if (
+          currentTilesetUrl === DEFAULT_URL.MAPGIS_M3D_22_WITH_TEXTURE
+        ) {
+          offset = new Cesium.HeadingPitchRange(0, -Math.PI / 4, 30000)
+        }
+        viewer.zoomTo(tileset, offset)
+      }
 
       // 添加竖剖面
       function addVerticalSection() {
-        //先移除上次的切面
+        // 先移除上次的切面
         removeSection()
         // 创建交互绘制工具
         drawElement = new zondy.cesium.DrawElement(viewer)
@@ -50,18 +109,19 @@
             for (let i = 0; i < positions.length - 1; ++i) {
               let geom = new Cesium.SectionPlaneGeometry({
                 positions: [positions[i], positions[i + 1]],
-                topHeight: 100,
-                bottomHeight: 1200
+                topHeight: 10000,
+                bottomHeight: 10000
               })
               // 设置只显示剖面,可以配合CuttingTool工具同时显示模型和剖面实现封边效果
-              modelLyr.sectionOnly(true)
+              tileset.sectionOnly(true)
               // 向m3d图层设置剖面几何
-              modelLyr.addSectionGeometry({ geometry: geom })
+              tileset.addSectionGeometry({ geometry: geom })
             }
             drawElement.stopDrawing()
           }
         })
       }
+
       // 添加横剖面
       function addHorizontalSection() {
         //先移除上次的切面
@@ -75,14 +135,14 @@
               var geom = new Cesium.SectionPlaneGeometry({
                 positions: [positions[i], positions[i + 1]],
                 // 设置topHeight和bottomHeight相同值，避免因向量方向导致正反面裁剪的深度不一致
-                topHeight: 1200,
-                bottomHeight: 1200,
+                topHeight: 10000,
+                bottomHeight: 10000,
                 isHorizontal: true
               })
               // 设置只显示剖面,可以配合CuttingTool工具同时显示模型和剖面实现封边效果
-              modelLyr.sectionOnly(true)
+              tileset.sectionOnly(true)
               // 向m3d图层设置剖面几何
-              modelLyr.addSectionGeometry({ geometry: geom })
+              tileset.addSectionGeometry({ geometry: geom })
             }
             drawElement.stopDrawing()
           }
@@ -90,49 +150,106 @@
       }
 
       function addHorizontalSectionByHeight() {
-        //先移除上次的切面
+        // 先移除上次的切面
         removeSection()
         // 设置只显示剖面,可以配合CuttingTool工具同时显示模型和剖面实现封边效果
-        modelLyr.sectionOnly(true)
-        modelLyr.addSectionGeometry({
+        tileset.sectionOnly(true)
+        tileset.addSectionGeometry({
           geometry: Cesium.SectionPlaneGeometry.createPlaneGeometryByHeight(
-            [modelLyr],
-            -500
+            [tileset],
+            tileset instanceof Cesium.MapGISM3DSet ? -500 : 0
           )
         })
       }
 
       function addHorizontalSectionByPositions() {
-        //先移除上次的切面
+        // 先移除上次的切面
         removeSection()
-        let positions = [
-          {
-            x: -2560899.547952669,
-            y: 4898389.417259944,
-            z: 3170871.8996368214
-          },
-          {
-            x: -2561130.42234208,
-            y: 4898620.797173124,
-            z: 3171051.5132434503
-          },
-          {
-            x: -2560605.882524569,
-            y: 4897812.988922655,
-            z: 3171999.5037288275
-          },
-          {
-            x: -2560836.7568747043,
-            y: 4898044.36864775,
-            z: 3172179.1172290794
+
+        let positions
+        if (tileset instanceof Cesium.MapGISM3DSet) {
+          if (currentTilesetUrl === DEFAULT_URL.MAPGIS_M3D_21) {
+            positions = [
+              {
+                x: -2560899.547952669,
+                y: 4898389.417259944,
+                z: 3170871.8996368214
+              },
+              {
+                x: -2561130.42234208,
+                y: 4898620.797173124,
+                z: 3171051.5132434503
+              },
+              {
+                x: -2560605.882524569,
+                y: 4897812.988922655,
+                z: 3171999.5037288275
+              },
+              {
+                x: -2560836.7568747043,
+                y: 4898044.36864775,
+                z: 3172179.1172290794
+              }
+            ]
+          } else if (
+            currentTilesetUrl === DEFAULT_URL.MAPGIS_M3D_22_WITH_TEXTURE
+          ) {
+            positions = [
+              {
+                x: -2013658.7142789518,
+                y: 4561889.011520342,
+                z: 3963471.627499303
+              },
+              {
+                x: -2019890.2749941775,
+                y: 4558543.421145003,
+                z: 3964145.4647447034
+              },
+              {
+                x: -2018138.7579325864,
+                y: 4554304.8349244,
+                z: 3969866.6997605967
+              },
+              {
+                x: -2010900.332832421,
+                y: 4557239.914200295,
+                z: 3970169.542940124
+              }
+            ]
           }
-        ].map(function (position) {
-          return new Cesium.Cartesian3(position.x, position.y, position.z)
-        })
+          positions.map(function (position) {
+            return new Cesium.Cartesian3(position.x, position.y, position.z)
+          })
+        } else if (tileset instanceof Cesium.Cesium3DTileset) {
+          positions = [
+            {
+              x: -2177582.624103464,
+              y: 4388565.279698851,
+              z: 4070332.0485490714
+            },
+            {
+              x: -2177646.52955818,
+              y: 4389003.565761476,
+              z: 4069828.6442444855
+            },
+            {
+              x: -2177990.5951875453,
+              y: 4388813.77192029,
+              z: 4069849.0664698198
+            },
+            {
+              x: -2177951.8860621825,
+              y: 4388486.4965347415,
+              z: 4070220.1751120593
+            }
+          ].map(function (position) {
+            return new Cesium.Cartesian3(position.x, position.y, position.z)
+          })
+        }
 
         // 设置只显示剖面,可以配合CuttingTool工具同时显示模型和剖面实现封边效果
-        modelLyr.sectionOnly(true)
-        modelLyr.addSectionGeometry({
+        tileset.sectionOnly(true)
+        tileset.addSectionGeometry({
           geometry: Cesium.SectionPlaneGeometry.createPlaneGeometryByPositions(
             positions[0],
             positions[1],
@@ -145,8 +262,8 @@
       // 移除剖面
       function removeSection() {
         // 移除剖面几何
-        if (Cesium.defined(modelLyr)) {
-          modelLyr.removeAllSectionGeometry()
+        if (Cesium.defined(tileset)) {
+          tileset.removeAllSectionGeometry()
         }
 
         // 停止绘制工具
@@ -167,8 +284,8 @@
         let highlightColor = new Cesium.Color(1.0, 1.0, 0.0, 0.6)
         let leftClickHandler1 = function onLeftClick(movement) {
           let oid = viewer.scene.pickOid(movement.position)
-          modelLyr.pickedOid = oid
-          modelLyr.pickedColor = highlightColor
+          tileset.pickedOid = oid
+          tileset.pickedColor = highlightColor
         }
 
         // 获取属性值
@@ -202,130 +319,149 @@
         }
       }
 
-      // 添加模型数据
-      function addModel() {
-        let url =
-          'http://10.10.130.72:8089/igs/rest/services/Scene/地质体模型/SceneServer'
-        let igsSceneLayer = new zondy.layer.IGSSceneLayer({
-          url: url,
-          // 设置场景初始化参数
-          scenes: [
-            {
-              // 设置子图层初始化参数
-              sublayers: [
-                {
-                  // 子图层id
-                  id: '0',
-                  // 子图层初始化参数
-                  extensionOptions: {
-                    // 开启自动跳转
-                    autoReset: true,
-                    // 如果后续会addSectionGeometry方法给m3d图层设置剖面设置为true,在m3d加载时统计oid等信息支持剖面的拾取高亮
-                    hasSectionGeometry: true
-                  }
-                }
-              ]
+      function initUI() {
+        pane = new Pane({
+          title: '操作面板'
+        })
+
+        const modelCacheBladeFolder = pane.addFolder({
+          title: '模型缓存类型'
+        })
+
+        const modelSectionFolder = pane.addFolder({
+          title: '剖面操作选项'
+        })
+
+        const modelTypeList = modelCacheBladeFolder
+          .addBlade({
+            view: 'list',
+            label: '切换类型',
+            options: [
+              {
+                text: 'MapGIS M3D',
+                value: 'M3D'
+              },
+              {
+                text: 'Cesium 3D Tiles',
+                value: '3DTILES'
+              }
+            ],
+            value: 'M3D'
+          })
+          .on('change', (e) => {
+            if (e.value === 'M3D') {
+              cesium3DTilesModelList.hidden = true
+              M3DModelList.hidden = false
+              loadTileset(DEFAULT_URL.MAPGIS_M3D_21, 'M3D')
+            } else if (e.value === '3DTILES') {
+              cesium3DTilesModelList.hidden = false
+              M3DModelList.hidden = true
+              loadTileset(DEFAULT_URL.CESIUM_3DTILES_10, '3DTILES')
             }
-          ]
-        })
-        map.add(igsSceneLayer)
-        // 图层加载完毕
-        igsSceneLayer.on('layerview-created', function (result) {
-          let layer = sceneView.getInnerLayer(result.layer, '0')
-          modelLyr = layer
-        })
+          })
+
+        const M3DModelList = modelCacheBladeFolder
+          .addBlade({
+            view: 'list',
+            label: 'M3D',
+            options: [
+              {
+                text: '地质体-M3D 2.1-文件服务',
+                value: DEFAULT_URL.MAPGIS_M3D_21
+              },
+              {
+                text: '地质体带纹理-M3D 2.2-文件服务',
+                value: DEFAULT_URL.MAPGIS_M3D_22_WITH_TEXTURE
+              }
+            ],
+            value: DEFAULT_URL.MAPGIS_M3D_21
+          })
+          .on('change', (e) => {
+            loadTileset(e.value, 'M3D')
+          })
+
+        const cesium3DTilesModelList = modelCacheBladeFolder
+          .addBlade({
+            hidden: true,
+            view: 'list',
+            label: '3D Tiles',
+            options: [
+              {
+                text: '地质体-3D Tiles 1.0-文件服务',
+                value: DEFAULT_URL.CESIUM_3DTILES_10
+              }
+            ],
+            value: DEFAULT_URL.CESIUM_3DTILES_10
+          })
+          .on('change', (e) => {})
+
+        modelSectionFolder
+          .addButton({
+            title: '绘制竖面'
+          })
+          .on('click', () => {
+            addVerticalSection()
+          })
+
+        modelSectionFolder
+          .addButton({
+            title: '绘制横面'
+          })
+          .on('click', () => {
+            addHorizontalSection()
+          })
+
+        modelSectionFolder
+          .addButton({
+            title: '添加横面（统一高度）'
+          })
+          .on('click', () => {
+            addHorizontalSectionByHeight()
+          })
+
+        modelSectionFolder
+          .addButton({
+            title: '添加横面（自定义范围）'
+          })
+          .on('click', () => {
+            addHorizontalSectionByPositions()
+          })
+
+        modelSectionFolder
+          .addButton({
+            title: '开启点选'
+          })
+          .on('click', () => {
+            enablePick()
+          })
+
+        pane
+          .addButton({
+            title: '移除剖面 '
+          })
+          .on('click', () => {
+            removeSection()
+          })
       }
 
-      //初始化球体
-      function initViewer() {
-        //初始化图层管理容器
-        map = new zondy.Map()
-        //初始化地图视图对象
-        sceneView = new zondy.cesium.SceneView({
-          //视图id
-          viewId: 'mapgis-3d-viewer',
-          //图层管理容器
-          map: map
-        })
-        //获取视图对象
-        viewer = sceneView.getInnerView()
-        //为了更好的展示，去掉地球
-        viewer.scene.globe.show = false
-        // 针对cesium10.7.4.10版本隐藏大气环境光
-        if (viewer.scene.skyAtmosphere) {
-          viewer.scene.skyAtmosphere.show = false
-        }
-        if (viewer.scene.sun.show) {
-          viewer.scene.sun.show = false
-        }
-        if (viewer.scene.moon.show) {
-          viewer.scene.moon.show = false
-        }
-        if (viewer.scene.globe.showGroundAtmosphere) {
-          viewer.scene.globe.showGroundAtmosphere = false
-        }
-      }
-
-      //地图初始化函数
+      // 地图初始化函数
       function init() {
-        //初始化球体
+        // 初始化球体
         initViewer()
-        //三维试图类构造完毕，添加模型
-        addModel()
+        // 加载模型
+        loadTileset(DEFAULT_URL.MAPGIS_M3D_21, 'M3D')
+        // 初始化UI
+        initUI()
       }
-    </script>
-  </head>
 
-  <body onload="init()">
-    <div id="mapgis-3d-viewer"></div>
-    <div class="layui-panel layui-panel-right" style="width: 440px">
-      <div style="display: flex">
-        <button
-          type="button"
-          class="layui-btn layui-btn-sm layui-btn-normal"
-          onclick="addVerticalSection()"
-        >
-          添加竖面
-        </button>
-        <button
-          type="button"
-          class="layui-btn layui-btn-sm layui-btn-normal"
-          onclick="addHorizontalSection()"
-        >
-          添加横面
-        </button>
-        <button
-          type="button"
-          class="layui-btn layui-btn-sm layui-btn-normal"
-          onclick="addHorizontalSectionByHeight()"
-        >
-          添加横面(统一高度)
-        </button>
-        <button
-          type="button"
-          class="layui-btn layui-btn-sm layui-btn-normal"
-          onclick="addHorizontalSectionByPositions()"
-        >
-          添加横面(控制点)
-        </button>
-      </div>
-      <div style="display: flex; margin-top: 10px">
-        <button
-          type="button"
-          class="layui-btn layui-btn-sm layui-btn-normal"
-          onclick="enablePick()"
-        >
-          开启点选
-        </button>
-        <button
-          type="button"
-          class="layui-btn layui-btn-sm layui-btn-danger"
-          onclick="removeSection()"
-        >
-          移除剖面
-        </button>
-      </div>
-    </div>
-    <style></style>
+      init()
+    </script>
+    <style>
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    </style>
   </body>
 </html>

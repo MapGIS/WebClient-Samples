@@ -8,101 +8,50 @@
     <!--plugin脚本库-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
-    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"/>
     <!--示例公共样式-->
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css"/>
-    <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/tool.css"/>
-    <script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <div id="app-tips">
+      提示：10.7.2.10版本不支持3D Tiles模型拉伸夸张显示功能
+    </div>
+
+    <script type="module">
       'use strict'
-      //定义三维视图的主要类
-      let map, sceneView, viewer, layer
-      let layerList = []
-      let urlM3D2_0 =
-        'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/地质体模型/地质体模型.mcj'
-      let urlM3D2_1 =
-        'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.1/wujiangdizhiti_21/wujiangdizhiti_21.mcj'
-      function addModel(url) {
-        // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/M3DModelCacheLayer.html
-        let M3DLayer = new zondy.layer.M3DModelCacheLayer({
-          url: url,
-          // 初始化参数
-          extensionOptions: {
-            autoReset: true
-          }
-        })
-        map.add(M3DLayer)
-        M3DLayer.on('layerview-created', function (result) {
-          layer = sceneView.getInnerLayer(result.layer)
-          layerList.push(layer)
-          // 开启模型拉伸
-          layer.enableStretch = true
-          // 模型拉伸参考高度
-          layer.stretchReferenceHeight = 0
-          // 模型拉伸系数
-          layer.stretchFactor = 1
-        })
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
+      // 定义三维视图的主要类
+      let map, sceneView, viewer, tileset, pane
+
+      // 定义默认的模型URL
+      const DEFAULT_URL = {
+        MAPGIS_M3D_21:
+          'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.1/wujiangdizhiti_21/wujiangdizhiti_21.mcj',
+        CESIUM_3DTILES_10:
+          'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/wujiangdizhiti/tileset.json'
       }
 
-      //初始化示例UI操作
-      function initUI() {
-        layui.use(function () {
-          // 模型拉伸参考高度
-          layui.slider.render({
-            elem: '#stretchReferenceHeight',
-            value: 0,
-            min: -1000,
-            max: 500,
-            step: 1,
-            theme: 'rgb(21, 134, 238)',
-            change: function (value) {
-              layer.stretchReferenceHeight = value
-            }
-          })
-          // 模型拉伸系数
-          layui.slider.render({
-            elem: '#stretchFactor',
-            value: 1,
-            min: 1,
-            max: 10,
-            step: 1,
-            theme: 'rgb(21, 134, 238)',
-            change: function (value) {
-              layer.stretchFactor = value
-            }
-          })
+      let currentCesiumVersion = localStorage.getItem('currentCesiumVersion')
 
-          let form = layui.form
-          //监听选择框
-          form.on('select(type)', function (data) {
-            while (layerList.length > 0) {
-              let layer = layerList.shift()
-              viewer.scene.primitives.remove(layer)
-            }
-            if (data.value === '0') {
-              addModel(urlM3D2_0)
-            } else {
-              addModel(urlM3D2_1)
-            }
-          })
-        })
-      }
-
-      //初始化球体
+      // 初始化球体
       function initViewer() {
-        //初始化图层管理容器
+        // 初始化图层管理容器
         map = new zondy.Map()
-        //初始化地图视图对象
+        // 初始化地图视图对象
         sceneView = new zondy.cesium.SceneView({
-          //视图id
+          // 视图id
           viewId: 'mapgis-3d-viewer',
-          //图层管理容器
+          // 图层管理容器
           map: map
         })
-        //获取视图对象
+        // 获取视图对象
         viewer = sceneView.getInnerView()
+        viewer.scene.skyBox.show = false
         viewer.scene.skyAtmosphere.show = false
         viewer.scene.sun.show = false
         viewer.scene.moon.show = false
@@ -110,56 +59,188 @@
         viewer.scene.globe.show = false
       }
 
-      //地图初始化函数
+      async function loadTileset(url, type) {
+        viewer.scene.primitives.remove(tileset)
+        if (type === 'M3D') {
+          tileset = await zondy.cesium.MapGISM3DSet.fromUrl(url, {
+            _scene: viewer.scene
+          })
+        } else if (type === '3DTILES') {
+          tileset = await zondy.cesium.Cesium3DTileset.fromUrl(url)
+        }
+        viewer.scene.primitives.add(tileset)
+        viewer.zoomTo(
+          tileset,
+          new Cesium.HeadingPitchRange(0, -Math.PI / 4, 3000)
+        )
+        // 开启模型拉伸
+        tileset.enableStretch = true
+        // 模型拉伸参考高度
+        tileset.stretchReferenceHeight = 0
+        // 模型拉伸系数
+        tileset.stretchFactor = 1
+      }
+
+      // 初始化示例UI操作
+      function initUI() {
+        pane = new Pane({
+          title: '操作面板'
+        })
+
+        const controls = {
+          enableStretch: true,
+          stretchReferenceHeight: 0,
+          stretchFactor: 1
+        }
+
+        const modelCacheBladeFolder = pane.addFolder({
+          title: '模型缓存类型'
+        })
+
+        const modelStretchOptionsFolder = pane.addFolder({
+          title: '模型拉伸选项'
+        })
+
+        function resetComponents() {
+          controls.enableStretch = true
+          controls.stretchReferenceHeight = 0
+          controls.stretchFactor = 1
+        }
+
+        const modelTypeList = modelCacheBladeFolder
+          .addBlade({
+            view: 'list',
+            label: '切换类型',
+            options: [
+              {
+                text: 'MapGIS M3D',
+                value: 'M3D'
+              },
+              {
+                text: 'Cesium 3D Tiles',
+                value: '3DTILES'
+              }
+            ],
+            value: 'M3D'
+          })
+          .on('change', (e) => {
+            if (e.value === 'M3D') {
+              cesium3DTilesModelList.hidden = true
+              M3DModelList.hidden = false
+              loadTileset(DEFAULT_URL.MAPGIS_M3D_21, 'M3D')
+            } else if (e.value === '3DTILES') {
+              cesium3DTilesModelList.hidden = false
+              M3DModelList.hidden = true
+              loadTileset(DEFAULT_URL.CESIUM_3DTILES_10, '3DTILES')
+            }
+            resetComponents()
+          })
+
+        if (currentCesiumVersion === '10.7.2.10') {
+          modelTypeList.disabled = true
+        }
+
+        const M3DModelList = modelCacheBladeFolder
+          .addBlade({
+            view: 'list',
+            label: 'M3D',
+            options: [
+              {
+                text: '地质体-M3D 2.1-文件服务',
+                value: DEFAULT_URL.MAPGIS_M3D_21
+              }
+            ],
+            value: DEFAULT_URL.MAPGIS_M3D_21
+          })
+          .on('change', (e) => {})
+
+        const cesium3DTilesModelList = modelCacheBladeFolder
+          .addBlade({
+            hidden: true,
+            view: 'list',
+            label: '3D Tiles',
+            options: [
+              {
+                text: '地质体-3D Tiles 1.0-文件服务',
+                value: DEFAULT_URL.CESIUM_3DTILES_10
+              }
+            ],
+            value: DEFAULT_URL.CESIUM_3DTILES_10
+          })
+          .on('change', (e) => {})
+
+        modelStretchOptionsFolder
+          .addBinding(controls, 'enableStretch', {
+            label: '模型拉伸'
+          })
+          .on('change', (e) => {
+            tileset.enableStretch = e.value
+          })
+
+        modelStretchOptionsFolder
+          .addBinding(controls, 'stretchReferenceHeight', {
+            label: '参考高度',
+            min: -500,
+            max: 500
+          })
+          .on('change', (e) => {
+            tileset.stretchReferenceHeight = e.value
+          })
+
+        modelStretchOptionsFolder
+          .addBinding(controls, 'stretchFactor', {
+            label: '拉伸系数',
+            min: 1,
+            max: 10
+          })
+          .on('change', (e) => {
+            tileset.stretchFactor = e.value
+          })
+
+        pane
+          .addButton({
+            title: '重置'
+          })
+          .on('click', () => {
+            controls.stretchReferenceHeight = 0
+            controls.stretchFactor = 1
+            tileset.stretchReferenceHeight = 0
+            tileset.stretchFactor = 1
+            pane.refresh()
+          })
+      }
+
+      // 地图初始化函数
       function init() {
-        //初始化球体
+        // 初始化球体
         initViewer()
-        //创建切换Cesium版本的按钮
+        // 创建切换Cesium版本的按钮
         createChangeTab()
-        //添加模型
-        addModel(urlM3D2_0)
+        // 加载默认的3D模型-MAPGIS_M3D_21
+        loadTileset(DEFAULT_URL.MAPGIS_M3D_21, 'M3D')
         // 初始化示例UI操作
         initUI()
       }
+
+      init()
     </script>
-  </head>
 
-  <body onload="init()">
-    <div id="mapgis-3d-viewer"></div>
-    <div class="layui-panel layui-panel-right">
-      <form class="layui-form" action="">
-        <div class="layui-form-item">
-          <label class="layui-form-label">吴江地质体</label>
-          <div class="layui-input-block" style="width: 100px">
-            <select name="type" lay-verify="required" lay-filter="type">
-              <option value="0" selected>M3D2.0</option>
-              <option value="1">M3D2.1</option>
-            </select>
-          </div>
-        </div>
-      </form>
-      <form class="layui-form" action="">
-        <div class="layui-form-item">
-          <label class="layui-form-label">模型拉伸参考高度</label>
-          <div class="layui-input-block sample-slider">
-            <div id="stretchReferenceHeight"></div>
-          </div>
-        </div>
-        <div class="layui-form-item">
-          <label class="layui-form-label">模型拉伸系数</label>
-          <div class="layui-input-block sample-slider">
-            <div id="stretchFactor"></div>
-          </div>
-        </div>
-      </form>
-    </div>
     <style>
-      .layui-panel-right {
-        width: auto;
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
       }
-
-      .layui-form-label {
-        width: 120px;
+      #app-tips {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        background: #28292e;
+        color: #f5f5f5;
+        padding: 5px;
+        user-select: none;
+        font-size: 12px;
+        border-radius: 2px;
       }
     </style>
   </body>

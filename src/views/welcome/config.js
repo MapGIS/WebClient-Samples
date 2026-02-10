@@ -87,6 +87,10 @@ export const Develops = [
         url: "/vue3/mapboxgl/examples/index.html"
       },
       {
+        title: 'Leaflet',
+        url: '/vue3/leaflet/examples/index.html'
+      },
+      {
         title: "UI",
         url: "/vue3/ui/examples/index.html"
       },
@@ -248,16 +252,16 @@ export const NewGallerys = [
     index: "/modules/common/layers/modelCacheLayer/voxel-model",
   },
   {
-    icon: "./static/modules/cesium/example-gallery/visualization/themeLayer/breaks-hybrid.png",
-    title: "混合开发",
-    subtitle: "支持WebClient库与第三方Cesium库混合开发",
-    index: "/modules/cesium/visualization/themeLayer/breaks-hybrid",
+    icon: "./static/modules/cesium/example-gallery/environmentEffects/weatherEffect/weather-height-fog.png",
+    title: "环境特效",
+    subtitle: "新增高度雾、体积光、动物集群等高级环境特效",
+    index: "/modules/cesium/environmentEffects/weatherEffect/weather-height-fog"
   },
   {
-    icon: "./static/modules/cesium/example-gallery/layer/modelCacheLayer/i3s.png",
-    title: "I3S数据接入",
-    subtitle: "支持I3S服务数据的加载",
-    index: "/modules/cesium/layer/modelCacheLayer/i3s",
+    icon: "./static/modules/cesium/example-gallery/layer/modelCacheLayer/m3d-gaussian-splatting.png",
+    title: "3D高斯数据接入",
+    subtitle: "支持3D高斯数据数据的加载",
+    index: "/modules/cesium/layer/modelCacheLayer/m3d-gaussian-splatting",
   },
   {
     icon: "./static/assets/gallery/model-banding.png",
