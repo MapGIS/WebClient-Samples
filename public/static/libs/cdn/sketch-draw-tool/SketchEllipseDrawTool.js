@@ -1,20 +1,30 @@
-var GeometryEngine = zondy.geometry.GeometryEngine
-var { SketchEditMode, ViewEventType } = zondy.enum
-var LineString = zondy.geometry.LineString
-var SketchPolygonDrawTool = zondy.tool.sketch.SketchPolygonDrawTool
 
-class SketchEllipseDrawTool extends SketchPolygonDrawTool {
+class SketchEllipseDrawTool extends zondy.tool.sketch.SketchPolygonDrawTool {
   constructor(options) {
     super(options)
+    // 草图鼠标跟随文字提示
+    this._tipText = {
+      drawStart: {
+        text: '左键按下确定椭圆外包盒左上角，拖动确定椭圆外包盒右下角',
+        lineWidth: 200
+      },
+      drawEnd: { text: '左键单击图形，进行整体编辑', lineWidth: 160 },
+      editGraphic: {
+        text: '左键拖动外包盒，更改位置；左键拖动外包盒顶点，更改大小',
+        lineWidth: 200
+      }
+    }
   }
 
   /**
    * @description 鼠标绘制图形：鼠标单击绘制区的一个顶点；鼠标移动，区图形随鼠标位置变动；鼠标双击，完成区图形绘制。
    */
   drawFeature() {
-    this._editMode = SketchEditMode.DRAWING
+    this._editMode = zondy.enum.SketchEditMode.DRAWING
     // 屏蔽地图默认拖拽事件
     this.view._mapActionControl('drag-pan', false)
+    // 对于视频地图，开启视频地图绘制事件，禁止视频地图播放控制
+    this.view._mapActionControl('video-map-active', true)
     // 控制鼠标移动事件频率
     const timer = null
     // 当前正在绘制的图形对象
@@ -36,6 +46,8 @@ class SketchEllipseDrawTool extends SketchPolygonDrawTool {
     let interactDoms = this._getInteractiveDom()
     // 初始捕获
     this._setInitSnap()
+    // 发送一个开始绘制事件
+    this._fireStartDrawEvent()
 
     // 处理鼠标点击事件。点击后渲染端点图形，渲染区图形
     const handlerDrag = (options) => {
@@ -45,7 +57,7 @@ class SketchEllipseDrawTool extends SketchPolygonDrawTool {
       // 清除捕获效果（上一次）
       if (this.sketchStage.snapGraphics.length > 0) {
         this.sketchStage.snapGraphics.forEach((feature) => {
-          this._removeFeatureFromMap(feature)
+          this._removeFeatureFromLayer(feature, this._sketchInnerLayer)
         })
         this.sketchStage.snapGraphics = []
       }
@@ -67,8 +79,8 @@ class SketchEllipseDrawTool extends SketchPolygonDrawTool {
             // 如果有捕获结果，则纠正此时鼠标坐标为捕获坐标点
             curCoord = this._snapPoint
           }
-          semiMajorAxis = GeometryEngine.planarLength(
-            new LineString({
+          semiMajorAxis = zondy.geometry.GeometryEngine.planarLength(
+            new zondy.geometry.LineString({
               coordinates: [
                 centerCoord.coordinates,
                 [curCoord.coordinates[0], centerCoord.coordinates[1]]
@@ -76,8 +88,8 @@ class SketchEllipseDrawTool extends SketchPolygonDrawTool {
               spatialReference: this._spatialReference
             })
           )
-          semiMinorAxis = GeometryEngine.planarLength(
-            new LineString({
+          semiMinorAxis = zondy.geometry.GeometryEngine.planarLength(
+            new zondy.geometry.LineString({
               coordinates: [
                 centerCoord.coordinates,
                 [centerCoord.coordinates[0], curCoord.coordinates[1]]
@@ -85,14 +97,15 @@ class SketchEllipseDrawTool extends SketchPolygonDrawTool {
               spatialReference: this._spatialReference
             })
           )
-          const coordinates = GeometryEngine.getEllipseCoordinates(
-            centerCoord,
-            semiMajorAxis,
-            semiMinorAxis
-          )
+          const coordinates =
+            zondy.geometry.GeometryEngine.getEllipseCoordinates(
+              centerCoord,
+              semiMajorAxis,
+              semiMinorAxis
+            )
           if (!feature) {
             feature = this._getFeature(coordinates)
-            this._addFeaturesToMap(feature)
+            this._addFeatureToLayer(feature, this.layer)
             this.sketchStage.entityGraphic = feature
           } else {
             feature.geometry.coordinates = JSON.parse(
@@ -112,12 +125,12 @@ class SketchEllipseDrawTool extends SketchPolygonDrawTool {
           // 清除捕获效果
           if (this.sketchStage.snapGraphics.length > 0) {
             this.sketchStage.snapGraphics.forEach((feature) => {
-              this._removeFeatureFromMap(feature)
+              this._removeFeatureFromLayer(feature, this._sketchInnerLayer)
             })
             this.sketchStage.snapGraphics = []
           }
           centerCoord = null
-          this._editMode = SketchEditMode.NONE
+          this._editMode = zondy.enum.SketchEditMode.NONE
           // 恢复鼠标样式
           this.view.cursor = this.cursorStyle
           this._addInteractiveStyle(interactDoms)
@@ -130,12 +143,14 @@ class SketchEllipseDrawTool extends SketchPolygonDrawTool {
           this._fireStopDrawEvent(feature)
           // 恢复地图默认拖拽事件
           this.view._mapActionControl('drag-pan', true)
+          // 对于视频地图视图，禁止视频地图绘制事件，恢复视频地图播放控制
+          this.view._mapActionControl('video-map-active', false)
         }
       }
     }
     // 注册绘制事件
     this._drawEventHandlers.push(handlerDrag)
-    this.view.on(ViewEventType.drag, handlerDrag)
+    this.view.on(zondy.enum.ViewEventType.drag, handlerDrag)
   }
 }
 

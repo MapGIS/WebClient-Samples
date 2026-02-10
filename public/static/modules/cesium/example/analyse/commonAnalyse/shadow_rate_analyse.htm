@@ -183,7 +183,6 @@
         //获取视图对象
         viewer = sceneView.getInnerView()
         // 开启抗锯齿
-        viewer.scene.fxaa = true
         viewer.scene.postProcessStages.fxaa.enabled = true
         if (Cesium.FeatureDetection.supportsImageRenderingPixelated()) {
           //判断是否支持图像渲染像素化处理

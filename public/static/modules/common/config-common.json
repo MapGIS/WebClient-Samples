@@ -129,6 +129,74 @@
       "folder": "layers",
       "childs": [
         {
+          "name": "图层管理",
+          "folder": "layer-management",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "工程化管理工具",
+              "file": "engineering-management-tools",
+              "icon": "engineering-management-tools.png",
+              "diffcult": "1",
+              "tags": [
+                "engineering-management-tools",
+                "management",
+                "工程化管理工具",
+                "gongcehnghuaguanli",
+                "tools"
+              ]
+            },
+            {
+              "name": "底图切换",
+              "file": "change-basemap",
+              "icon": "change-basemap.png",
+              "diffcult": "1",
+              "tags": [
+                "change-basemap",
+                "layer",
+                "地图切换",
+                "dituqiehuan",
+                "Basemap",
+                "baseLayers"
+              ]
+            },
+            {
+              "name": "图层列表",
+              "file": "layer-list",
+              "icon": "layer-list.png",
+              "diffcult": "1",
+              "tags": ["layer-list", "layers", "图层列表", "tucengliebiao"]
+            },
+            {
+              "name": "图层裁剪(客户端)",
+              "file": "client-clip",
+              "icon": "client-clip.png",
+              "diffcult": "1",
+              "tags": ["layers", "空间裁剪", "客户端"]
+            },
+            {
+              "name": "瓦片显示设置",
+              "file": "tile-layer-stretch",
+              "icon": "tile-layer-stretch.png",
+              "diffcult": "1",
+              "tags": ["layers", "瓦片拉伸", "瓦片显示设置"]
+            },
+            {
+              "name": "子图层筛选",
+              "file": "show-sub-layer",
+              "icon": "show-sub-layer.png",
+              "diffcult": "1",
+              "tags": [
+                "sublayer",
+                "IGSMapImageLayer",
+                "IGSVectorTileLayer",
+                "子图层",
+                "zituceng"
+              ]
+            }
+          ]
+        },
+        {
           "name": "瓦片图层",
           "folder": "tileLayer",
           "leaffolder": true,
@@ -735,6 +803,20 @@
                 "graphicslayer",
                 "gaochengmoshi"
               ]
+            },
+            {
+              "name": "几何图层 - 图元避让显示",
+              "file": "graphics-layer-collision",
+              "icon": "graphics-layer-collision.png",
+              "diffcult": "1",
+              "tags": [
+                "graphics-layer-collision",
+                "GraphicsLayer",
+                "几何图层 - 图元避让显示",
+                "jihetuceng",
+                "graphicslayer",
+                "gaochengmoshi"
+              ]
             }
           ]
         },
@@ -827,6 +909,13 @@
                 "geologic-body-mapgis-group",
                 "SceneLayer"
               ]
+            },
+            {
+              "name": "MapGIS覆盖物服务",
+              "file": "mapgis-covering",
+              "icon": "mapgis-covering.png",
+              "diffcult": "1",
+              "tags": ["覆盖物服务", "covering", "fugaiwu", "SceneLayer"]
             },
             {
               "name": "IS场景服务",
@@ -1037,72 +1126,7 @@
               "file": "custom-czml-layer",
               "icon": "custom-czml-layer.png",
               "diffcult": "1",
-              "tags": [
-                "custom-czml-layer",
-                "custom",
-                "custom-czml"
-              ]
-            }
-          ]
-        },
-        {
-          "name": "图层管理",
-          "folder": "layer-management",
-          "leaffolder": true,
-          "childs": [
-            {
-              "name": "工程化管理工具",
-              "file": "engineering-management-tools",
-              "icon": "engineering-management-tools.png",
-              "diffcult": "1",
-              "tags": [
-                "engineering-management-tools",
-                "management",
-                "工程化管理工具",
-                "gongcehnghuaguanli",
-                "tools"
-              ]
-            },
-            {
-              "name": "底图切换",
-              "file": "change-basemap",
-              "icon": "change-basemap.png",
-              "diffcult": "1",
-              "tags": [
-                "change-basemap",
-                "layer",
-                "地图切换",
-                "dituqiehuan",
-                "Basemap",
-                "baseLayers"
-              ]
-            },
-            {
-              "name": "图层列表",
-              "file": "layer-list",
-              "icon": "layer-list.png",
-              "diffcult": "1",
-              "tags": ["layer-list", "layers", "图层列表", "tucengliebiao"]
-            },
-            {
-              "name": "图层裁剪(客户端)",
-              "file": "client-clip",
-              "icon": "client-clip.png",
-              "diffcult": "1",
-              "tags": ["layers", "空间裁剪", "客户端"]
-            },
-            {
-              "name": "显示子图层",
-              "file": "show-sub-layer",
-              "icon": "show-sub-layer.png",
-              "diffcult": "1",
-              "tags": [
-                "sublayer",
-                "IGSMapImageLayer",
-                "IGSVectorTileLayer",
-                "子图层",
-                "zituceng"
-              ]
+              "tags": ["custom-czml-layer", "custom", "custom-czml"]
             }
           ]
         }
@@ -1212,6 +1236,20 @@
               "diffcult": "1",
               "icon": "view-event.png",
               "tags": ["视图事件", "view-event", "shitushijian"]
+            }
+          ]
+        },
+        {
+          "name": "视图工具",
+          "folder": "view-tool",
+          "leaffolder": true,
+          "childs": [
+            {
+              "name": "卷帘",
+              "file": "swipe-tool",
+              "diffcult": "1",
+              "icon": "swipe-tool.png",
+              "tags": ["卷帘", "swipe-tool", "卷帘工具"]
             }
           ]
         }
@@ -2107,6 +2145,17 @@
                 "SimpleLineSymbol",
                 "SimpleFillSymbol",
                 "PictureFillSymbol"
+              ]
+            },
+            {
+              "name": "分段专题图-栅格体元",
+              "file": "breaks-voxel",
+              "diffcult": "1",
+              "icon": "breaks-voxel.png",
+              "tags": [
+                "分段专题图-栅格体元",
+                "breaks-voxel",
+                "fenduanshangetiyuan"
               ]
             },
             {

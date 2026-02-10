@@ -4,18 +4,16 @@
 
 **前往**[司马云官网](http://smaryun.com/dev/download_detail.html#/download828)**下载MapGIS Client for JavaScript开发库**
 
-以 10.7.4.10 为例，其中：
+以 10.7.6.10 为例，其中：
 
-- mapgis-client-for-javascript-dist-v10.7.4.10.rar为开发库
+- mapgis-client-for-javascript-dist-v10.7.6.10.rar为开发库
 
-- mapgis-client-for-javascript-all-v10.7.4.10.rar为开发库+示例站点
+- mapgis-client-for-javascript-all-v10.7.6.10.rar为开发库+示例站点
 
 
 **Webclient-Leaflet-Plugin所需开发包位于如下文件夹中**
 
-- @mapgis/webclient-leaflet-plugin 库：`mapgis-client-for-javascript-all-v10.7.4.10\dist\cdn\zondyclient\webclient-leaflet-plugin.min.js`
-
-- @mapgis/leaflet 库：`mapgis-client-for-javascript-all-v10.7.4.10\dist\cdn\leaflet`
+- @mapgis/webclient-leaflet-plugin 库：`mapgis-client-for-javascript-all-v10.7.6.10\dist\cdn\zondyclient\webclient-leaflet-plugin.min.js`
 
 # 2、引入开发库
 
@@ -43,16 +41,26 @@
 
 **引入项目本地的库时，将 webclient-leaflet-plugin.min.js 文件和 leaflet 文件夹拷贝出来，放入项目的静态资源目录。**
 
-## 2.2、npm 方式引入
+## 2.2、npm（或yarn、pnpm） 方式引入
 
 使用此方式前请先检查电脑中是否已安装应用程序 Node.js，并切换 npm 源为公网。
 
-获取 npm 包，两种 npm install 方式：
+获取 js 包，两种 install 方式：
 
 &ensp;&ensp;&ensp;&ensp;1.直接安装：
 
 ```plain
+npm install leaflet@1.9.2
+npm install @mapgis/webclient-common
 npm install @mapgis/webclient-leaflet-plugin
+// 使用 yarn 安装
+yarn add leaflet@1.9.2
+yarn add @mapgis/webclient-common
+yarn add @mapgis/webclient-leaflet-plugin
+// 使用 pnpm 安装
+pnpm add leaflet@1.9.2
+pnpm add @mapgis/webclient-common
+pnpm add @mapgis/webclient-leaflet-plugin
 ```
 
 &ensp;&ensp;&ensp;&ensp;2.在项目 package.json 文件中的 dependencies 内增加 @mapgis/webclient-leaflet-plugin 及对应版本号，例如：
@@ -62,7 +70,9 @@ npm install @mapgis/webclient-leaflet-plugin
   "version": "0.0.0",
   "scripts": {},
   "dependencies": {
-    "@mapgis/webclient-leaflet-plugin": "^17.4.0"
+    "leaflet": "1.9.2",
+    "@mapgis/webclient-common": "^17.6.0",
+    "@mapgis/webclient-leaflet-plugin": "^17.6.0"
   },
   "devDependencies": {}
 }
@@ -70,7 +80,12 @@ npm install @mapgis/webclient-leaflet-plugin
 &ensp;&ensp;&ensp;&ensp;然后再进行安装：
 
 ```plain
+// 使用 npm 安装
 npm install
+// 使用 yarn 安装
+yarn install
+// 使用 pnpm 安装
+pnpm install
 ```
 
 &ensp;&ensp;&ensp;&ensp;安装完毕后，在项目`node_modules/@mapgis`文件夹中可找到`webclient-leaflet-plugin`文件夹、`leaflet`文件夹。
@@ -81,6 +96,17 @@ npm install
 - 对于 @mapgis/webclient-leaflet-plugin 库：
 同时支持文件方式引入和 npm 引入方式。
 `@mapgis/webclient-leaflet-plugin/dist/es5`文件夹中 webclient-leaflet-plugin.min.js 文件支持文件方式引入开发库，需要将 webclient-leaflet-plugin.min.js 文件拷贝到项目的静态资源目录，引入开发库方法请参考“2、引入开发库 - 2.1文件方式” 。
+
+## 2.3、查看 webclient-common 库版本号
+
+@mapgis/webclient-leaflet-plugin 库版本号查看方式：
+zondy.leaflet.VERSION
+
+附：其他 weblcient-javascript 基础库版本查看方式
+@mapgis/webclient-common 库：zondy.VERSION
+@mapgis/webclient-cesium-plugin 库：zondy.cesium.VERSION
+@mapgis/webclient-mapboxgl-plugin 库：zondy.mapboxgl.VERSION
+@mapgis/webclient-cesium 库：Cesium.MAPGIS_VERSION
 
 # 3、调用库中的接口进行功能开发
 
@@ -142,6 +168,12 @@ npm install
 ## 3.2、npm 方式
 
 以 VUE 项目为例，React 和 Angular 类似。
+
+**在项目的main.js文件中引入leaflet引擎的样式文件**
+
+```javascript
+import 'leaflet/dist/leaflet.css'
+```
 
 **在项目的 css 文件中设置地图视图容器的样式，否则地图视图无法显示**
 

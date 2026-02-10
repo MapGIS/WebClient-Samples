@@ -8,6 +8,7 @@
       include="jquery,fancytree"
       src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"
     ></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
     <link
@@ -29,6 +30,8 @@
       // 定义视图的主要类
       let map,
         view,
+        tiandituLayer,
+        tiandituLayer1,
         igsMapImageLayer,
         igsTileLayer,
         igsVectorTileLayer,
@@ -43,6 +46,7 @@
       const { Map, MapView, SceneView, Basemap, Collection, Color, Feature } =
         zondy
       const {
+        WebTileLayer,
         IGSTileLayer,
         IGSMapImageLayer,
         IGSVectorTileLayer,
@@ -62,6 +66,8 @@
       function init() {
         // 初始化地图视图
         initView()
+        // 添加天地图
+        addTianDiTuLayer()
         // 添加IGS地图图层
         addIGSMapImageLayer()
         // 添加瓦片图层
@@ -94,22 +100,33 @@
         map = new Map()
         // 获取引擎类型
         let type = localStorage.getItem('engine-type')
-        // 是MapBox引擎，设置雪碧图和字体参数
-        if (type === 'mapboxgl') {
-          view = new zondy.mapboxgl.MapView({
-            viewId: 'mapgis-viewer',
-            map: map,
-            extensionOptions: {
-              style: {
-                glyphs: "http://10.10.130.72:8089/igs/rest/services/VectorTile/湖北省3857矢量瓦片/VectorTileServer/fonts/{fontstack}?range={range}.pbf&f=pbf",
-                sprite: "http://10.10.130.72:8089/igs/rest/services/VectorTile/湖北省3857矢量瓦片/VectorTileServer/sprites/sprite"
-              }
-            }
-          })
-        } else {
-          // 初始化地图视图对象
-          view = createView('mapgis-viewer', map)
-        }
+        // 初始化地图视图对象
+        view = createView('mapgis-viewer', map)
+      }
+
+      function addTianDiTuLayer() {
+        tiandituLayer = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=img_w&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken(),
+          // 图层透明度
+          opacity: 1
+        })
+
+        tiandituLayer1 = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=cva_w&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken(),
+          // 图层透明度
+          opacity: 1
+        })
+        map.addMany([tiandituLayer, tiandituLayer1])
       }
 
       // 添加地图服务图层
@@ -118,8 +135,6 @@
         igsMapImageLayer = new IGSMapImageLayer({
           //服务地址
           url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/MapServer',
-          // 设置出图模式
-          renderMode: 'image',
           // 设置子图层
           sublayers: [
             {
@@ -141,7 +156,8 @@
             }
           ],
           // 图层名称
-          title: '湖北省地图服务图层'
+          title: '湖北省地图服务图层',
+          visible: false
         })
         map.add(igsMapImageLayer)
       }
@@ -154,13 +170,15 @@
           url: 'http://10.10.130.72:8089/igs/rest/services/Tile/湖北省_3857_normal_3-10/TileServer',
           // 图层名称
           title: '湖北省瓦片图层',
+          // 设置透明度
+          opacity: 0.5,
           // 显示或隐藏
-          visible: false
+          visible: true
         })
         igsTileLayer.on('layerview-created', function (result) {
           //视点跳转
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
         map.add(igsTileLayer)
@@ -210,8 +228,8 @@
       // 添加同空间参考系（3857）不同裁图方式图层叠加用例
       function addSpatialReferenceGroupLayer() {
         const wuhan_3857_256_custom_mvt = new IGSVectorTileLayer({
-          url:"http://10.10.130.72:8089/igs/rest/services/VectorTile/wuhan_3857_256_custom_mvt/VectorTileServer",
-          title: "自定义原点分辨率矢量瓦片",
+          url: 'http://10.10.130.72:8089/igs/rest/services/VectorTile/wuhan_3857_256_custom_mvt/VectorTileServer',
+          title: '自定义原点分辨率矢量瓦片',
           // 显示或隐藏
           visible: true
         })
@@ -239,21 +257,18 @@
           url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/FeatureServer',
           title: '湖北省要素图层',
           sublayerId: 0,
-          opacity: 0.3,
           // 显示或隐藏
-          visible: false,
+          visible: true,
           renderer: new SimpleRenderer({
             symbol: new SimpleFillSymbol({
               // 填充颜色
-              color: 'rgba(0,255,252,1)',
+              color: 'rgba(0,0,0,0)',
               // 外边线样式
               outline: new SimpleLineSymbol({
                 //线颜色
-                color: new Color(255, 1, 0, 1),
+                color: new Color(58, 133, 198, 1),
                 //线宽
-                width: 1,
-                //线样式
-                style: 'dot'
+                width: 1
               })
             })
           })
@@ -278,7 +293,7 @@
             })
           }),
           // 显示或隐藏
-          visible: true,
+          visible: false,
           // 图层名称
           title: '武汉行政区规划GeoJSON图层'
         })
@@ -294,7 +309,7 @@
           // 图层名称
           title: '湖北省WFS图层',
           // 显示或隐藏
-          visible: false,
+          visible: true,
           // 指定显示一个子图层
           sublayerId: 'Map_湖北省4326:t70',
           // 设置渲染样式-统一专题图
@@ -302,9 +317,9 @@
             // 因为该数据的几何类型为区，因此设置区样式
             symbol: new SimpleMarkerSymbol({
               // 半径
-              size: 20,
+              size: 10,
               // 填充颜色
-              color: new Color(0, 0, 255),
+              color: new Color(255, 0, 0, 1),
               // 外边线样式
               outline: new SimpleLineSymbol({
                 // 外边线颜色
@@ -321,6 +336,7 @@
       function addGraphicLayer() {
         graphicsLayer = new GraphicsLayer({
           title: '标绘物-几何图元图层',
+          visible: false,
           graphics: [
             new Feature({
               symbol: new SimpleMarkerSymbol({
@@ -351,6 +367,7 @@
         // 创建组图层
         groupLayer = new GroupLayer({
           title: '组图层',
+          visible: false,
           layers: [
             new IGSFeatureLayer({
               url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省3857/FeatureServer/1-8',
@@ -377,106 +394,50 @@
 
       // 确认所以图层加载完毕
       function allLayerLoaded() {
-        function getMapImageSubLayer(list, arr) {
-          list.forEach((layer) => {
-            const childArr = []
-            getMapImageSubLayer(layer.sublayers.items, childArr)
-            arr.push({
-              title: layer.name,
-              key: layer.id,
-              children: childArr,
-              isMapImageSublayer: true,
-              layer: layer,
-              selected: layer.visible
-            })
-          })
-        }
-
-        function getLayerTreeData(list, arr) {
-          list.forEach((layer) => {
+        function getLayerTreeData(items) {
+          return items.map((layer) => {
             if (layer.type === 'group') {
-              const childArr = []
-              getLayerTreeData(layer.layers.items, childArr)
-              arr.push({
+              return {
+                folder: true,
                 title: layer.title,
                 key: layer.id,
-                folder: true,
-                children: childArr,
+                children: getLayerTreeData(layer.layers.items),
                 layer: layer,
                 selected: layer.visible
-              })
+              }
+            } else if (layer.sublayers && layer.sublayers.items.length > 0) {
+              return {
+                folder: true,
+                title: layer.title,
+                key: layer.id,
+                children: getLayerTreeData(layer.sublayers.items),
+                layer: layer,
+                selected: layer.visible
+              }
             } else {
-              // 针对地图服务图层
-              if (layer.type === 'igs-map-image') {
-                const sublayerChildArr = []
-                getMapImageSubLayer(layer.sublayers.items, sublayerChildArr)
-                arr.push({
-                  folder: false,
-                  title: layer.title,
-                  key: layer.id,
-                  layer: layer,
-                  selected: layer.visible,
-                  children: sublayerChildArr
-                })
-              } else {
-                arr.push({
-                  folder: false,
-                  title: layer.title,
-                  key: layer.id,
-                  layer: layer,
-                  selected: layer.visible
-                })
+              return {
+                folder: false,
+                title: layer.title,
+                key: layer.id,
+                layer: layer,
+                selected: layer.visible
               }
             }
           })
         }
 
         map.once('map-layer-loaded', () => {
-          const treeData = []
-          getLayerTreeData(map.layers.items, treeData)
+          const treeData = getLayerTreeData(map.layers.items)
           $('#layer-list-panel').fancytree({
-            extensions: ['dnd5', 'multi'],
+            extensions: ['dnd5'],
             checkbox: true,
-            selectMode: 3,
+            selectMode: 2,
             source: treeData,
             select: function (event, data) {
-              // 扁平化的所有keys
-              const selNodesKeys = $.map(
-                data.tree.getSelectedNodes(),
-                function (node) {
-                  return node.key
-                }
-              )
-
-              const allLayers = map.allLayers.items.forEach((layer) => {
-                if(layer.type === 'group') return
-                // 判断是否为igsMapImageLayer
-                if (layer.type === 'igs-map-image') {
-                  const sublayers = layer.allSublayers.items
-                  sublayers.forEach((sublayer) => {
-                    if (selNodesKeys.some((v) => sublayer.id === v)) {
-                      if (sublayer.visible !== true) {
-                        sublayer.visible = true
-                      }
-                    } else {
-                      if (sublayer.visible !== false) {
-                        sublayer.visible = false
-                      }
-                    }
-                  })
-                  return
-                }
-
-                if (selNodesKeys.some((v) => layer.id === v)) {
-                  if (layer.visible !== true) {
-                    layer.visible = true
-                  }
-                } else {
-                  if (layer.visible !== false) {
-                    layer.visible = false
-                  }
-                }
-              })
+              if (data && data.node) {
+                const layer = data.node.data.layer
+                layer.visible = data.node.selected
+              }
             },
             dnd5: {
               preventVoidMoves: true, // Prevent moving nodes 'before self', etc.
@@ -485,7 +446,10 @@
               autoExpandMS: 1000,
               multiSource: false, // drag all selected nodes (plus current node)
               dragStart: function (node, data) {
-                if (node.data.isMapImageSublayer) {
+                if (
+                  node.data &&
+                  node.data.layer instanceof zondy.layer.SubLayer
+                ) {
                   return false
                 }
                 return true
@@ -508,11 +472,9 @@
                     const group = groupLayer.findLayerById(sourceTargetLayer.id)
                       ? groupLayer
                       : map
-
                     let index = group.layers.items
                       .filter((v) => v.id !== sourceTargetLayer.id)
                       .findIndex((v) => v.id === layer.id)
-
                     if (data.hitMode === 'after') {
                       index += 1
                     }
@@ -536,15 +498,15 @@
     ></div>
     <div
       class="layui-panel layui-panel-right"
-      style="width: 330px; height: 500px; cursor: pointer"
+      style="width: 330px; height: 500px; cursor: pointer; opacity: 0.7"
     >
       <form class="layui-form" action="">
         <div class="layui-form-item">
-          <label class="layui-form-label">图层列表</label>
+          <label class="layui-form-label" style="">图层列表</label>
         </div>
         <div id="layer-list-panel" class="layui-form-item"></div>
         <div id="layer-list-tips">
-          Tips:拖动列表内图层可实现图层排序,排序功能参考Api文档
+          TIPS:拖动列表内图层可实现图层排序,排序功能参考Api文档
         </div>
       </form>
     </div>

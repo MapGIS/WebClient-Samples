@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>大气雾</title>
+    <!--加载Cesium库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <script type="module">
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
+      // 定义创建图层与UI交互相关的变量
+      let map,
+        sceneView,
+        viewer,
+        pane,
+        atmosphereFogStage,
+        atmosphereFogControls
+
+      //添加大气雾的参数
+      let defaultAtmosphereFogControls = {
+        enabled: true,
+        lightDensity: 0.5,
+        rayleighCoefficient: 0.2,
+        mieCoefficient: 0.2,
+        absorbCoefficient: 0.0,
+        viewer
+      }
+
+      // 该方法用于初始化三维地图查看器，包括创建图层管理容器，初始化地图视图对象以及获取Cesium场景视图对象
+      // 初始场景
+      async function initViewer() {
+        map = new zondy.Map()
+        sceneView = new zondy.cesium.SceneView({
+          viewId: 'mapgis-3d-viewer',
+          map: map,
+          extensionOptions: {
+            timeline: true
+          }
+        })
+        viewer = sceneView.getInnerView()
+        // 恢复为默认天空，效果搭配大气雾更佳
+        viewer.scene.skyBox = new Cesium.SkyBox({
+          sources: {
+            positiveX:
+              'http://10.10.130.72:8086/static/libs/cdn/cesium/Assets/Textures/SkyBox/tycho2t3_80_px.jpg',
+            negativeX:
+              'http://10.10.130.72:8086/static/libs/cdn/cesium/Assets/Textures/SkyBox/tycho2t3_80_mx.jpg',
+            positiveY:
+              'http://10.10.130.72:8086/static/libs/cdn/cesium/Assets/Textures/SkyBox/tycho2t3_80_py.jpg',
+            negativeY:
+              'http://10.10.130.72:8086/static/libs/cdn/cesium/Assets/Textures/SkyBox/tycho2t3_80_my.jpg',
+            positiveZ:
+              'http://10.10.130.72:8086/static/libs/cdn/cesium/Assets/Textures/SkyBox/tycho2t3_80_pz.jpg',
+            negativeZ:
+              'http://10.10.130.72:8086/static/libs/cdn/cesium/Assets/Textures/SkyBox/tycho2t3_80_mz.jpg'
+          }
+        })
+        // 开启地形深度测试
+        viewer.scene.globe.depthTestAgainstTerrain = true
+        // 配置提升效果
+        viewer.scene.highDynamicRange = true
+        viewer.scene.fog.enabled = false
+        viewer.scene.globe.showGroundAtmosphere = false
+        viewer.scene.skyAtmosphere.show = false
+
+        // 指定时间
+        viewer.clock.currentTime = Cesium.JulianDate.fromIso8601(
+          '2025-09-11T22:12:00Z'
+        )
+
+        // viewer.scene.debugShowFramesPerSecond = true
+        sceneView.on('loaded', () => {
+          viewer.camera.setView({
+            destination: {
+              x: -2118775.9651788757,
+              y: 5019631.30357204,
+              z: 3307815.88332065
+            },
+            orientation: {
+              heading: 1.5020262414091672,
+              pitch: -0.1432563048294173,
+              roll: 0.00006063558975721861
+            }
+          })
+        })
+      }
+      // 添加地形
+      async function addTerrain() {
+        viewer.terrainProvider = await Cesium.CesiumTerrainProvider.fromUrl(
+          'http://10.10.130.72:8200/3DData/TerrainCache/HubeiTerrain/'
+        )
+      }
+      // 添加天地图
+      function addTDT() {
+        let TDTLayer = new zondy.layer.WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_c/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        map.add(TDTLayer)
+      }
+
+      function initAtmosphereFog() {
+        //特效对象
+        atmosphereFogStage =
+          zondy.cesium.PostProcessStageLibrary.createAtmosphereFogStage({
+            viewer
+          })
+        viewer.scene.postProcessStages.add(atmosphereFogStage)
+      }
+
+      // 初始化UI组件
+      function initUI() {
+        if (pane) {
+          pane.dispose()
+        }
+        pane = new Pane({
+          title: '大气雾特效操作面板'
+        })
+
+        const atmosphereFolder = pane.addFolder({
+          title: '大气雾控制'
+        })
+
+        atmosphereFogControls = Object.assign({}, defaultAtmosphereFogControls)
+
+        atmosphereFolder
+          .addBinding(atmosphereFogControls, 'lightDensity', {
+            label: '光强度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            atmosphereFogStage.uniforms.lightDensity = e.value
+          })
+        atmosphereFolder
+          .addBinding(atmosphereFogControls, 'rayleighCoefficient', {
+            label: '瑞利散射系数',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            atmosphereFogStage.uniforms.rayleighCoefficient = e.value
+          })
+        atmosphereFolder
+          .addBinding(atmosphereFogControls, 'mieCoefficient', {
+            label: '米氏散射系数',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            atmosphereFogStage.uniforms.mieCoefficient = e.value
+          })
+        atmosphereFolder
+          .addBinding(atmosphereFogControls, 'absorbCoefficient', {
+            label: '大气吸收系数',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            atmosphereFogStage.uniforms.absorbCoefficient = e.value
+          })
+        atmosphereFolder
+          .addBinding(atmosphereFogControls, 'enabled', {
+            label: '开启大气雾'
+          })
+          .on('change', (e) => {
+            atmosphereFogStage.enabled = e.value
+          })
+      }
+
+      // 该方法用于初始化整个应用，包括初始化查看器、添加模型缓存图层和初始化用户界面
+      function init() {
+        initViewer()
+        addTerrain()
+        initAtmosphereFog()
+        addTDT()
+        initUI()
+      }
+
+      init()
+    </script>
+
+    <style>
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+    </style>
+  </body>
+</html>

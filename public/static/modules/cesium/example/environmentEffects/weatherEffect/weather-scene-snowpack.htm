@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>场景积雪</title>
+    <!--加载不同版本Cesium库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <div id="app-tips">
+      提示：场景积雪只会为模型（M3D和3D Tiles）和地形添加积雪效果 <br />
+      若数据中存在法向量，则使用法向量计算积雪，否则会实时计算法向量
+    </div>
+
+    <script type="module">
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
+      // 定义创建图层与UI交互相关的变量
+      let map, sceneView, viewer, pane, tileset
+
+      // 该方法用于初始化三维地图查看器，包括创建图层管理容器，初始化地图视图对象以及获取Cesium场景视图对象
+      function initViewer() {
+        map = new zondy.Map()
+        sceneView = new zondy.cesium.SceneView({
+          viewId: 'mapgis-3d-viewer',
+          map: map,
+          extensionOptions: {
+            timeline: true,
+            shadows: true,
+            terrainShadows: Cesium.ShadowMode.ENABLED
+          }
+        })
+        viewer = sceneView.getInnerView()
+        // 开启地形深度测试
+        viewer.scene.globe.depthTestAgainstTerrain = true
+        // 开启场景抗锯齿
+        viewer.scene.postProcessStages.fxaa.enabled = true
+      }
+
+      // 该方法用于添加M3D模型缓存图层
+      function addModelCacheLayer() {
+        const modelCacheLayer = new zondy.layer.M3DModelCacheLayer({
+          url: 'http://10.10.130.72:8200/3DData/ModelCache/M3D/1.0/DaYanTa-M3D/dayanta.mcj'
+        })
+        map.add(modelCacheLayer)
+        modelCacheLayer.on('layerview-created', function (result) {
+          tileset = sceneView.getInnerLayer(result.layer)
+          // viewer.zoomTo(tileset)
+        })
+      }
+
+      // 该方法用于添加地形数据
+      function addTerrain() {
+        let terrainCacheLayer = new zondy.layer.TerrainCacheLayer({
+          url: 'http://10.10.130.72:8200/3DData/TerrainCache/台湾地形',
+          extensionOptions: {
+            requestVertexNormals: true
+          }
+        })
+        map.add(terrainCacheLayer)
+        // 将视角定位到地形区域
+        viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(
+            120.33220756190961,
+            23.05535048439857,
+            17342.530828034127
+          ),
+          orientation: {
+            heading: Cesium.Math.toRadians(62.28939435690799),
+            pitch: Cesium.Math.toRadians(-12.870214031070452),
+            roll: 0
+          },
+          duration: 0
+        })
+      }
+
+      // 该方法用于加载天地图
+      function addTDT() {
+        let TDTLayer = new zondy.layer.WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_c/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        map.add(TDTLayer)
+      }
+
+      // 该方法用于添加积雪后处理特效
+      function addSceneSnowpack() {
+        viewer.scene.enableSnowpack = true
+        viewer.scene.snowpackDensity = 0.06
+      }
+
+      // 该方法用于初始化UI操作面板
+      function initUI() {
+        pane = new Pane({
+          title: '操作面板'
+        })
+
+        const snowpackControlFolder = pane.addFolder({
+          title: '积雪控制'
+        })
+
+        const viewControlFolder = pane.addFolder({
+          title: '视角跳转'
+        })
+
+        // 定义默认参数
+        const paneParameters = {
+          enabled: true,
+          density: 0.06,
+          alpha: 1.0
+        }
+
+        snowpackControlFolder
+          .addBinding(paneParameters, 'enabled', {
+            label: '开启积雪'
+          })
+          .on('change', (e) => {
+            viewer.scene.enableSnowpack = e.value
+          })
+
+        snowpackControlFolder
+          .addBinding(paneParameters, 'alpha', {
+            label: '透明度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            viewer.scene.snowpackAlpha = e.value
+          })
+
+        snowpackControlFolder
+          .addBinding(paneParameters, 'density', {
+            label: '厚度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            viewer.scene.snowpackDensity = e.value
+          })
+
+        viewControlFolder
+          .addButton({
+            title: '倾斜摄影'
+          })
+          .on('click', () => {
+            viewer.zoomTo(tileset)
+          })
+
+        viewControlFolder
+          .addButton({
+            title: '地形'
+          })
+          .on('click', () => {
+            viewer.camera.flyTo({
+              destination: Cesium.Cartesian3.fromDegrees(
+                120.33220756190961,
+                23.05535048439857,
+                17342.530828034127
+              ),
+              orientation: {
+                heading: Cesium.Math.toRadians(62.28939435690799),
+                pitch: Cesium.Math.toRadians(-12.870214031070452),
+                roll: 0
+              },
+              duration: 0
+            })
+          })
+
+        pane
+          .addButton({
+            title: '重置'
+          })
+          .on('click', () => {
+            paneParameters.enabled = true
+            paneParameters.density = 0.06
+            paneParameters.alpha = 1
+            viewer.scene.enableSnowpack = true
+            viewer.scene.snowpackDensity = 0.06
+            viewer.scene.snowpackAlpha = 1
+            pane.refresh()
+          })
+      }
+
+      // 该方法用于初始化整个应用，包括初始化查看器、添加模型缓存图层和初始化用户界面
+      function init() {
+        initViewer()
+        addTerrain()
+        addModelCacheLayer()
+        addSceneSnowpack()
+        addTDT()
+        initUI()
+      }
+
+      init()
+    </script>
+
+    <style>
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      /* 提示内容样式 */
+      #app-tips {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        /* left: 50%; */
+        /* transform: translateX(-50%); */
+        background: #28292e;
+        color: #f5f5f5;
+        padding: 5px;
+        user-select: none;
+        font-size: 12px;
+        border-radius: 2px;
+      }
+    </style>
+  </body>
+</html>

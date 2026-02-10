@@ -240,7 +240,7 @@
         // 图层加载完毕
         wmtsLayer.on('layerview-created', function (result) {
           console.log('加载完毕:', result.layer)
-          view.flyTo({
+          view.goTo({
             center: [114.4016, 30.4667, 1000],
             zoom: 17
           })
@@ -654,7 +654,7 @@
       }
 
       function addEditPolygon() {
-        view.flyTo({
+        view.goTo({
           center: [112.615, 31.14, 100000],
           zoom: 13
         })
@@ -1252,7 +1252,7 @@
       }
 
       function addEditPolygon2() {
-        view.flyTo({
+        view.goTo({
           center: [114.333, 30.673, 100000],
           zoom: 11
         })

@@ -55,8 +55,8 @@
         })
         map.add(igsTileLayer)
         igsTileLayer.on('layerview-created', (result) => {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }

@@ -52,7 +52,7 @@
       //飞到指定视角
       function flyTo() {
         //飞到指定视角
-        sceneView.flyTo({
+        sceneView.goTo({
           center: [116.5258, 41.8054, 20000000]
         })
       }
@@ -131,6 +131,10 @@
             // 是否开启抗锯齿
             viewer.scene.fxaa = data.elem.checked
             viewer.scene.postProcessStages.fxaa.enabled = data.elem.checked
+          })
+          form.on('switch(HDR)', function (data) {
+            // 是否开启HDR
+            viewer.scene.highDynamicRange = data.elem.checked;
           })
           form.on('switch(fog)', function (data) {
             // 是否开启雾化效果，需要缩放至近地面查看效果

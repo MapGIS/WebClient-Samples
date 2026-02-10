@@ -70,20 +70,76 @@ export const Develops = [
   },
   {
     icon: "./static/assets/home/vue-new.png",
-    routeGallery: "http://192.168.82.91:8086/storybook/index.html",
+    routeGallery: "",
+    routeGalleryList: [
+      {
+        group: "Vue 3 组件",
+        groupIcon: "beta",
+        title: "Common",
+        url: "/vue3/common/examples/index.html"
+      },
+      {
+        title: "Cesium",
+        url: "/vue3/cesium/examples/index.html"
+      },
+      {
+        title: "MapboxGL",
+        url: "/vue3/mapboxgl/examples/index.html"
+      },
+      {
+        title: 'Leaflet',
+        url: '/vue3/leaflet/examples/index.html'
+      },
+      {
+        title: "UI",
+        url: "/vue3/ui/examples/index.html"
+      },
+      {
+        group: "Vue 2 组件",
+        title: "示例",
+        url: "/static/modules/component/storybook/index.html?path=/story/基础介绍-0-介绍--page"
+      }
+    ],
     routeAPI: "",
-    routeAPIList: [{
-      "title": "Cesium-API",
-        "url": "./static/modules/component/api/vue-cesium/index.html"
-      },{
-        "title": "MapboxGL-API",
-        "url": "/static/modules/component/api/vue-mapboxgl/index.html"
-      },{
-        "title": "UI-API",
-        "url": "/static/modules/component/api/vue-ui/index.html"
-      }],
+    routeAPIList: [
+      {
+        group: "Vue 3 组件",
+        groupIcon: "beta",
+        title: "Common",
+        url: "/vue3/common/docs/index.html"
+      },
+      {
+        title: "Cesium",
+        url: "/vue3/cesium/docs/index.html"
+      },
+      {
+        title: "MapboxGL",
+        url: "/vue3/mapboxgl/docs/index.html"
+      },
+      {
+        title: "UI",
+        url: "/vue3/ui/docs/index.html"
+      },
+      {
+        group: "Vue 2 组件",
+        title: "Cesium",
+        url: "./static/modules/component/api/vue-cesium/index.html"
+      },
+      {
+        title: "MapboxGL",
+        url: "/static/modules/component/api/vue-mapboxgl/index.html"
+      },
+      {
+        title: "UI",
+        url: "/static/modules/component/api/vue-ui/index.html"
+      }
+    ],
     title: "组件",
-    subtitle: ["VUE-MapboxGL、VUE-Cesium、", "MapGIS UI组件库", "适合WebGIS二三维组件应用开发"],
+    subtitle: [
+      "VUE-MapboxGL、VUE-Cesium、",
+      "MapGIS UI组件库",
+      "适合WebGIS二三维组件应用开发"
+    ],
     index: "/",
   },
   // {
@@ -162,10 +218,10 @@ export const Gallerys = [
       "/modules/cesium/query/clientQuery/model-wireframe-and-outline-display",
   },
   {
-    icon: "./static/modules/cesium/example-gallery/edit/modelEditor/m3d-model-editor.png",
-    title: "模型编辑",
-    subtitle: "实现M3D模型在线编辑",
-    index: "/modules/cesium/edit/modelEditor/m3d-model-editor",
+    icon: "./static/modules/cesium/example-gallery/analyse/commonAnalyse/keyboard-roaming.png",
+    title: "碰撞检测",
+    subtitle: "有效解决室内、隧道、巷道漫游中”穿模“的问题",
+    index: "/modules/cesium/analyse/commonAnalyse/keyboard-roaming",
   },
   {
     icon: "./static/modules/cesium/example-gallery/analyse/geologyAnalyse/model-draw.png",
@@ -196,16 +252,16 @@ export const NewGallerys = [
     index: "/modules/common/layers/modelCacheLayer/voxel-model",
   },
   {
-    icon: "./static/modules/cesium/example-gallery/visualization/themeLayer/breaks-hybrid.png",
-    title: "混合开发",
-    subtitle: "支持WebClient库与第三方Cesium库混合开发",
-    index: "/modules/cesium/visualization/themeLayer/breaks-hybrid",
+    icon: "./static/modules/cesium/example-gallery/environmentEffects/weatherEffect/weather-height-fog.png",
+    title: "环境特效",
+    subtitle: "新增高度雾、体积光、动物集群等高级环境特效",
+    index: "/modules/cesium/environmentEffects/weatherEffect/weather-height-fog"
   },
   {
-    icon: "./static/modules/cesium/example-gallery/layer/modelCacheLayer/i3s.png",
-    title: "I3S数据接入",
-    subtitle: "支持I3S服务数据的加载",
-    index: "/modules/cesium/layer/modelCacheLayer/i3s",
+    icon: "./static/modules/cesium/example-gallery/layer/modelCacheLayer/m3d-gaussian-splatting.png",
+    title: "3D高斯数据接入",
+    subtitle: "支持3D高斯数据数据的加载",
+    index: "/modules/cesium/layer/modelCacheLayer/m3d-gaussian-splatting",
   },
   {
     icon: "./static/assets/gallery/model-banding.png",
@@ -214,10 +270,10 @@ export const NewGallerys = [
     index: "/modules/cesium/analyse/geologyAnalyse/model-banding",
   },
   {
-    icon: "./static/modules/cesium/example-gallery/analyse/commonAnalyse/keyboard-roaming.png",
-    title: "碰撞检测",
-    subtitle: "有效解决室内、隧道、巷道漫游中”穿模“的问题",
-    index: "/modules/cesium/analyse/commonAnalyse/keyboard-roaming",
+    icon: "./static/modules/cesium/example-gallery/simulation/fluid-dam-break.png",
+    title: "流体模拟 - 筑坝溃坝",
+    subtitle: "基于流体模拟功能实现的筑坝溃坝场景展示",
+    index: "/modules/cesium/simulation/fluid-dam-break"
   },
   {
     icon: "./static/modules/common/example-gallery/plot/plot-profess/plot-link-animation.png",
