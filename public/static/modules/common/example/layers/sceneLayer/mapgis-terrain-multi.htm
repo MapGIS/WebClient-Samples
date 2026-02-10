@@ -60,6 +60,10 @@
           url: 'http://10.10.130.72:8089/igs/rest/services/Scene/TwTerrain/SceneServer'
         })
         map.add(layer)
+        // 图层添加完毕后，跳转到图层范围内
+        layer.on('layerview-created', (result) => {
+          flyToTW()
+        })
         layer2 = new IGSSceneLayer({
           // 服务基地址
           url: 'http://10.10.130.72:8089/igs/rest/services/Scene/HkTerrain/SceneServer'
@@ -69,21 +73,15 @@
 
       // 飞到台湾地形
       function flyToTW() {
-        view.flyTo({
-          center: [121.0076, 23.3814, 9000.0],
-          orientation: {
-            pitch: Cesium.Math.toRadians(-35.0)
-          }
+        view.goTo({
+          layer: layer
         })
       }
 
       // 飞到台湾地形
       function flyToHK() {
-        view.flyTo({
-          center: [113.9, 22.1, 9000.0],
-          orientation: {
-            pitch: Cesium.Math.toRadians(-35.0)
-          }
+        view.goTo({
+          layer: layer2
         })
       }
 

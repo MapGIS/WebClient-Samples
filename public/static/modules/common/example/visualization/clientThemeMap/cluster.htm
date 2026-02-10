@@ -8,7 +8,7 @@
     />
     <title>聚合专题图</title>
     <!-- 引入地图引擎库 -->
-    <script include="engine:leaflet cesium" src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"></script>
     <!--示例中面板、按钮等，第三方layui的js库与css样式-->
     <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
     <link
@@ -54,19 +54,18 @@
               // 最大聚类数量
               maxValue: 6,
               // 聚类文字样式
-              labelExpressionInfo:{
-                expression:"'A组|聚合' + $cluster_count + '个'"
+              labelExpressionInfo: {
+                expression: "'A组|聚合' + $cluster_count + '个'"
               },
               labelSymbol: new TextSymbol({
                 // 文字颜色
-                color: "#000000",
+                color: '#000000',
                 // 文字大小
                 font: {
-                  size: 15,
-                  family:'SimHei'
+                  size: 15
                 },
-                haloColor:'#ffffff',
-                haloSize:3
+                haloColor: '#ffffff',
+                haloSize: 3
               }),
               // 聚类符号样式
               symbol: new SimpleMarkerSymbol({
@@ -77,11 +76,11 @@
                 // 符号外边线样式
                 outline: {
                   // 外边线颜色
-                  color: "rgba(241, 211, 87, 0.6)",
+                  color: 'rgba(241, 211, 87, 0.6)',
                   // 外边线宽度
-                  width: 5,
-                },
-              }),
+                  width: 5
+                }
+              })
             },
             // 聚类分段3
             {
@@ -90,19 +89,19 @@
               // 最大聚类数量
               maxValue: 30,
               // 聚类文字样式
-              labelExpressionInfo:{
-                expression:"'A组|聚合' + $cluster_count + '个'"
+              labelExpressionInfo: {
+                expression: "'A组|聚合' + $cluster_count + '个'"
               },
               labelSymbol: new TextSymbol({
                 // 文字颜色
-                color: "#000000",
+                color: '#000000',
                 // 文字大小
                 font: {
                   size: 15,
-                  family:'SimHei'
+                  family: 'SimHei'
                 },
-                haloColor:'#ffffff',
-                haloSize:3
+                haloColor: '#ffffff',
+                haloSize: 3
               }),
               // 聚类符号样式
               symbol: new SimpleMarkerSymbol({
@@ -113,12 +112,12 @@
                 // 符号外边线样式
                 outline: {
                   // 外边线颜色
-                  color: "rgba(241, 211, 87, 0.6)",
+                  color: 'rgba(241, 211, 87, 0.6)',
                   // 外边线宽度
-                  width: 5,
-                },
-              }),
-            },
+                  width: 5
+                }
+              })
+            }
           ],
           isHoverShowBound: true,
           defaultLabelSymbol: new TextSymbol({
@@ -127,28 +126,28 @@
             // 文字大小
             font: {
               size: 15,
-              family:'SimHei'
+              family: 'SimHei'
             },
-            haloColor:'#ffffff',
-            haloSize:3
+            haloColor: '#ffffff',
+            haloSize: 3
           }),
           defaultSymbol: new SimpleMarkerSymbol({
             // 符号颜色
-            color: "rgba(240, 194, 12, 0.6)",
+            color: 'rgba(240, 194, 12, 0.6)',
             // 符号大小
             size: 30,
             // 符号外边线样式
             outline: {
               // 外边线颜色
-              color: "rgba(241, 211, 87, 0.6)",
+              color: 'rgba(241, 211, 87, 0.6)',
               // 外边线宽度
-              width: 5,
-            },
+              width: 5
+            }
           }),
-          defaultLabelExpressionInfo:{
-            expression:"'A组|聚合' + $cluster_count + '个'"
+          defaultLabelExpressionInfo: {
+            expression: "'A组|聚合' + $cluster_count + '个'"
           }
-        });
+        })
       }
 
       //获取线renderer
@@ -186,8 +185,8 @@
         map.add(layerOfPoint)
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
           console.log('点加载完毕:', result.layer)
         })
@@ -228,8 +227,8 @@
         map.add(layerOfPoint)
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
           console.log('点加载完毕:', result.layer)
         })
@@ -272,8 +271,8 @@
         map.add(layerOfPoint)
         // 图层加载完毕
         layerOfPoint.on('layerview-created', function (result) {
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
           console.log('点加载完毕:', result.layer)
         })
@@ -468,7 +467,10 @@
   </head>
 
   <body onload="init()">
-    <div id="mapgis-viewer" style="position: absolute; width: 100%; height: 100%"></div>
+    <div
+      id="mapgis-viewer"
+      style="position: absolute; width: 100%; height: 100%"
+    ></div>
     <div class="layui-panel layui-panel-right">
       <form class="layui-form" action="">
         <div class="layui-form-item">

@@ -129,6 +129,59 @@
 
 ## 版本说明
 
+### <font color=red>V10.7.8.10</font>
+
+<font size=4>**webclient-mapboxgl-plugin**</font>
+
+1. 功能优化
+
+- 增加支持区、线类型的几何进行聚类
+
+2. API接口变更
+- 此版无变更
+
+<font size=4>**webclient-mapboxgl**</font>
+
+1. 功能新增
+
+- 新增超出 RasterSource、VectorTileSource 最小级别后是否缩小瓦片显示的配置
+
+2. API接口变更
+
+- API接口变更
+<a href="http://10.10.130.72:8086/#/guideMulti/mapboxgl/development_mapboxgl_api_update" target="_blank">webclient-mapboxgl 接口变更表</a>
+
+### <font color=red>V10.7.6.10</font>
+
+<font size=4>**webclient-mapboxgl-plugin**</font>
+
+1. 功能新增
+
+- 支持百度、高德瓦片服务纠偏显示
+
+2. 功能优化
+
+- 此版本无更新
+
+3. API接口变更
+- 此版无变更
+
+<font size=4>**webclient-mapboxgl**</font>
+
+1. 功能新增
+
+- 矢量瓦片支持配置请求方式和请求头
+
+2. 功能优化
+
+- 优化不同裁图瓦片叠加时的空间裁剪效果
+
+3. API接口变更
+
+- API接口变更
+<a href="http://10.10.130.72:8086/#/guideMulti/mapboxgl/development_mapboxgl_api_update" target="_blank">webclient-mapboxgl 接口变更表</a>
+
+
 ### <font color=red>V10.7.4.10</font>
 
 <font size=4>**webclient-mapboxgl-plugin**</font>

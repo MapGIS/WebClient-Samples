@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>BIM(M3D 2.1/2.2 DB属性查询)</title>
+    <!--加载Cesium库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+    />
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <div id="app-tips">
+      提示：待模型加载完毕后，请鼠标左键点击任意要素进行属性查询
+    </div>
+
+    <script type="module">
+      'use strict'
+
+      // 定义创建图层与UI交互相关的变量
+      let map, sceneView, viewer, tileset
+
+      // 该方法用于初始化三维地图查看器，包括创建图层管理容器，初始化地图视图对象以及获取Cesium场景视图对象
+      function initViewer() {
+        map = new zondy.Map()
+        sceneView = new zondy.cesium.SceneView({
+          viewId: 'mapgis-3d-viewer',
+          map: map
+        })
+        viewer = sceneView.getInnerView()
+        viewer.scene.skyBox.show = false
+        viewer.scene.skyAtmosphere.show = false
+        viewer.scene.sun.show = false
+        viewer.scene.moon.show = false
+        viewer.scene.globe.showGroundAtmosphere = false
+        viewer.scene.globe.show = false
+      }
+
+      // 该方法用于添加M3D模型缓存图层
+      function addModelCacheLayer() {
+        const modelCacheLayer = new zondy.layer.M3DModelCacheLayer({
+          url: 'http://10.10.130.72:8089/igs/rest/services/M3Dv2/小别墅_属性DB文件存储_M3D22/M3dServer',
+          extensionOptions: {
+            // 开启自动跳转
+            autoReset: true
+          }
+        })
+        map.add(modelCacheLayer)
+        modelCacheLayer.on('layerview-created', function (result) {
+          tileset = sceneView.getInnerLayer(result.layer)
+          addClickHandler()
+        })
+      }
+
+      // 该方法用于添加点击事件查询要素属性
+      function addClickHandler() {
+        const handler = new Cesium.ScreenSpaceEventHandler(viewer.canvas)
+        handler.setInputAction(async (movement) => {
+          const feature = viewer.scene.pick(movement.position)
+          if (feature instanceof Cesium.Cesium3DTileFeature) {
+            // 根据拾取到的要素TID进行高亮显示
+            const id = await feature.getProperty('tid')
+            tileset.style = new Cesium.Cesium3DTileStyle({
+              defines: {
+                id: `${id}`
+              },
+              color: {
+                conditions: [['${tid} === ${id}', "color('red')"]]
+              }
+            })
+            // 获取要素的所有属性字段名信息
+            // const propertyIds = await feature.getPropertyIds()
+            // 获取要素的所有属性字段值信息，有如下注意事项：
+            //   1. 对于M3D 2.1/2.2属性存储在DB文件中的数据，在调用getProperty()方法获取属性值时，不传入参数则返回所有属性字段名和属性字段值
+            //   2. 除上述情况之外，getProperty()方法必须传入需要查询的属性字段名，否则会导致方法运行时错误
+            const property = await feature.getProperty()
+            // 根据获取到的要素属性值进行弹窗显示
+            pickAttributesPopup(property)
+          }
+        }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
+      }
+
+      // 根据属性对象生成HTML表格，用于layui弹窗展示属性信息
+      function createHTMLTableFromAttributes(attributes) {
+        let table = '<table class="layui-table">'
+        table += '<tr><th>属性</th><th>值</th></tr>'
+        for (let key in attributes) {
+          if (attributes.hasOwnProperty(key)) {
+            table += `<tr><td>${key}</td><td>${attributes[key]}</td></tr>`
+          }
+        }
+        table += '</table>'
+        return table
+      }
+
+      // 若开启了属性查询则弹窗显示属性信息
+      function pickAttributesPopup(attributes) {
+        layui.use('layer', () => {
+          const layer = layui.layer
+
+          layer.open({
+            title: '属性信息',
+            type: 1,
+            shade: 0.1,
+            shadeClose: true,
+            skin: 'class-layer-demo-custom',
+            content: createHTMLTableFromAttributes(attributes)
+          })
+        })
+      }
+
+      // 该方法用于初始化整个应用，包括初始化查看器、添加模型缓存图层和初始化用户界面
+      function init() {
+        initViewer()
+        addModelCacheLayer()
+      }
+
+      init()
+    </script>
+
+    <style>
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      /* 提示内容样式 */
+      #app-tips {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        /* left: 50%; */
+        /* transform: translateX(-50%); */
+        background: #28292e;
+        color: #f5f5f5;
+        padding: 5px;
+        user-select: none;
+        font-size: 12px;
+        border-radius: 2px;
+      }
+
+      .layui-form-item {
+        display: flex;
+        align-items: center;
+        margin: 0px;
+      }
+
+      .layui-panel-left {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+      }
+
+      .sample-main-panel {
+        font-size: 12px;
+        height: auto;
+        border: none;
+        margin: 0px;
+      }
+
+      .layui-panel-right {
+        padding: 10px;
+        width: 280px;
+      }
+
+      .layui-form-label {
+        width: 100px;
+      }
+
+      .layui-input-block,
+      .layui-form-select {
+        width: 150px;
+      }
+
+      .tree-home-icon {
+        position: absolute;
+        top: 0px;
+        color: #ccc;
+        display: none;
+      }
+
+      .tree-home-icon:hover {
+        cursor: pointer;
+        color: #fff;
+      }
+
+      .layui-panel-left.hidden-tree .tree-home-icon {
+        display: inline-block;
+      }
+
+      .layui-panel-left.hidden-tree .tree-area {
+        display: none;
+      }
+
+      .tree-area {
+        width: 220px;
+        color: #ccc;
+        font-size: 12px;
+        background: rgba(43, 45, 47, 0.9);
+        border: none;
+        padding: 5px 0px;
+      }
+
+      .tree-nodeInfo-title {
+        line-height: 26px;
+        border-bottom: 1px solid #1f2022c7;
+        padding: 0 10px;
+      }
+
+      .tree-nodeInfo-title .layui-icon-refresh {
+        float: right;
+        font-size: 14px;
+        margin-right: 10px;
+      }
+
+      .tree-nodeInfo-title .layui-icon-close {
+        float: right;
+      }
+
+      .tree-nodeInfo-title .layui-icon-refresh:hover,
+      .tree-nodeInfo-title .layui-icon-close:hover {
+        cursor: pointer;
+        color: #fff;
+      }
+
+      #search-area {
+        padding: 5px 10px 0;
+      }
+
+      .layui-input-wrap {
+        line-height: 30px;
+      }
+
+      .layui-input-affix {
+        line-height: 30px;
+      }
+
+      .layui-input-affix .layui-icon-clear {
+        color: #757575;
+      }
+
+      .layui-input-affix .layui-icon-clear:hover {
+        color: #d2d2d2;
+      }
+
+      .layui-input {
+        height: 30px;
+      }
+
+      #layui-tree {
+        width: 100%;
+        max-height: 400px;
+        overflow-y: auto;
+        margin-top: 5px;
+      }
+
+      .layui-tree-main {
+        width: 100%;
+      }
+
+      .layui-tree-txt {
+        color: #ccc;
+        word-break: break-all;
+        white-space: normal;
+        width: calc(100% - 30px);
+      }
+
+      .layui-tree-entry {
+        height: auto;
+      }
+
+      .layui-tree-entry:hover {
+        background: rgba(28, 31, 32, 0.9);
+      }
+
+      /*高宽分别对应横竖滚动条的尺寸，滑块*/
+      ::-webkit-scrollbar {
+        width: 5px;
+      }
+
+      /*定义滚动条轨道内阴影+圆角*/
+      ::-webkit-scrollbar-track {
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0);
+      }
+
+      /*定义滑块内阴影+圆角*/
+      ::-webkit-scrollbar-thumb {
+        border-radius: 5px;
+        background-color: rgba(0, 0, 0, 0.7);
+      }
+
+      .class-layer-demo-custom .layui-layer-title {
+        font-size: 12px;
+        background-color: #282828;
+        color: #ccc;
+        height: 32px;
+        line-height: 32px;
+        border-bottom: 1px solid #1f2022c7;
+        padding-left: 6px;
+      }
+
+      .class-layer-demo-custom .layui-layer-btn {
+        padding: 5px 10px 10px;
+      }
+
+      .class-layer-demo-custom .layui-layer-setwin {
+        right: 10px;
+        top: 8px;
+      }
+
+      .class-layer-demo-custom .layui-layer-setwin span {
+        color: #ccc;
+      }
+
+      .class-layer-demo-custom .layui-layer-btn a {
+        background: #fff;
+        border-color: #e9e7e7;
+        color: #333;
+      }
+      .class-layer-demo-custom .layui-layer-btn .layui-layer-btn0 {
+        border-color: #fa584d;
+        background-color: #fa584d;
+        color: #fff;
+      }
+
+      .layui-table {
+        width: 98%;
+        margin: 2px;
+        background: rgba(43, 45, 47, 0.9);
+        color: #ccc;
+      }
+
+      .layui-layer {
+        background: rgba(43, 45, 47, 0.9);
+        width: auto;
+      }
+
+      .layui-layer-page .layui-layer-content {
+        overflow-y: auto;
+        padding: 2px;
+        max-height: 400px;
+      }
+
+      .layui-table td,
+      .layui-table th {
+        font-size: 12px;
+        padding: 2px;
+        border-color: rgba(40, 40, 40, 0.9);
+      }
+
+      .layui-btn {
+        background-color: #6593f9;
+      }
+    </style>
+  </body>
+</html>

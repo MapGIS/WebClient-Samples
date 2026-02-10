@@ -1,144 +1,290 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>场景夸张</title>
+    <!--加载Cesium脚本库及其样式-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-  <title>场景夸张</title>
-  <!--加载Cesium库-->
-  <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
-  <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css" />
-  <!--plugin脚本库-->
-  <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
-  <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
-  <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <div id="app-tips">
+      提示：场景中飞机为glb数据，建筑白模为M3D数据，货轮为3D Tiles数据
+    </div>
+    <script type="module">
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
 
-  <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-  <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-  <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css" />
-  <!--示例公共样式-->
-  <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/style.css" />
-  <link rel="stylesheet" href="http://10.10.130.72:8086/static/libs/css/tool.css" />
-  <script>
-    'use strict'
-    //定义三维视图的主要类
-    let map, sceneView, viewer, tileset, exaggeration, relativeHeight
-    let modelUrls = [
-      "http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.0/dayantaresult/tileset.json",
-      "http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.1/dayantaresult/tileset.json",
-    ]
-    let selectedUrl = modelUrls[0]
+      // 定义创建图层与UI交互相关的变量
+      let map, sceneView, viewer, pane, m3dLayer, cesium3DTilesLayer, glbEntity
 
-    //地图初始化函数
-    function init() {
-      //初始化球体
-      initViewer()
-      initUI()
-      //三维试图类构造完毕，添加一个模型
-      addModel()
-    }
+      // 该方法用于初始化三维地图查看器，包括创建图层管理容器，初始化地图视图对象以及获取Cesium场景视图对象
+      function initViewer() {
+        map = new zondy.Map()
+        sceneView = new zondy.cesium.SceneView({
+          viewId: 'mapgis-3d-viewer',
+          map: map
+        })
+        viewer = sceneView.getInnerView()
 
-    // 初始二维地图
-    function initView() {
-      // 初始化图层管理容器
-      map = new Map()
-      // 初始化地图视图对象
-      view = createView('mapgis-viewer', map)
-    }
+        // 开启地形深度测试
+        viewer.scene.globe.depthTestAgainstTerrain = true
 
-    //地图初始化函数
-    function initViewer() {
-      //初始化图层管理容器
-      map = new zondy.Map()
-      //初始化地图视图对象
-      sceneView = new zondy.cesium.SceneView({
-        //视图id
-        viewId: 'mapgis-3d-viewer',
-        //图层管理容器
-        map: map
-      })
-      viewer = sceneView.getInnerView()
-    }
-
-    //加载模型
-    async function addModel() {
-      removeModel()
-      tileset = await zondy.cesium.Cesium3DTileset.fromUrl(selectedUrl)
-      viewer.scene.primitives.add(tileset)
-      viewer.zoomTo(
-        tileset,
-        new Cesium.HeadingPitchRange(
-          0,
-          -2.0,
-          Math.max(100.0 - tileset.boundingSphere.radius, 0.0),
-        ),
-      )
-    }
-
-    function removeModel() {
-      if (tileset) {
-        viewer.scene.primitives.remove(tileset)
-      }
-    }
-
-    function updateExaggeration() {
-      scene.verticalExaggeration = Number(exaggeration)
-      scene.verticalExaggerationRelativeHeight = Number(relativeHeight)
-    }
-
-    // 初始化示例UI操作
-    function initUI() {
-      layui.use(function () {
-        layui.slider.render({
-          elem: "#exaggeration",
-          value: 100,
-          min: 100,
-          max: 300,
-          setTips: function (value) {
-            return value / 100
+        // 视角定位
+        viewer.camera.flyTo({
+          destination: Cesium.Cartesian3.fromDegrees(
+            114.33468110738815,
+            30.53108603369252,
+            1359.5985905103469
+          ),
+          orientation: {
+            heading: Cesium.Math.toRadians(57.29286389815108),
+            pitch: Cesium.Math.toRadians(-26.477840281593224),
+            roll: 0.002692484803205611
           },
-          theme: 'rgb(21, 134, 238)',
-          change: function (value) {
-            viewer.scene.verticalExaggeration = Number(value/100)
-            console.log('viewer.scene.verticalExaggeration : ', viewer.scene.verticalExaggeration );
-          }
-        });
-        layui.slider.render({
-          elem: "#relativeHeight",
-          value: 0,
-          min: -100,
-          max: 100,
-          step: 1,
-          theme: 'rgb(21, 134, 238)',
-          change: function (value) {
-            viewer.scene.verticalExaggeration = Number(value)
-          }
-        });
-      })
-    }
-  </script>
-</head>
+          duration: 0
+        })
+      }
 
-<body onload="init();">
-  <!--  视图容器div  -->
-  <div id="mapgis-3d-viewer" style="position: absolute; width: 100%; height: 100%"></div>
-  <!--  示例UI  -->
-  <div class="layui-panel layui-panel-right tile-layer-panel">
-    <form class="layui-form" action="">
-      <div class="layui-form-item">
-        <label class="layui-form-label" style="width: 100px;">场景夸张系数</label>
-        <div class="layui-input-block sample-slider" style="width: 160px;">
-          <div id="exaggeration"></div>
-        </div>
-      </div>
-      <div class="layui-form-item">
-        <label class="layui-form-label" style="width: 100px;">场景夸张相对高度</label>
-        <div class="layui-input-block sample-slider" style="width: 160px;">
-          <div id="relativeHeight"></div>
-        </div>
-      </div>
-    </form>
-  </div>
-</body>
+      // 该方法用于添加glTF模型
+      function addGltfModel() {
+        glbEntity = viewer.entities.add({
+          position: Cesium.Cartesian3.fromDegrees(
+            114.35155895162313,
+            30.54422444617202,
+            200
+          ),
+          model: {
+            uri: 'http://10.10.130.72:8200/3DData/Model/glb/Cesium_Air.glb',
+            scale: 20,
+            // 设置glTF模型默认不受场景夸张的影响
+            enableVerticalExaggeration: false
+          }
+        })
+      }
 
+      // 该方法用于添加3D Tiles模型缓存图层
+      function addCesium3DTilesCacheLayer() {
+        // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/Cesium3DTilesCacheLayer.html
+        let Cesium3DTilesCacheLayer = new zondy.layer.Cesium3DTilesCacheLayer({
+          url: 'http://10.10.130.72:8200/3DData/ModelCache/3DTileset/1.1/CargoShip/tileset.json'
+        })
+        map.add(Cesium3DTilesCacheLayer)
+        // 图层加载完毕的回调方法
+        Cesium3DTilesCacheLayer.on('layerview-created', function (result) {
+          // 获取内部图层对象，即MapGISM3DSet或Cesium3DTileset对象
+          cesium3DTilesLayer = sceneView.getInnerLayer(result.layer)
+          // 设置3D Tiles模型默认不受场景夸张的影响
+          cesium3DTilesLayer.enableVerticalExaggeration = false
+          // 调整3D Tiles模型的位置以及缩放比例
+          const position = Cesium.Cartesian3.fromDegrees(
+            114.3693534117723,
+            30.55331563562155,
+            0
+          )
+          const mat = Cesium.Transforms.eastNorthUpToFixedFrame(position)
+          const scale = Cesium.Matrix4.fromUniformScale(5)
+          Cesium.Matrix4.multiply(mat, scale, mat)
+          cesium3DTilesLayer._root.transform = mat
+        })
+      }
+
+      // 该方法用于添加M3D模型缓存图层
+      function addModelCacheLayer() {
+        let modelCacheLayer = new zondy.layer.M3DModelCacheLayer({
+          url: 'http://10.10.130.72:8200/3DData/ModelCache/M3D/2.0/武汉建筑轮廓白/武汉建筑轮廓白.mcj'
+        })
+        map.add(modelCacheLayer)
+        // 图层加载完毕的回调方法
+        modelCacheLayer.on('layerview-created', function (result) {
+          // 获取内部图层对象，即MapGISM3DSet或Cesium3DTileset对象
+          m3dLayer = sceneView.getInnerLayer(result.layer)
+          // 调整M3D模型的高度
+          adjustTilesetHeight(m3dLayer, 15)
+        })
+      }
+
+      /**
+       * 该方法用于调整模型瓦片集的高度
+       * @param {MapGISM3DSet|Cesium3DTileset} tileset - 模型瓦片集对象
+       * @param {Number} height - 目标高度值
+       */
+      function adjustTilesetHeight(tileset, height) {
+        const cartographic = Cesium.Cartographic.fromCartesian(
+          m3dLayer.boundingSphere.center
+        )
+        const translation = Cesium.Cartesian3.subtract(
+          Cesium.Cartesian3.fromRadians(
+            cartographic.longitude,
+            cartographic.latitude,
+            height
+          ),
+          Cesium.Cartesian3.fromRadians(
+            cartographic.longitude,
+            cartographic.latitude,
+            0.0
+          ),
+          new Cesium.Cartesian3()
+        )
+        tileset.modelMatrix = Cesium.Matrix4.fromTranslation(translation)
+      }
+
+      // 该方法用于添加地形
+      function addTerrainCacheLayer() {
+        // 参考API: http://10.10.130.72:8086/static/modules/common/api/common-mapgis/TerrainCacheLayer.html
+        let terrainCacheLayer = new zondy.layer.TerrainCacheLayer({
+          url: 'http://10.10.130.72:8200/3DData/TerrainCache/武汉地形'
+        })
+        map.add(terrainCacheLayer)
+      }
+
+      // 该方法用于加载天地图
+      function addTDT() {
+        let TDTLayer = new zondy.layer.WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_c/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken()
+        })
+        map.add(TDTLayer)
+      }
+
+      // 该方法用于初始化UI操作面板
+      function initUI() {
+        pane = new Pane({
+          title: '操作面板'
+        })
+
+        // 定义默认参数
+        const paneParameters = {
+          verticalExaggeration: 1, // 夸张系数
+          verticalExaggerationRelativeHeight: 0, // 参考高度
+          enableGltfVerticalExaggeration: false, // 是否应用glTF场景夸张效果
+          enableM3DVerticalExaggeration: true, // 是否应用M3D场景夸张效果
+          enable3DTilesVerticalExaggeration: false // 是否应用3D Tiles场景夸张效果
+        }
+
+        const verticalExaggerationControlFolder = pane.addFolder({
+          title: '场景夸张独立开关'
+        })
+        const verticalExaggerationModifyFolder = pane.addFolder({
+          title: '场景夸张参数调整'
+        })
+
+        verticalExaggerationControlFolder
+          .addBinding(paneParameters, 'enableGltfVerticalExaggeration', {
+            label: 'glTF'
+          })
+          .on('change', (e) => {
+            glbEntity.model.enableVerticalExaggeration = e.value
+          })
+
+        verticalExaggerationControlFolder
+          .addBinding(paneParameters, 'enableM3DVerticalExaggeration', {
+            label: 'M3D'
+          })
+          .on('change', (e) => {
+            m3dLayer.enableVerticalExaggeration = e.value
+          })
+
+        verticalExaggerationControlFolder
+          .addBinding(paneParameters, 'enable3DTilesVerticalExaggeration', {
+            label: '3D Tiles'
+          })
+          .on('change', (e) => {
+            cesium3DTilesLayer.enableVerticalExaggeration = e.value
+          })
+
+        verticalExaggerationModifyFolder
+          .addBinding(paneParameters, 'verticalExaggeration', {
+            label: '夸张系数',
+            min: 0,
+            max: 10
+          })
+          .on('change', (e) => {
+            viewer.scene.verticalExaggeration = e.value
+          })
+
+        verticalExaggerationModifyFolder
+          .addBinding(paneParameters, 'verticalExaggerationRelativeHeight', {
+            label: '参考高度',
+            min: -1000,
+            max: 1000
+          })
+          .on('change', (e) => {
+            viewer.scene.verticalExaggerationRelativeHeight = e.value
+          })
+
+        pane
+          .addButton({
+            title: '重置'
+          })
+          .on('click', () => {
+            paneParameters.verticalExaggeration = 1
+            paneParameters.verticalExaggerationRelativeHeight = 0
+            paneParameters.enableGltfVerticalExaggeration = false
+            paneParameters.enableM3DVerticalExaggeration = true
+            paneParameters.enable3DTilesVerticalExaggeration = false
+            viewer.scene.verticalExaggeration = 1
+            viewer.scene.verticalExaggerationRelativeHeight = 0
+            pane.refresh()
+          })
+      }
+
+      // 该方法用于初始化整个应用，包括初始化查看器、添加模型缓存图层和初始化用户界面
+      function init() {
+        initViewer()
+        addGltfModel()
+        addModelCacheLayer()
+        addCesium3DTilesCacheLayer()
+        addTerrainCacheLayer()
+        addTDT()
+        initUI()
+      }
+
+      init()
+    </script>
+
+    <style>
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
+      }
+      /* 提示内容样式 */
+      #app-tips {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        /* left: 50%; */
+        /* transform: translateX(-50%); */
+        background: #28292e;
+        color: #f5f5f5;
+        padding: 5px;
+        user-select: none;
+        font-size: 12px;
+        border-radius: 2px;
+      }
+    </style>
+  </body>
 </html>

@@ -224,6 +224,10 @@
           title: '反射效果'
         })
 
+        const fluidUnderwaterFolder = tab.pages[1].addFolder({
+          title: '水下效果'
+        })
+
         const controls = {
           // 场景控制
           debugShowFramesPerSecond: false,
@@ -237,7 +241,7 @@
           flowParticleColor: { r: 255, g: 0, b: 0, a: 1 },
           flowParticleLineWidth: 4,
           showFlowParticle: false,
-          flowParticleNumber: 10000 * 25,
+          flowParticleNumber: 500,
           // 白浪效果
           showFluidFoam: false,
           fluidFoamSize: 0.7,
@@ -259,11 +263,20 @@
           fluidReflectionOpacity: 0.5,
           fluidReflectionMaxDistance: 500,
           fluidReflectionThickness: 0,
+          // 水下效果
+          showFluidUnderwater: true,
+          fluidUnderwaterColor: { r: 0, g: 0, b: 255, a: 1 },
+          fluidUnderwaterCausticsColor: { r: 255, g: 255, b: 255, a: 1 },
+          fluidUnderwaterCausticsScale: 0.5,
+          fluidUnderwaterNearDistance: 0.0,
+          fluidUnderwaterNearAlpha: 0.0,
+          fluidUnderwaterFarDistance: 1000.0,
+          fluidUnderwaterFarAlpha: 1.0,
           // 添加点流体源的参数
           addPointFluidSourceRadius: 200,
-          addPointFluidSourceFlow: 300,
+          addPointFluidSourceFlow: 3000000,
           // 添加全域流体源的参数
-          addVolumeFluidSourceIntensity: 10
+          addVolumeFluidSourceIntensity: 600000
         }
 
         sceneControlFolder
@@ -420,8 +433,8 @@
         flowParticleFolder
           .addBinding(controls, 'flowParticleNumber', {
             label: '粒子数量',
-            min: 10000,
-            max: 500000
+            min: 100,
+            max: 10000
           })
           .on('change', (e) => {
             fluid.flowParticle.number = e.value
@@ -596,6 +609,118 @@
             fluid.reflection.thickness = e.value
           })
 
+        fluidUnderwaterFolder
+          .addBinding(controls, 'showFluidUnderwater', {
+            label: '显示水下效果'
+          })
+          .on('change', (e) => {
+            fluid.underwater.show = e.value
+          })
+        fluidUnderwaterFolder
+          .addBinding(controls, 'fluidUnderwaterColor', {
+            label: '水下模糊颜色',
+            min: 0,
+            max: 1000
+          })
+          .on('change', (e) => {
+            fluid.underwater.color = Cesium.Color.fromBytes(
+              e.value.r,
+              e.value.g,
+              e.value.b,
+              e.value.a * 255
+            )
+          })
+        fluidUnderwaterFolder
+          .addBinding(controls, 'fluidUnderwaterCausticsColor', {
+            label: '焦散颜色'
+          })
+          .on('change', (e) => {
+            fluid.underwater.causticsColor = Cesium.Color.fromBytes(
+              e.value.r,
+              e.value.g,
+              e.value.b,
+              e.value.a * 255
+            )
+          })
+        fluidUnderwaterFolder
+          .addBinding(controls, 'fluidUnderwaterCausticsScale', {
+            label: '焦散的大小',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            fluid.underwater.causticsScale = e.value
+          })
+        fluidUnderwaterFolder
+          .addBinding(controls, 'fluidUnderwaterNearDistance', {
+            label: '近端距离',
+            min: 0,
+            max: 1000
+          })
+          .on('change', (e) => {
+            if (e.value > controls.fluidUnderwaterFarDistance) {
+              controls.fluidUnderwaterNearDistance =
+                controls.fluidUnderwaterFarDistance
+              pane.refresh()
+            }
+            fluid.underwater.nearFarScalar = new Cesium.Cartesian4(
+              controls.fluidUnderwaterNearDistance,
+              controls.fluidUnderwaterNearAlpha,
+              controls.fluidUnderwaterFarDistance,
+              controls.fluidUnderwaterFarAlpha
+            )
+          })
+
+        fluidUnderwaterFolder
+          .addBinding(controls, 'fluidUnderwaterNearAlpha', {
+            label: '近端透明度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            fluid.underwater.nearFarScalar = new Cesium.Cartesian4(
+              controls.fluidUnderwaterNearDistance,
+              e.value,
+              controls.fluidUnderwaterFarDistance,
+              controls.fluidUnderwaterFarAlpha
+            )
+          })
+
+        fluidUnderwaterFolder
+          .addBinding(controls, 'fluidUnderwaterFarDistance', {
+            label: '远端距离',
+            min: 0,
+            max: 1000
+          })
+          .on('change', (e) => {
+            if (e.value < controls.fluidUnderwaterNearDistance) {
+              controls.fluidUnderwaterFarDistance =
+                controls.fluidUnderwaterNearDistance
+              pane.refresh()
+            }
+            fluid.underwater.nearFarScalar = new Cesium.Cartesian4(
+              controls.fluidUnderwaterNearDistance,
+              controls.fluidUnderwaterNearAlpha,
+              controls.fluidUnderwaterFarDistance,
+              controls.fluidUnderwaterFarAlpha
+            )
+          })
+
+        fluidUnderwaterFolder
+          .addBinding(controls, 'fluidUnderwaterFarAlpha', {
+            label: '远端透明度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            fluid.underwater.nearFarScalar = new Cesium.Cartesian4(
+              controls.fluidUnderwaterNearDistance,
+              controls.fluidUnderwaterNearAlpha,
+              controls.fluidUnderwaterFarDistance,
+              e.value
+            )
+          })
+
         fluidSourceControlFolder
           .addBinding(controls, 'addPointFluidSourceRadius', {
             label: '半径大小',
@@ -610,7 +735,7 @@
           .addBinding(controls, 'addPointFluidSourceFlow', {
             label: '流量大小',
             min: 0,
-            max: 1000
+            max: 10000000
           })
           .on('change', (e) => {
             controls.addPointFluidSourceFlow = e.value
@@ -658,7 +783,7 @@
           .addBinding(controls, 'addVolumeFluidSourceIntensity', {
             label: '流量大小',
             min: 0,
-            max: 100
+            max: 10000000
           })
           .on('change', (e) => {
             controls.addVolumeFluidSourceIntensity = e.value
@@ -671,7 +796,7 @@
           .on('click', () => {
             fluid.fluidSources.add(
               new zondy.cesium.VolumeFluidSource({
-                intensity: 50
+                intensity: controls.addVolumeFluidSourceIntensity
               })
             )
           })

@@ -34,11 +34,11 @@
       function getRenderer() {
         const renderer = new UniqueValueRenderer({
           // 专题图过滤字段名
-          field: 'OID',
+          field: 'Floor',
           // 单值专题图过滤条件数组
           uniqueValueInfos: []
         })
-        for (let i = 0; i < 20000; i++) {
+        for (let i = 1; i < 6; i++) {
           renderer.uniqueValueInfos.push({
             //单值过滤条件
             value: i,
@@ -73,11 +73,11 @@
       function changeRenderer() {
         const renderer = new UniqueValueRenderer({
           // 专题图过滤字段名
-          field: 'OID',
+          field: 'Floor',
           // 单值专题图过滤条件数组
           uniqueValueInfos: []
         })
-        for (let i = 0; i < 20000; i++) {
+        for (let i = 1; i < 6; i++) {
           renderer.uniqueValueInfos.push({
             //单值过滤条件
             value: i,

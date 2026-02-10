@@ -226,34 +226,6 @@
         })
       }
 
-      // // 添加专题图图层
-      // function addThemLayer() {
-      //   igsMapImageLayer = new IGSMapImageLayer({
-      //     // 服务基地址
-      //     url: 'http://10.10.130.72:8089/igs/rest/services/Map/湖北省4326/MapServer',
-      //     // 设置子图层专题图
-      //     sublayers: [
-      //       {
-      //         // 子图层id
-      //         id: 0,
-      //         // 设置单值专题图渲染器
-      //         renderer: getRendererOfRegion()
-      //       }
-      //     ]
-      //   })
-
-      //   // 添加图层
-      //   map.add(igsMapImageLayer)
-
-      //   // 图层加载完毕事件
-      //   igsMapImageLayer.on('layerview-created', (result) => {
-      //     console.log('加载完毕', result.layer)
-      //     view.flyTo({
-      //       extent: result.layer.extent
-      //     })
-      //   })
-      // }
-
       // 随机颜色值
       function randomColor() {
         return new Color(
@@ -303,8 +275,8 @@
           layerOfLine.renderer = getRendererOfLine()
           // 设置区图层的专题图
           layerOfRegion.renderer = getRendererOfRegion()
-          view.flyTo({
-            extent: result.layer.extent
+          view.goTo({
+            layer: result.layer
           })
         })
       }

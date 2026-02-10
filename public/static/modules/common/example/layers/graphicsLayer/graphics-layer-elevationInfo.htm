@@ -225,7 +225,7 @@
         layer.on('layerview-created', function (result) {
           console.log("加载完毕:", result.layer);
           // 视点跳转
-          view.flyTo({
+          view.goTo({
             center: [110.31, 31.28, 100000]
           });
         });

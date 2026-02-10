@@ -78,9 +78,9 @@ function createChangeTab() {
       buttons.push(button1)
 
       const button2 = document.createElement('button')
-      button2.innerText = '10.7.4.10'
+      button2.innerText = 'latest'
       button2.onclick = () => {
-        localStorage.setItem('currentCesiumVersion', '10.7.4.10')
+        localStorage.setItem('currentCesiumVersion', 'latest')
         refresh()
       }
       buttonContainer.appendChild(button2)

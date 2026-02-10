@@ -13,57 +13,28 @@
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
     <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
     <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
-
-    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
-    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
-    <link
-      rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
-    />
     <!--示例公共样式-->
     <link
       rel="stylesheet"
       href="http://10.10.130.72:8086/static/libs/css/style.css"
     />
-    <link
-      rel="stylesheet"
-      href="http://10.10.130.72:8086/static/libs/css/analyse.css"
-    />
-    <script>
+    <script type="module">
       'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
       // 定义三维视图的主要类
       let map, sceneView, viewer
       // 定义可视域分析
-      let viewShed3d = null
-      let viewShed3dAction = false
-      let viewShed3ding = false
-      // 鼠标移动方式的可视域，对鼠标操作的标志位
-      let mouseLeftOnceClicked = false // 是否点击了一次鼠标左键
-      let mouseEventDone = false // 可视域分析的鼠标事件完整结束
+      let viewshed3d = null
+      let viewshed3dAction = false
+      let viewshed3ding = false
+      let viewshedId = 0
+      let viewshedVisibleRate = 0
       // 屏幕空间事件处理器
       let handler = null
       // 当前分析类型
-      let currentType = 'model'
-
-      // 地图初始化函数
-      function init() {
-        // 初始化三维球体
-        initViewer()
-        // 创建切换Cesium版本的按钮
-        createChangeTab()
-        // 添加模型
-        addModel()
-        // 添加地形
-        addTerrain()
-        // 添加一个Billboard，用于测试自定义渲染通道
-        addBillboard()
-        // 加载天地图
-        addTDT()
-        // 初始化示例UI
-        initUI()
-        // 初始视角
-        flyTo(currentType)
-      }
+      let currentType = 'MODEL'
+      let pane = null
 
       // 初始化三维球体
       function initViewer() {
@@ -78,37 +49,25 @@
         })
         // 获取视图对象
         viewer = sceneView.getInnerView()
-        viewer.showPosition()
         viewer.scene.globe.depthTestAgainstTerrain = true
-        computeViewshedVisibleRate()
+        // computeViewshedVisibleRate()
       }
 
       // 添加一个可视域分析(鼠标点选)
       function addViewShed() {
         // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium/ViewshedAnalysis.html
-        viewShed3d = new Cesium.ViewshedAnalysis()
-        viewer.scene.visualAnalysisManager.add(viewShed3d)
-        viewShed3dAction = true
-        viewShed3ding = false
-        addCesiumScreenSpaceEventHandler()
-        layer.msg('鼠标左键选取，鼠标右键结束')
+        viewshed3d = new Cesium.ViewshedAnalysis()
+        viewshed3dAction = true
+        viewshed3ding = false
       }
 
       // 计算可视域分析可视率，在每次相机移动结束后计算
-      function computeViewshedVisibleRate() {
+      function computeViewshedVisibleRate(controls) {
         viewer.scene.camera.moveEnd.addEventListener(() => {
-          if (viewShed3d) {
-            var viewshedVisibleRate =
+          if (viewshed3d) {
+            viewshedVisibleRate =
               viewer.scene.visualAnalysisManager.getViewshedVisibleRate()
-
-            document.getElementById('viewshed-visible-rate').innerHTML = `${(
-              viewshedVisibleRate * 100
-            )
-              .toFixed(2)
-              .replace(/\.?0+$/, '')}%`
-          } else {
-            document.getElementById('viewshed-visible-rate').innerHTML =
-              '（当前场景中无可视域分析）'
+            controls.viewshedVisibleRate = viewshedVisibleRate * 100
           }
         })
       }
@@ -116,43 +75,42 @@
       // 增加Cesium的ScreenSpaceEventHandler中的左键、移动、右键三个鼠标事件。
       function addCesiumScreenSpaceEventHandler() {
         handler = new Cesium.ScreenSpaceEventHandler(viewer.scene.canvas)
-        // 鼠标左击
         handler.setInputAction(function (movement) {
-          if (viewShed3d !== undefined) {
-            if (viewShed3dAction) {
+          if (viewshed3d !== undefined) {
+            if (viewshed3dAction) {
+              viewer.scene.visualAnalysisManager.add(viewshed3d, viewshedId)
               let cartesian = viewer.scene.pickPosition(movement.position)
               let cartographic = Cesium.Cartographic.fromCartesian(cartesian)
               cartographic.height += 2.0
               cartesian = Cesium.Cartographic.toCartesian(cartographic)
-              if (cartesian !== undefined && !viewShed3ding) {
-                viewShed3d.viewPosition = cartesian
-              } else {
-                viewShed3d.targetPosition = cartesian
-                viewShed3dAction = false
+              if (cartesian) {
+                if (!viewshed3ding) {
+                  viewshed3d.viewPosition = cartesian
+                } else {
+                  viewshed3d.targetPosition = cartesian
+                  viewshed3dAction = false
+                }
+                viewshed3ding = true
               }
-              viewShed3ding = true
             }
           }
         }, Cesium.ScreenSpaceEventType.LEFT_CLICK)
-
-        // 鼠标右键结束
         handler.setInputAction(function (movement) {
-          if (viewShed3ding) {
+          if (viewshed3ding) {
             let cartesian = viewer.scene.pickPosition(movement.position)
-            if (cartesian !== undefined) {
-              viewShed3d.targetPosition = cartesian
+            if (cartesian) {
+              viewshed3d.targetPosition = cartesian
             }
-            viewShed3dAction = false
-            viewShed3ding = false
+            viewshed3dAction = false
+            viewshed3ding = false
+            viewshedId++
           }
         }, Cesium.ScreenSpaceEventType.RIGHT_CLICK)
-
-        // 鼠标移动
         handler.setInputAction(function (movement) {
-          if (viewShed3ding) {
+          if (viewshed3ding) {
             let cartesian = viewer.scene.pickPosition(movement.endPosition)
             if (cartesian) {
-              viewShed3d.targetPosition = cartesian
+              viewshed3d.targetPosition = cartesian
             }
           }
         }, Cesium.ScreenSpaceEventType.MOUSE_MOVE)
@@ -168,12 +126,12 @@
         // 观察点Cartesian3
         let viewPointLon, viewPointLat, viewPointHeight
         switch (currentType) {
-          case 'model':
+          case 'MODEL':
             viewPointLon = 108.95919735136667
             viewPointLat = 34.21930564263558
             viewPointHeight = 18
             break
-          case 'terrain':
+          case 'TERRAIN':
             viewPointLon = 120.5548
             viewPointLat = 23.3302
             viewPointHeight = 652
@@ -190,34 +148,24 @@
         let heading = 30 // 方位角，以北顺时针
         let pitch = 15 // 俯仰角
         // 参考API: http://10.10.130.72:8086/static/modules/cesium/api/cesium/ViewshedAnalysis.html
-        viewShed3d = new Cesium.ViewshedAnalysis()
+        viewshed3d = new Cesium.ViewshedAnalysis()
         //将可视域分析添加到分析管理类中
-        viewer.scene.visualAnalysisManager.add(viewShed3d)
-        viewShed3d.viewPosition = viewPosition
-        viewShed3d.viewRadius = viewRadius // 可视距离
-        viewShed3d.heading = heading // 方位角
-        viewShed3d.pitch = pitch // 俯仰角
+        viewer.scene.visualAnalysisManager.add(viewshed3d)
+        viewshed3d.viewPosition = viewPosition
+        viewshed3d.viewRadius = viewRadius // 可视距离
+        viewshed3d.heading = heading // 方位角
+        viewshed3d.pitch = pitch // 俯仰角
         // 可视区域夹角，不可视颜色，可是颜色等其他参数(非必须)
-        viewShed3d.horizontAngle = 45
-        viewShed3d.verticalAngle = 45
-        viewShed3d.visibleColor = Cesium.Color.BLUE
-        viewShed3d.unVisibleColor = Cesium.Color.RED
+        viewshed3d.horizontAngle = 45
+        viewshed3d.verticalAngle = 45
+        viewshed3d.visibleColor = Cesium.Color.BLUE
+        viewshed3d.unVisibleColor = Cesium.Color.RED
       }
 
       // 移除可视域分析
       function removeViewShed() {
-        // 如果存在可视域分析，那么通过分析管理类移除
-        if (viewShed3d) {
-          viewer.scene.visualAnalysisManager.removeAll()
-          viewShed3d = null
-        }
-        mouseLeftOnceClicked = false
-        mouseEventDone = false
-        // 如果有对应的handler,移除对应的Cesium鼠标事件
-        if (handler) {
-          handler.removeInputAction(Cesium.ScreenSpaceEventType.LEFT_CLICK)
-          handler.removeInputAction(Cesium.ScreenSpaceEventType.MOUSE_MOVE)
-        }
+        viewer.scene.visualAnalysisManager.removeAll()
+        viewshed3d = null
       }
 
       function addModel() {
@@ -273,11 +221,11 @@
 
       function flyTo(type) {
         switch (type) {
-          case 'terrain':
+          case 'TERRAIN':
             // 定位到地形，并调整到合适的视角
             sceneView.flyTo({
               center: [121.07, 24.05, 10000.0],
-              duration: 2,
+              duration: 0,
               orientation: {
                 heading: Cesium.Math.toRadians(0), // 方位角
                 pitch: Cesium.Math.toRadians(-30), // 俯仰角
@@ -285,11 +233,11 @@
               }
             })
             break
-          case 'model':
+          case 'MODEL':
             // 定位到模型，并调整到合适的视角
             sceneView.flyTo({
               center: [108.9595, 34.2165, 200.0],
-              duration: 2,
+              duration: 0,
               orientation: {
                 heading: Cesium.Math.toRadians(0), // 方位角
                 pitch: Cesium.Math.toRadians(-30), // 俯仰角
@@ -300,33 +248,111 @@
       }
 
       function initUI() {
-        layui.use(function () {
-          let form = layui.form
-          // 监听选择的分析数据类型
-          form.on('select(content)', function (data) {
-            // 定位到分析视角下
-            currentType = data.value
-            flyTo(currentType)
-          })
+        pane = new Pane({
+          title: '操作面板'
         })
 
-        layui.use(function () {
-          let form = layui.form
-          // 监听选择的渲染通道
-          // 地球渲染后：Cesium.Pass.AFTER_GLOBE
-          // 模型缓存渲染后（默认通道）：Cesium.Pass.AFTER_TILE
-          // 模型缓存覆盖物渲染后：Cesium.Pass.AFTER_TILE_CLASSIFICATION
-          form.on('select(pass)', function (data) {
+        const controls = {
+          viewshedVisibleRate
+        }
+
+        const viewshedOptionsFolder = pane.addFolder({
+          title: '可视域配置面板'
+        })
+        const viewshedAnalysisFolder = pane.addFolder({
+          title: '可视域分析面板'
+        })
+        const viewshedOperationFolder = pane.addFolder({
+          title: '可视域操作面板'
+        })
+
+        computeViewshedVisibleRate(controls)
+
+        viewshedOptionsFolder
+          .addBlade({
+            view: 'list',
+            label: '切换类型',
+            options: [
+              {
+                text: '模型',
+                value: 'MODEL'
+              },
+              {
+                text: '地形',
+                value: 'TERRAIN'
+              }
+            ],
+            value: 'MODEL'
+          })
+          .on('change', (e) => {
+            currentType = e.value
+            flyTo(currentType)
+          })
+
+        viewshedOptionsFolder
+          .addBlade({
+            view: 'list',
+            label: '渲染通道',
+            options: [
+              {
+                text: '模型缓存渲染后',
+                value: 'AFTER_TILE'
+              },
+              {
+                text: '地球渲染后',
+                value: 'AFTER_GLOBE'
+              },
+              {
+                text: '模型缓存覆盖物渲染后',
+                value: 'AFTER_TILE_CLASSIFICATION'
+              },
+              {
+                text: '分析通道',
+                value: 'ANALYSIS'
+              }
+            ],
+            value: 'AFTER_TILE'
+          })
+          .on('change', (e) => {
             let visualAnalysisValues =
               viewer.scene.visualAnalysisManager.getAll()
             // 为每个可视域分析对象设置渲染通道
             for (let i = 0; i < visualAnalysisValues.length; i++) {
               if (visualAnalysisValues[i] instanceof Cesium.ViewshedAnalysis) {
-                visualAnalysisValues[i].pass = Cesium.Pass[data.value]
+                visualAnalysisValues[i].pass = Cesium.Pass[e.value]
               }
             }
           })
+
+        viewshedAnalysisFolder.addBinding(controls, 'viewshedVisibleRate', {
+          label: '可视率(%)',
+          readonly: true
         })
+
+        viewshedOperationFolder
+          .addButton({
+            title: '绘制可视域'
+          })
+          .on('click', () => {
+            addViewShed()
+          })
+
+        viewshedOperationFolder
+          .addButton({
+            title: '固定参数添加可视域'
+          })
+          .on('click', () => {
+            addViewShedByOption()
+          })
+
+        viewshedOperationFolder
+          .addButton({
+            title: '移除所有可视域'
+          })
+          .on('click', () => {
+            removeViewShed()
+            controls.viewshedVisibleRate = 0
+          })
       }
 
       function addTDT() {
@@ -340,92 +366,41 @@
         })
         map.add(TDTLayer)
       }
+
+      // 地图初始化函数
+      function init() {
+        // 初始化三维球体
+        initViewer()
+        // 创建切换Cesium版本的按钮
+        createChangeTab()
+        // 添加模型
+        addModel()
+        // 添加地形
+        addTerrain()
+        // 添加一个Billboard，用于测试自定义渲染通道
+        addBillboard()
+        // 加载天地图
+        addTDT()
+        // 初始化示例UI
+        initUI()
+        // 初始视角
+        flyTo(currentType)
+        // 添加鼠标操作事件
+        addCesiumScreenSpaceEventHandler()
+      }
+
+      init()
     </script>
     <style>
-      .sample-button-panel {
-        width: 260px;
-      }
-      .layui-layer-content {
-        user-select: none;
-        pointer-events: none;
-      }
-      .layui-form-item {
-        margin-bottom: 8px;
-      }
-
-      .sample-main-panel {
-        height: auto;
-        line-height: 37px;
-        margin-bottom: 8px;
-      }
-
-      .layui-slider {
-        top: -20px;
-        width: 115px;
-        left: 114px;
-      }
-
-      .layui-slider-input {
-        top: -34px;
+      #mapgis-3d-viewer {
+        position: absolute;
+        left: 0;
+        top: 0;
       }
     </style>
   </head>
 
-  <body onload="init()">
+  <body>
     <div id="mapgis-3d-viewer"></div>
-    <div class="layui-panel layui-panel-right" style="width: 345px">
-      <form class="layui-form" action="">
-        <div class="sample-main-panel">
-          <div class="layui-form-item">
-            <label class="layui-form-label">模型或地形</label>
-            <div class="layui-input-block">
-              <select lay-filter="content">
-                <option value="model">模型</option>
-                <option value="terrain">地形</option>
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label class="layui-form-label">渲染通道</label>
-            <div class="layui-input-block">
-              <select lay-filter="pass">
-                <option value="AFTER_TILE" selected>模型缓存渲染后</option>
-                <option value="AFTER_GLOBE">地球渲染后</option>
-                <option value="AFTER_TILE_CLASSIFICATION">
-                  模型缓存覆盖物渲染后
-                </option>
-              </select>
-            </div>
-          </div>
-          <div class="layui-form-item">
-            <label class="layui-form-label">可视率</label>
-            <div class="layui-input-block" id="viewshed-visible-rate"></div>
-          </div>
-        </div>
-        <div class="sample-button-panel">
-          <button
-            type="button"
-            class="layui-btn layui-btn-sm layui-btn-normal"
-            onclick="addViewShed()"
-          >
-            手动添加
-          </button>
-          <button
-            type="button"
-            class="layui-btn layui-btn-sm layui-btn-normal"
-            onclick="addViewShedByOption()"
-          >
-            参数添加
-          </button>
-          <button
-            type="button"
-            class="layui-btn layui-btn-sm layui-btn-danger"
-            onclick="removeViewShed()"
-          >
-            移除
-          </button>
-        </div>
-      </form>
-    </div>
   </body>
 </html>

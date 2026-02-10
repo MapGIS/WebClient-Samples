@@ -70,7 +70,9 @@ npm install @mapgis/webclient-common
 | @mapgis/webclient-plot        | 包括行业标绘相关接口                                         |
 | @mapgis/webclient-video-plugin | 包括视频视图、视频草图编辑等视频调绘相关接口                 |
 
-  > 开发库分别提供ES5压缩版（webclient-common.min.js）与ES6压缩版（webclient-common-es6.min.js）两个版本。
+> 开发库分别提供ES5压缩版（webclient-common.min.js）与ES6压缩版（webclient-common-es6.min.js）两个版本。
+> 从 10.7.6.12 版本开始，新增 webclient-common 静态资源文件夹 webclient-common-resource。
+
 
 ### 开发 API
 
@@ -126,6 +128,54 @@ npm install @mapgis/webclient-common
   > 具体请查看配套的 MapGIS Client for JavaScript（common） API。
 
 ## 版本说明
+
+### <font color=red>V10.7.8.10</font>
+
+1. 功能新增
+
+- 场景下支持图标和图标上动态 Tip 的避让
+- 提供视图卷帘工具（当前仅 leaflet 引擎中的 MapView 支持）
+- 支持 GeoServer 平台发布的 WMS、WMTS、WFS 服务
+
+2. 功能优化
+
+- 统一部分符号属性在不同引擎上的效果差异
+- 优化服务请求失败的状态信息
+- GeoJson 接入能力增强，支持加载 MapGIS Desktop 上导出的 GeoJson (ESRI WKT)
+
+3. API接口变更
+  <a href="http://10.10.130.72:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
+
+4. 新增示例
+
+- <a href="http://10.10.130.72:8086/#/modules/common/layers/sceneLayer/mapgis-covering" target="_blank">MapGIS覆盖物服务</a>
+- <a href="http://10.10.130.72:8086/#/modules/common/view/view-tool/swipe-tool" target="_blank">卷帘</a>
+- <a href="http://10.10.130.72:8086/#/modules/common/layers/graphicsLayer/graphics-layer-collision" target="_blank">几何图层 - 图元避让显示</a>
+- <a href="http://10.10.130.72:8086/#/modules/common/visualization/clientThemeMap/breaks-voxel" target="_blank">分段专题图-栅格体元</a>
+- <a href="http://10.10.130.72:8086/#/modules/common/layers/layer-management/tile-layer-stretch" target="_blank">瓦片显示设置</a>
+
+### <font color=red>V10.7.6.10</font>
+
+1. 功能新增
+
+- 服务接口支持请求头 Header 传 Token
+- 支持加载 IGSImageServer 影像服务
+- 支持接入 IGS 加密瓦片服务
+- 地图服务（IGSMap地图服务、ArcGIS地图服务、WMS服务）支持全屏一张图加载方式
+
+2. 功能优化
+
+- IGSSceneLayer、ISSceneLayer子图层功能增强
+- 草图编辑工具接口的优化并增强，支持动态设置几何图层、提示文字、高程模式
+- SimpleLineSymbol、SimpleFillSymbol、TextSymbol等符号效果的优化和增强
+- 枚举类型的规范化
+
+3. API接口变更
+  <a href="http://10.10.130.72:8086/#/guideMulti/common/development_api_update" target="_blank">webclient-common 接口变更表</a>
+
+4. 新增示例
+
+- 自定义CZML图层
 
 ### <font color=red>V10.7.4.10</font>
 

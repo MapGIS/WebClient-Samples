@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="initial-scale=1,maximum-scale=1,user-scalable=no"
+    />
+    <title>鸟群特效</title>
+    <!--加载Cesium库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/cesium/Cesium.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/cesium/Widgets/widgets.css"
+    />
+    <!--plugin脚本库-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-common.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/libs/cdn/zondyclient/webclient-cesium-plugin.min.js"></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+  </head>
+
+  <body>
+    <div id="mapgis-3d-viewer"></div>
+    <script type="module">
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+
+      // 定义视图等变量
+      let viewer, pane, boids, boidsControls
+      const defaultBoidsControls = {
+        // 动物集群效果
+        show: true,
+        separationDistance: 1,
+        alignmentDistance: 20,
+        cohesionDistance: 5,
+        freedomFactor: 0.0,
+        scale: 5,
+        count: 1024,
+        maxSpeed: 15
+      }
+
+      async function init() {
+        initViewer()
+        addTDT()
+        addTerrain()
+        initBoids()
+        initUI()
+      }
+      init()
+
+      // 初始场景
+      function initViewer() {
+        viewer = new Cesium.Viewer('mapgis-3d-viewer', {
+          timeline: true,
+          // 开启动画
+          shouldAnimate: true
+        })
+
+        viewer.camera.setView({
+          destination: new Cesium.Cartesian3.fromDegrees(110.915, 31.182, 1200),
+          orientation: {
+            heading: 0.06266785592645174,
+            pitch: 0.16549326305365764,
+            roll: 6.282848966277779
+          }
+        })
+
+        //viewer.scene.debugShowFramesPerSecond = true;
+      }
+      // 添加天地图
+      function addTDT() {
+        const tdtToken = '63c5c4f101d68229494bb45d3bf60277'
+        viewer.imageryLayers.addImageryProvider(
+          new Cesium.WebMapTileServiceImageryProvider({
+            url: `http://t0.tianditu.com/img_w/wmts?service=wmts&request=GetTile&version=1.0.0&LAYER=img&tileMatrixSet=w&TileMatrix={TileMatrix}&TileRow={TileRow}&TileCol={TileCol}&style=default&format=tiles&tk=${tdtToken}`,
+            layer: 'tdtBasicLayer',
+            style: 'default',
+            format: 'image/jpeg',
+            tileMatrixSetID: 'GoogleMapsCompatible'
+          })
+        )
+      }
+      async function addTerrain() {
+        viewer.terrainProvider = await Cesium.CesiumTerrainProvider.fromUrl(
+          'http://10.10.130.72:8200/3DData/TerrainCache/HubeiTerrain/'
+        )
+        viewer.scene.globe.depthTestAgainstTerrain = true
+      }
+      function initBoids() {
+        const position = Cesium.Cartesian3.fromDegrees(110.913, 31.182, 600)
+        const dimensions = new Cesium.Cartesian3(400, 400, 400)
+        const box = viewer.entities.add({
+          position,
+          box: {
+            dimensions,
+            fill: false,
+            outline: true,
+            outlineColor: Cesium.Color.WHITE.withAlpha(0.1)
+          }
+        })
+        viewer.trackedEntity = box
+        boids = new Cesium.Boids(
+          Object.assign(
+            {
+              viewer,
+              dimensions,
+              position,
+              url: 'http://10.10.130.72:8200/3DData/Model/glb/Parrot.glb'
+            },
+            defaultBoidsControls
+          )
+        )
+      }
+
+      // 初始化UI组件
+      function initUI() {
+        if (pane) {
+          pane.dispose()
+        }
+        pane = new Pane({
+          title: '动物集群特效操作面板'
+        })
+
+        const boidsFolder = pane.addFolder({
+          title: '动物集群控制'
+        })
+
+        boidsControls = Object.assign({}, defaultBoidsControls)
+
+        // 动物集群控制
+        boidsFolder
+          .addBinding(boidsControls, 'show', {
+            label: '显示动物集群'
+          })
+          .on('change', (e) => {
+            boids.show = e.value
+          })
+        boidsFolder
+          .addBinding(boidsControls, 'separationDistance', {
+            label: '分离距离',
+            min: 0,
+            max: 100
+          })
+          .on('change', (e) => {
+            boids.separationDistance = e.value
+          })
+        boidsFolder
+          .addBinding(boidsControls, 'alignmentDistance', {
+            label: '对齐距离',
+            min: 0,
+            max: 100
+          })
+          .on('change', (e) => {
+            boids.alignmentDistance = e.value
+          })
+        boidsFolder
+          .addBinding(boidsControls, 'cohesionDistance', {
+            label: '凝聚距离',
+            min: 0,
+            max: 100
+          })
+          .on('change', (e) => {
+            boids.cohesionDistance = e.value
+          })
+        boidsFolder
+          .addBinding(boidsControls, 'freedomFactor', {
+            label: '自由度',
+            min: 0,
+            max: 1
+          })
+          .on('change', (e) => {
+            boids.freedomFactor = e.value
+          })
+        boidsFolder
+          .addBinding(boidsControls, 'scale', {
+            label: '缩放',
+            min: 0,
+            max: 100
+          })
+          .on('change', (e) => {
+            boids.scale = e.value
+          })
+        boidsFolder
+          .addBinding(boidsControls, 'count', {
+            label: '数量',
+            min: 1,
+            max: 10000
+          })
+          .on('change', (e) => {
+            boids.count = e.value
+          })
+        boidsFolder
+          .addBinding(boidsControls, 'maxSpeed', {
+            label: '最大速度',
+            min: 0,
+            max: 100
+          })
+          .on('change', (e) => {
+            boids.maxSpeed = e.value
+          })
+
+        boidsFolder
+          .addButton({
+            title: '重置'
+          })
+          .on('click', () => {
+            boids.destroy()
+            initBoids()
+            initUI()
+          })
+      }
+    </script>
+
+    <style>
+      /* tweakpane样式 */
+      .tp-dfwv {
+        position: absolute;
+        top: 15px;
+        /* left: 10px; */
+        width: 240px;
+      }
+    </style>
+  </body>
+</html>

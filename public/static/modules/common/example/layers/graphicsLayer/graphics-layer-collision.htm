@@ -1,0 +1,399 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>图形图层 - 图元避让显示</title>
+    <!-- 引入地图引擎库 -->
+    <script
+      include="engine:cesium"
+      src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"
+    ></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+    />
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+    <style>
+      @keyframes rotate {
+        from {
+          transform: rotate(0deg);
+        }
+
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      .html-marker {
+        position: relative;
+        border-radius: 5px;
+        background: linear-gradient(#3a85c6, rgb(96 81 93));
+        width: 100px;
+        height: 35px;
+        overflow: hidden;
+        line-height: 35px;
+
+        &:before {
+          content: '';
+          position: absolute;
+          width: 112%;
+          height: 62%;
+          background: rgb(255, 255, 255);
+          animation: rotate 5s linear infinite;
+        }
+
+        &:after {
+          content: '';
+          position: absolute;
+          background: linear-gradient(
+            180deg,
+            #3a85c6 0%,
+            rgba(0, 175, 237, 1) 100%
+          );
+          inset: 2px;
+          border-radius: 10px;
+        }
+      }
+    </style>
+    <script type="module">
+      //使用严格模式
+      'use strict'
+      import { Pane } from 'http://10.10.130.72:8086/static/libs/cdn/tweakpane/tweakpane.min.js'
+      let map,
+        view,
+        viewer,
+        layer,
+        tiandituLayer,
+        tiandituLayer1,
+        updateInterval,
+        isAutoUpdate = false,
+        features = []
+      const { WebTileLayer, GraphicsLayer } = zondy.layer
+      const { Map, Feature, Color } = zondy
+      const { Point, LineString, Polygon, GeometryEngine } = zondy.geometry
+      const {
+        SimpleMarkerSymbol,
+        SimpleLineSymbol,
+        SimpleFillSymbol,
+        PictureMarkerSymbol,
+        PictureFillSymbol,
+        TextSymbol,
+        HTMLMarkerSymbol
+      } = zondy.symbol
+
+      // 模拟济南市全市
+      const latRange = [36.033333, 37.9]
+      const lonRange = [116.35, 118.55]
+
+      // 初始三维地图
+      function initViewer() {
+        // 初始化图层管理容器
+        map = new Map()
+        // 初始化地图视图对象
+        view = createView('mapgis-viewer', map)
+        // 内部视图
+        viewer = view.getInnerView()
+        // 添加模型
+        Cesium.Model.fromGltfAsync({
+          id: 'modelPrimitive',
+          url: 'http://10.10.130.72:8200/3DData/Model/glb/CesiumMilkTruck.glb',
+          modelMatrix: Cesium.Transforms.headingPitchRollToFixedFrame(
+            Cesium.Cartesian3.fromDegrees(117, 37, 0),
+            new Cesium.HeadingPitchRoll()
+          ),
+          scale: 10000.0
+        }).then((res) => {
+          console.log('res: ', res)
+          viewer.scene.primitives.add(res)
+        })
+      }
+
+      function addTianDiTuLayer() {
+        tiandituLayer = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=img_w&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken(),
+          // 图层透明度
+          opacity: 1
+        })
+
+        tiandituLayer1 = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=cva_w&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken(),
+          // 图层透明度
+          opacity: 1
+        })
+        map.addMany([tiandituLayer, tiandituLayer1])
+      }
+
+      // 添加图形图层
+      function addLayer() {
+        // 创建Graphics图层对象
+        layer = new GraphicsLayer({
+          // 开启避让选项
+          deconflictionStrategy: 'static'
+        })
+        // 添加图层对象到地图文档中
+        map.add(layer)
+      }
+
+      function addRandomGraphics() {
+        for (let i = 0; i < 10; i++) {
+          for (let j = 0; j < 10; j++) {
+            const lat =
+              Math.random() * (latRange[1] - latRange[0]) + latRange[0]
+            const lon =
+              Math.random() * (lonRange[1] - lonRange[0]) + lonRange[0]
+            const feature = new Feature({
+              geometry: new Point({
+                coordinates: [lon, lat]
+              }),
+              symbol: {
+                type: 'html-marker',
+                html: `<div style='    display: flex;justify-content: center;align-content: center;align-items: center;'><div class='html-marker'></div><span style="position:absolute;        font-family: simhei;color: bisque;">压力:${Math.random().toFixed(
+                  3
+                )}<span></div>`
+              }
+            })
+            layer.add(feature)
+            features.push(feature)
+          }
+        }
+      }
+      // ***********************************************************************************************
+      function initUI() {
+        // UI
+        const pane = new Pane({})
+        const params = {
+          html: `<div style='    display: flex;justify-content: center;align-content: center;align-items: center;'><div class='html-marker'></div><span style="position:absolute;        font-family: simhei;color: bisque;">压力:${Math.random().toFixed(
+            3
+          )}<span></div>`,
+          pointEvents: 'auto',
+          verticalAlignment: 'middle',
+          horizontalAlignment: 'center',
+          pixelOffset: {
+            x: 0,
+            y: 0
+          },
+          updateInterval: 5,
+          horizonCulling: false,
+          occlusionCulling: false
+        }
+
+        const container = pane.addFolder({
+          title: '图元设置'
+        })
+
+        const markerTab = container.addTab({
+          pages: [{ title: 'HTMLMarker图元' }, { title: 'BillBoard图元' }]
+        })
+        const htmlControls = markerTab.pages[0]
+        const billboardControls = markerTab.pages[1]
+
+        markerTab.on('select', (e) => {
+          if (e.index === 0) {
+            if (isAutoUpdate) {
+              updateMarkerInterval(params.updateInterval)
+            } else {
+              clearInterval(updateInterval)
+            }
+            features.forEach((feature) => {
+              feature.symbol = {
+                type: 'html-marker',
+                html: `<div style='    display: flex;justify-content: center;align-content: center;align-items: center;'><div class='html-marker'></div><span style="position:absolute;        font-family: simhei;color: bisque;">压力:${Math.random().toFixed(
+                  3
+                )}<span></div>`
+              }
+            })
+          } else {
+            clearInterval(updateInterval)
+            features.forEach((feature) => {
+              feature.symbol = new zondy.symbol.PictureMarkerSymbol({
+                // 图片源数据，支持Image、HTMLCanvasElement、SVGElement、Svg字符串、基础图像地址、相对路径等
+                url: 'static/assets/logo/mapgis_logo_blue.png',
+                width: 40,
+                height: 40
+              })
+            })
+          }
+        })
+
+        htmlControls
+          .addBlade({
+            view: 'list',
+            label: 'dom事件穿透',
+            options: [
+              { text: '关闭', value: 'auto' },
+              { text: '开启', value: 'none' }
+            ],
+            value: params.pointEvents
+          })
+          .on('change', (ev) => {
+            features.forEach((feature) => {
+              feature.symbol.pointEvents = ev.value
+            })
+          })
+
+        htmlControls
+          .addBlade({
+            view: 'list',
+            label: '地平线测试',
+            options: [
+              { text: '关闭', value: false },
+              { text: '开启', value: true }
+            ],
+            value: params.horizonCulling
+          })
+          .on('change', (e) => {
+            features.forEach((feature) => {
+              feature.symbol.horizonCulling = e.value
+            })
+          })
+
+        htmlControls
+          .addBlade({
+            view: 'list',
+            label: '遮挡测试',
+            options: [
+              { text: '关闭', value: false },
+              { text: '开启', value: true }
+            ],
+            value: params.occlusionCulling
+          })
+          .on('change', (e) => {
+            features.forEach((feature) => {
+              feature.symbol.occlusionCulling = e.value
+            })
+          })
+
+        htmlControls
+          .addBlade({
+            view: 'list',
+            label: '水平原点位置',
+            options: [
+              { text: 'center', value: 'center' },
+              { text: 'left', value: 'left' },
+              { text: 'right', value: 'right' }
+            ],
+            value: params.horizontalAlignment
+          })
+          .on('change', (e) => {
+            features.forEach((feature) => {
+              feature.symbol.horizontalAlignment = e.value
+            })
+          })
+
+        htmlControls
+          .addBlade({
+            view: 'list',
+            label: '垂直原点位置',
+            options: [
+              { text: 'middle', value: 'middle' },
+              { text: 'top', value: 'top' },
+              { text: 'baseline', value: 'baseline' },
+              { text: 'bottom', value: 'bottom' }
+            ],
+            value: params.verticalAlignment
+          })
+          .on('change', (e) => {
+            features.forEach((feature) => {
+              feature.symbol.verticalAlignment = e.value
+            })
+          })
+
+        htmlControls.addBinding(params, 'pixelOffset').on('change', (ev) => {
+          features.forEach((feature) => {
+            feature.symbol.xoffset = ev.value.x
+            feature.symbol.yoffset = ev.value.y
+          })
+        })
+
+        const tab = htmlControls.addTab({
+          pages: [{ title: '手动更新' }, { title: '动态设置' }]
+        })
+
+        tab.pages[0].addBinding(params, 'html').on('change', (ev) => {
+          features.forEach((feature) => {
+            feature.symbol.html = ev.value
+          })
+        })
+
+        tab.pages[1]
+          .addBinding(params, 'updateInterval', {
+            min: 1,
+            max: 20
+          })
+          .on('change', (ev) => {
+            updateMarkerInterval(ev.value)
+          })
+
+        tab.on('select', (e) => {
+          if (e.index === 0) {
+            isAutoUpdate = false
+            clearInterval(updateInterval)
+          } else {
+            isAutoUpdate = true
+            updateMarkerInterval(params.updateInterval)
+          }
+        })
+      }
+
+      function updateMarkerInterval(time) {
+        if (updateInterval) {
+          clearInterval(updateInterval)
+        }
+        updateInterval = setInterval(() => {
+          updateRandomMarker()
+        }, time * 1000)
+      }
+
+      function updateRandomMarker() {
+        features.forEach((feature) => {
+          feature.symbol.html = `<div style='    display: flex;justify-content: center;align-content: center;align-items: center;'><div class='html-marker'></div><span style="position:absolute;        font-family: simhei;color: bisque;">压力:${Math.random().toFixed(
+            3
+          )}<span></div>`
+        })
+      }
+      // 初始化地图
+      function init() {
+        // 初始化地图视图
+        initViewer()
+        // 添加天地图
+        addTianDiTuLayer()
+        // 添加图形图层
+        addLayer()
+        // 添加随机几何
+        addRandomGraphics()
+        // 初始化示例UI
+        initUI()
+        // 跳转
+        view.on('loaded', () => {
+          view.goTo({
+            layer: layer
+          })
+        })
+      }
+      init()
+    </script>
+  </head>
+  <body>
+    <!--  视图容器div  -->
+    <div
+      id="mapgis-viewer"
+      style="position: absolute; width: 100%; height: 100%"
+    ></div>
+  </body>
+</html>

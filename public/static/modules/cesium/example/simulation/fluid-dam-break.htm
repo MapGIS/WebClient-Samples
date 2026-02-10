@@ -204,7 +204,8 @@
         const pointFluidSource = new zondy.cesium.PointFluidSource({
           position: Cesium.Cartesian3.fromDegrees(111.10114, 30.85543),
           radius: 200,
-          flow: 10000
+          // 为了展示模拟效果，对水源流量夸大处理
+          flow: 100000000
         })
         fluid.fluidSources.add(pointFluidSource)
 
@@ -253,7 +254,7 @@
           viewer.camera.flyTo(viewPositions.fluidSource)
           // 重新设置一些特效参数
           fluid.flowParticle.lineWidth = 2
-          fluid.flowParticle.number = 20000
+          fluid.flowParticle.number = 200
         })
 
         viewer.camera.flyTo({

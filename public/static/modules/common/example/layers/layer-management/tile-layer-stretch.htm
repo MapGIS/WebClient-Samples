@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>瓦片显示设置</title>
+    <!-- 引入地图引擎库 -->
+    <script
+      include="jquery,fancytree"
+      src="http://10.10.130.72:8086/static/libs/include-lib-local-upgrade.js"
+    ></script>
+    <script src="http://10.10.130.72:8086/static/assets/js/TDT-token.js"></script>
+    <!--示例中面板、按钮等，第三方layui的js库与css样式-->
+    <script src="http://10.10.130.72:8086/static/libs/cdn/layui/layui.js"></script>
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/cdn/layui/css/layui.css"
+    />
+    <!--示例公共样式-->
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/style.css"
+    />
+    <link
+      rel="stylesheet"
+      href="http://10.10.130.72:8086/static/libs/css/analyse.css"
+    />
+    <script type="text/javascript">
+      //使用严格模式
+      'use strict'
+      // 定义视图的主要类
+      let map,
+        view,
+        layer,
+        igsFeatureLayer,
+        tileDisplayStrategy = 'stretch'
+      const { Map, MapView, SceneView, Basemap, Collection, Color, Feature } =
+        zondy
+      const { Extent } = zondy.geometry
+      const {
+        WebTileLayer,
+        IGSTileLayer,
+        IGSMapImageLayer,
+        IGSVectorTileLayer,
+        IGSImageryTileLayer,
+        IGSFeatureLayer,
+        GeoJSONLayer,
+        WMTSLayer,
+        WMSLayer,
+        WFSLayer,
+        GraphicsLayer,
+        ArcGISTileLayer,
+        ArcGISVectorTileLayer,
+        GroupLayer
+      } = zondy.layer
+      const { SimpleRenderer, RandomRenderer } = zondy.renderer
+      const { SimpleMarkerSymbol, SimpleLineSymbol, SimpleFillSymbol } =
+        zondy.symbol
+
+      // 初始化地图
+      function init() {
+        // 初始化地图视图
+        initView()
+        // 添加瓦片图层
+        addIGSTileLayer()
+        // 图层加载完毕设置
+        layer.once('layerview-created', () => {
+          view.goTo({
+            layer: layer
+          })
+          // 初始化ui
+          initUI()
+        })
+      }
+
+      // 初始地图
+      function initView() {
+        // 初始化图层管理容器
+        map = new Map()
+        // 获取引擎类型
+        let type = localStorage.getItem('engine-type')
+        // 初始化地图视图对象
+        view = createView('mapgis-viewer', map, {
+          fullExtent: new Extent({
+            xmin: -180,
+            xmax: 180,
+            ymin: -90,
+            ymax: 90
+          }),
+          maxScale: 1
+        })
+      }
+
+      function addTianDiTuLayer() {
+        layer = new WebTileLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t1.tianditu.com/DataServer?T=img_w&x={col}&y={row}&l={level}',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken(),
+          // 图层透明度
+          opacity: 1,
+          // 瓦片显示策略
+          tileDisplayStrategy
+        })
+        map.add(layer)
+      }
+
+      // 添加瓦片图层
+      function addIGSTileLayer() {
+        // 创建地图图片图层
+        layer = new IGSTileLayer({
+          // 服务基地址
+          url: 'http://10.10.130.72:8089/igs/rest/services/Tile/湖北省_3857_normal_3-10/TileServer',
+          // 图层名称
+          title: '湖北省瓦片图层',
+          // 设置透明度
+          opacity: 1,
+          // 瓦片显示策略
+          tileDisplayStrategy
+        })
+        map.add(layer)
+      }
+
+      // 添加WMTS图层
+      function addWMTSLayer() {
+        // 创建WMTS图层
+        layer = new WMTSLayer({
+          // 加载经纬度的影像地图
+          url: 'http://t6.tianditu.gov.cn/img_w/wmts',
+          // 天地图必须加token，且token名为tk
+          tokenKey: 'tk',
+          // token请在天地图官网申请
+          tokenValue: getTDTToken(),
+          // 瓦片显示策略
+          tileDisplayStrategy
+        })
+        map.add(layer)
+      }
+      // 添加矢量瓦片图层
+      function addIGSVectorTileLayer() {
+        // 创建矢量瓦片图层
+        layer = new IGSVectorTileLayer({
+          url: 'http://10.10.130.72:8089/igs/rest/services/VectorTile/湖北省3857矢量瓦片/VectorTileServer',
+          // 图层名称
+          title: '湖北省矢量瓦片图层',
+          // 瓦片显示策略
+          tileDisplayStrategy
+        })
+        layer.on('layerview-created', function (result) {
+          layer.setStyleLayerVisibility('背景', false)
+        })
+        map.add(layer)
+      }
+
+      function addIGSImageryTileLayer() {
+        // 创建图层，如果是IGS1.0版本的服务请在初始化时指的图层坐标系
+        layer = new IGSImageryTileLayer({
+          // 服务基地址
+          url: 'http://10.10.130.72:8089/igs/rest/services/Image/world/ImageServer',
+          // 瓦片显示策略
+          tileDisplayStrategy
+        })
+        // 添加图层
+        map.add(layer)
+      }
+
+      function addArcGISTileLayer() {
+        layer = new ArcGISTileLayer({
+          // 服务基地址
+          url: 'https://services.arcgisonline.com/arcgis/rest/services/World_Terrain_Base/MapServer',
+          // 图层透明度
+          opacity: 1,
+          // 瓦片显示策略
+          tileDisplayStrategy
+        })
+        map.add(layer)
+      }
+
+      function addArcGISVectorTileLayer() {
+        layer = new ArcGISVectorTileLayer({
+          // 基地址
+          url: 'https://basemaps.arcgis.com/arcgis/rest/services/World_Basemap_v2/VectorTileServer',
+          // 瓦片显示策略
+          tileDisplayStrategy
+        })
+        map.add(layer)
+      }
+
+      function getSliderParamsInLayer(layer) {
+        const tileInfo =
+          layer.type === 'wmts'
+            ? layer.activeLayer.tileMatrixSet.tileInfo
+            : layer.tileInfo
+        const max = tileInfo.lods.length - 1
+        const min = 0
+        const startLevel = tileInfo.startLevel
+        const endLevel = tileInfo.endLevel
+
+        return {
+          max,
+          min,
+          startLevel,
+          endLevel
+        }
+      }
+
+      function updateTileInfoLevel(value) {
+        if (layer) {
+          layer.type === 'wmts'
+            ? layer.setProperty(
+                'activeLayer.tileMatrixSet.tileInfo.startLevel',
+                value[0]
+              )
+            : layer.setProperty('tileInfo.startLevel', value[0])
+          layer.type === 'wmts'
+            ? layer.setProperty(
+                'activeLayer.tileMatrixSet.tileInfo.endLevel',
+                value[1]
+              )
+            : layer.setProperty('tileInfo.endLevel', value[1])
+          document.getElementById('startLevel').innerText = value[0]
+          document.getElementById('endLevel').innerText = value[1]
+        }
+      }
+
+      // 初始化示例UI操作
+      function initUI() {
+        layui.use(function () {
+          const form = layui.form
+          // 切换底图
+          form.on('select(changeLayer)', function (data) {
+            map.removeAll()
+            switch (data.value) {
+              case 'IGS瓦片图层':
+                addIGSTileLayer()
+                break
+              case 'ArcGIS瓦片图层':
+                addArcGISTileLayer()
+                break
+              case '网络瓦片图层':
+                addTianDiTuLayer()
+                break
+              case 'IGS影像瓦片图层':
+                addIGSImageryTileLayer()
+                break
+              case 'IGS矢量瓦片图层':
+                addIGSVectorTileLayer()
+                break
+              case 'ArcGIS矢量瓦片图层':
+                addArcGISVectorTileLayer()
+                break
+              case 'WMTS图层':
+                addWMTSLayer()
+                break
+            }
+            layer.once('layerview-created', () => {
+              view.goTo({
+                layer: layer
+              })
+              updatePanel()
+            })
+          })
+
+          form.on('select(tileDisplayStrategy)', function (data) {
+            switch (data.value) {
+              case 'stretch':
+                tileDisplayStrategy = 'stretch'
+                if (layer) {
+                  layer.tileDisplayStrategy = tileDisplayStrategy
+                }
+                break
+              case 'hide':
+                tileDisplayStrategy = 'hide'
+                if (layer) {
+                  layer.tileDisplayStrategy = tileDisplayStrategy
+                }
+                break
+            }
+          })
+
+          function updateLevelInfoTable() {
+            const tbody = document.getElementById('level-info-tbody')
+            tbody.innerHTML = ''
+
+            if (!layer) return
+
+            const tileInfo =
+              layer.type === 'wmts'
+                ? layer.activeLayer.tileMatrixSet.tileInfo
+                : layer.tileInfo
+
+            if (!tileInfo || !tileInfo.lods) return
+
+            tileInfo.lods.forEach((lod, i) => {
+              const row = document.createElement('tr')
+              row.setAttribute('level', i)
+              row.setAttribute('scale', lod.scale)
+              row.innerHTML = `
+      <td>${i}</td>
+      <td>${lod.levelValue}</td>
+      <td>1:${Math.round(lod.scale)}</td>
+    `
+              tbody.appendChild(row)
+            })
+
+            updatePanelStyle()
+          }
+
+          function updatePanel() {
+            const { min, max, startLevel, endLevel } =
+              getSliderParamsInLayer(layer)
+            layui.slider.render({
+              elem: '#level-space',
+              value: [startLevel, endLevel], // 初始值
+              range: true, // 范围选择,
+              min: min,
+              max: max,
+              done: function (value) {
+                updateTileInfoLevel(value)
+                updatePanelStyle()
+              }
+            })
+            document.getElementById('level-text').innerText = `1:${
+              Math.floor(view.scale * 100) / 100 || null
+            }`
+            document.getElementById('startLevel').innerText = startLevel
+            document.getElementById('endLevel').innerText = endLevel
+            updateLevelInfoTable()
+          }
+
+          function updatePanelStyle() {
+            const { min, max, startLevel, endLevel } =
+              getSliderParamsInLayer(layer)
+            const nodes = document.getElementById('level-info-tbody').childNodes
+
+            for (let i = 0; i < nodes.length; i++) {
+              const node = nodes[i]
+              const level = node.getAttribute('level')
+              if (level < startLevel || level > endLevel) {
+                node.setAttribute('class', 'not-range-level')
+                continue
+              }
+              node.setAttribute('class', 'in-range-level')
+            }
+          }
+
+          updatePanel()
+
+          updatePanelStyle()
+
+          view.on('view-change', (e) => {
+            document.getElementById('level-text').innerText = `1:${
+              Math.floor(e.scale * 100) / 100 || null
+            }`
+          })
+        })
+      }
+    </script>
+  </head>
+
+  <body onload="init();">
+    <!--  视图容器div  -->
+    <div
+      id="mapgis-viewer"
+      style="position: absolute; width: 100%; height: 100%"
+    ></div>
+
+    <!-- 图层切换 -->
+    <div class="layui-panel layui-panel-right">
+      <form class="layui-form" action="">
+        <div class="layui-form-item">
+          <label class="layui-form-label">切换图层</label>
+          <div class="layui-input-block layui-input-block-select">
+            <select
+              id="changeLayer"
+              name="changeLayer"
+              lay-filter="changeLayer"
+            >
+              <option value="IGS瓦片图层">IGS瓦片图层</option>
+              <option value="ArcGIS瓦片图层">ArcGIS瓦片图层</option>
+              <option value="网络瓦片图层">网络瓦片图层</option>
+              <option value="IGS影像瓦片图层">IGS影像瓦片图层</option>
+              <option value="IGS矢量瓦片图层">IGS矢量瓦片图层</option>
+              <option value="ArcGIS矢量瓦片图层">ArcGIS矢量瓦片图层</option>
+              <option value="WMTS图层">WMTS图层</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label
+            class="layui-form-label"
+            title="请求瓦片的层级范围，不在这个范围内不会发送瓦片请求"
+            >层级范围</label
+          >
+          <div
+            class="layui-input-block layui-input-block-select"
+            style="display: flex"
+          >
+            <div id="startLevel">1</div>
+            <div id="level-space"></div>
+            <div id="endLevel">2</div>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          <label
+            class="layui-form-label"
+            title="超过瓦片的请求层级范围后，设置拉伸瓦片还是隐藏瓦片"
+            >显示策略</label
+          >
+          <div class="layui-input-block layui-input-block-select">
+            <select
+              id="tileDisplayStrategy"
+              name="tileDisplayStrategy"
+              lay-filter="tileDisplayStrategy"
+            >
+              <option value="stretch">瓦片拉伸</option>
+              <option value="hide">瓦片隐藏</option>
+            </select>
+          </div>
+        </div>
+        <div class="layui-form-item">
+          当前视图比例尺：<span id="level-text">1:null</span>
+        </div>
+        <div
+          class="layui-form-item"
+          style="max-height: 300px; overflow-y: scroll"
+        >
+          <label class="layui-form-label">瓦片信息</label>
+          <table class="layui-table tileInfo-table">
+            <thead>
+              <tr>
+                <th>层级</th>
+                <th>层级名称</th>
+                <th>比例尺</th>
+              </tr>
+            </thead>
+            <tbody id="level-info-tbody"></tbody>
+          </table>
+        </div>
+      </form>
+    </div>
+  </body>
+  <style>
+    .tileInfo-table {
+      background-color: rgb(44, 44, 44);
+      color: #ffffff;
+    }
+    .layui-form-radio:hover > *,
+    .layui-form-radioed,
+    .layui-form-radioed > i {
+      color: rgb(21, 134, 238) !important;
+    }
+
+    .layui-slider-bar {
+      background: rgb(21, 134, 238) !important;
+    }
+
+    #level-space {
+      flex: 3;
+    }
+
+    #startLevel {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-right: 5px;
+    }
+
+    #endLevel {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding-left: 5px;
+    }
+
+    .select-level {
+      color: #00ff40 !important;
+    }
+
+    .not-range-level {
+      color: #ff0000 !important;
+    }
+
+    .in-range-level {
+      color: #ffffff !important;
+    }
+  </style>
+</html>
